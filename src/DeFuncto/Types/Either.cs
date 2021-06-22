@@ -1,4 +1,6 @@
-﻿namespace DeFuncto
+﻿using System;
+
+namespace DeFuncto
 {
     public readonly struct Either<TLeft, TRight>
     {
@@ -23,5 +25,10 @@
 
         public static Either<TLeft, TRight> Right(TRight right) => new(right);
         public static Either<TLeft, TRight> Left(TLeft left) => new(left);
+
+        public Either<TLeft, TRight2> Map<TRight2>(Func<TRight, TRight2> projection) =>
+            IsRight
+                ? new Either<TLeft, TRight2>(projection(Value!))
+                : new Either<TLeft, TRight2>(Alternative!);
     }
 }
