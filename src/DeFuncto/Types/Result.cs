@@ -1,4 +1,5 @@
 ﻿using System;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
@@ -65,6 +66,7 @@ namespace DeFuncto
 
         public Result<TOk, TError> ToResult<TError>() => this;
     }
+
     public readonly struct ResultError<TError>
     {
         internal readonly TError ErrorValue;
@@ -73,5 +75,10 @@ namespace DeFuncto
             ErrorValue = errorValue;
 
         public Result<TOk, TError> ToResult<TOk>() => this;
+    }
+
+    public static class ResultExtensions
+    {
+        public static TOut Collapse<TOut>(this Result<TOut, TOut> result) => result.Match(Id, Id);
     }
 }
