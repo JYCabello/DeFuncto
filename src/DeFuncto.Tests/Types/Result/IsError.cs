@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace DeFuncto.Tests.Types.Either
+namespace DeFuncto.Tests.Types.Result
 {
     public class IsLeft
     {
