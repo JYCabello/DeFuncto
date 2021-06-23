@@ -3,7 +3,7 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Prelude
 {
-    public class OkFunc
+    public class Ok
     {
         [Fact(DisplayName = "Instantiates a resultOk")]
         public void Works()
