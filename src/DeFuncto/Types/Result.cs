@@ -1,4 +1,5 @@
 ﻿using System;
+using DeFuncto.Extensions;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto
@@ -57,30 +58,33 @@ namespace DeFuncto
         public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
             IsOk ? okProjection(OkValue!) : errorProjection(ErrorValue!);
 
-        public Unit Iter(Action<TOk> iterator)
+        public Result<TOk, TError> Iter(Action<TOk> iterator)
         {
             if (IsOk)
                 iterator(OkValue!);
-            return unit;
+            return this;
         }
 
-        public Unit Iter(Func<TOk, Unit> iterator) =>
+        public Result<TOk, TError> Iter(Func<TOk, Unit> iterator) =>
             Iter(ok => { iterator(ok); });
 
-        public Unit Iter(Action<TError> iterator)
+        public Result<TOk, TError> Iter(Action<TError> iterator)
         {
             if (IsError)
                 iterator(ErrorValue!);
-            return unit;
+            return this;
         }
 
-        public Unit Iter(Func<TError, Unit> iterator) =>
+        public Result<TOk, TError> Iter(Func<TError, Unit> iterator) =>
             Iter(error => { iterator(error); });
 
-        public Unit Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError) =>
-            Match(iteratorOk, iteratorError);
+        public Result<TOk, TError> Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError)
+        {
+             Match(iteratorOk, iteratorError);
+             return this;
+        }
 
-        public Unit Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
+        public Result<TOk, TError> Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
         {
             Iter(iteratorOk);
             return Iter(iteratorError);

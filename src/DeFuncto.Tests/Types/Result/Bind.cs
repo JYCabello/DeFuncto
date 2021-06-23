@@ -1,4 +1,5 @@
 ﻿using System;
+using DeFuncto.Assertions;
 using Xunit;
 
 namespace DeFuncto.Tests.Types.Result
@@ -10,9 +11,7 @@ namespace DeFuncto.Tests.Types.Result
         {
             var ok = Result<string, int>.Ok("ba");
             var result = ok.Bind(val => Result<string, int>.Ok($"{val}nana"));
-            Assert.True(result.IsOk);
-            Assert.NotNull(result.OkValue);
-            Assert.Equal("banana", result.OkValue);
+            result.ShouldBeOk("banana");
         }
 
         [Fact(DisplayName = "Gives second error on first Ok")]

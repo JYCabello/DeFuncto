@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeFuncto", "DeFuncto\DeFunc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeFuncto.Tests", "DeFuncto.Tests\DeFuncto.Tests.csproj", "{75C2921C-F490-4A37-9454-0FB08EBA94FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeFuncto.Assertions", "DeFuncto.Assertions\DeFuncto.Assertions.csproj", "{604125D0-29BA-4783-BD39-07B436BCDD2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{75C2921C-F490-4A37-9454-0FB08EBA94FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75C2921C-F490-4A37-9454-0FB08EBA94FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75C2921C-F490-4A37-9454-0FB08EBA94FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{604125D0-29BA-4783-BD39-07B436BCDD2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{604125D0-29BA-4783-BD39-07B436BCDD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{604125D0-29BA-4783-BD39-07B436BCDD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{604125D0-29BA-4783-BD39-07B436BCDD2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

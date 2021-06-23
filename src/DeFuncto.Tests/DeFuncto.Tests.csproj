@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DeFuncto.Assertions\DeFuncto.Assertions.csproj" />
       <ProjectReference Include="..\DeFuncto\DeFuncto.csproj" />
     </ItemGroup>
 
