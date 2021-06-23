@@ -59,6 +59,8 @@ namespace DeFuncto
 
         public ResultOk(TOk okValue) =>
             OkValue = okValue;
+
+        public Result<TOk, TError> ToResult<TError>() => this;
     }
     public readonly struct ResultError<TError>
     {
@@ -66,5 +68,7 @@ namespace DeFuncto
 
         public ResultError(TError errorValue) =>
             ErrorValue = errorValue;
+
+        public Result<TOk, TError> ToResult<TOk>() => this;
     }
 }
