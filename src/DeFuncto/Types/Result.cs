@@ -47,6 +47,9 @@ namespace DeFuncto
                 : new Result<TOkFinal, TError>(bound.ErrorValue!);
         }
 
+        public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
+            IsOk ? okProjection(OkValue!) : errorProjection(ErrorValue!);
+
         public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
         public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
         public static implicit operator Result<TOk, TError>(ResultError<TError> resultError) => Error(resultError.ErrorValue);
