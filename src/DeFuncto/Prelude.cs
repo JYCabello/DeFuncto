@@ -7,5 +7,7 @@
         public static ResultError<TError> Error<TError>(TError error) => new(error);
         public static Result<TOk, TError> Error<TOk, TError>(TError error) => Result<TOk, TError>.Error(error);
         public static T Id<T>(T t) => t;
+        // ReSharper disable once InconsistentNaming
+        public static Unit unit => Unit.Default;
     }
 }

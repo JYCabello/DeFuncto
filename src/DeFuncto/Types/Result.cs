@@ -51,6 +51,35 @@ namespace DeFuncto
         public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
             IsOk ? okProjection(OkValue!) : errorProjection(ErrorValue!);
 
+        public Unit Iter(Action<TOk> iterator)
+        {
+            if (IsOk)
+                iterator(OkValue!);
+            return unit;
+        }
+
+        public Unit Iter(Func<TOk, Unit> iterator) =>
+            Iter(ok => { iterator(ok); });
+
+        public Unit Iter(Action<TError> iterator)
+        {
+            if (IsError)
+                iterator(ErrorValue!);
+            return unit;
+        }
+
+        public Unit Iter(Func<TError, Unit> iterator) =>
+            Iter(error => { iterator(error); });
+
+        public Unit Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError) =>
+            Match(iteratorOk, iteratorError);
+
+        public Unit Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
+        {
+            Iter(iteratorOk);
+            return Iter(iteratorError);
+        }
+
         public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
         public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
         public static implicit operator Result<TOk, TError>(ResultError<TError> resultError) => Error(resultError.ErrorValue);
