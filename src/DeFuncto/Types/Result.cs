@@ -33,5 +33,18 @@ namespace DeFuncto
 
         public Result<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> binder) =>
             IsOk ? binder(OkValue!) : new Result<TOk2, TError>(ErrorValue!);
+
+        public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+            Func<TOk, Result<TOkBind, TError>> binder,
+            Func<TOk, TOkBind, TOkFinal> projection
+        )
+        {
+            if (IsError)
+                return new Result<TOkFinal, TError>(ErrorValue!);
+            var bound = Bind(binder);
+            return bound.IsOk
+                ? new Result<TOkFinal, TError>(projection(OkValue!, bound.OkValue!))
+                : new Result<TOkFinal, TError>(bound.ErrorValue!);
+        }
     }
 }
