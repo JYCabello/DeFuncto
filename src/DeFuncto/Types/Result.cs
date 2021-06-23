@@ -32,8 +32,14 @@ namespace DeFuncto
 
         public Result<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
+        public Result<TOk, TError2> MapError<TError2>(Func<TError, TError2> projection) =>
+            IsError ? new Result<TOk, TError2>(projection(ErrorValue!)) : new Result<TOk, TError2>(OkValue!);
+
         public Result<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> binder) =>
             IsOk ? binder(OkValue!) : new Result<TOk2, TError>(ErrorValue!);
+
+        public Result<TOk, TError2> BindError<TError2>(Func<TError, Result<TOk, TError2>> binder) =>
+            IsError ? binder(ErrorValue!) : new Result<TOk, TError2>(OkValue!);
 
         public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
             Func<TOk, Result<TOkBind, TError>> binder,

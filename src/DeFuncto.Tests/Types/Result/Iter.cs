@@ -34,10 +34,7 @@ namespace DeFuncto.Tests.Types.Result
         {
             var witness = 0;
             var error = Error("banana").ToResult<int>();
-            error.Iter(str =>
-            {
-                witness += str.Length;
-            });
+            error.Iter(str => { witness += str.Length; });
             error.Iter(str =>
             {
                 witness += str.Length;
@@ -50,7 +47,8 @@ namespace DeFuncto.Tests.Types.Result
                     witness += str.Length;
                     return unit;
                 });
-            Assert.Equal(18, witness);
+            error.Iter(_ => throw new Exception("Should not run"), str => { witness += str.Length; });
+            Assert.Equal(24, witness);
         }
     }
 }
