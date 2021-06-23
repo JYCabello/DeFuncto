@@ -46,5 +46,25 @@ namespace DeFuncto
                 ? new Result<TOkFinal, TError>(projection(OkValue!, bound.OkValue!))
                 : new Result<TOkFinal, TError>(bound.ErrorValue!);
         }
+
+        public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
+        public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
+        public static implicit operator Result<TOk, TError>(ResultError<TError> resultError) => Error(resultError.ErrorValue);
+        public static implicit operator Result<TOk, TError>(TError error) => Error(error);
+    }
+
+    public readonly struct ResultOk<TOk>
+    {
+        internal readonly TOk OkValue;
+
+        public ResultOk(TOk okValue) =>
+            OkValue = okValue;
+    }
+    public readonly struct ResultError<TError>
+    {
+        internal readonly TError ErrorValue;
+
+        public ResultError(TError errorValue) =>
+            ErrorValue = errorValue;
     }
 }
