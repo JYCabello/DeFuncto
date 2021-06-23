@@ -7,16 +7,16 @@ namespace DeFuncto.Tests.Types.Either
         [Fact(DisplayName = "Detects that is left correctly")]
         public void TrueOnLeft()
         {
-            var right = Either<string, int>.Left("banana");
-            Assert.True(right.IsLeft);
+            var error = Result<int, string>.Error("banana");
+            Assert.True(error.IsError);
         }
 
 
         [Fact(DisplayName = "Detects that is not left correctly")]
         public void FalseOnRight()
         {
-            var right = Either<int, string>.Right("banana");
-            Assert.False(right.IsLeft);
+            var ok = Result<string, int>.Ok("banana");
+            Assert.False(ok.IsError);
         }
     }
 }

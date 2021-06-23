@@ -1,0 +1,32 @@
+﻿using System;
+
+namespace DeFuncto
+{
+    public readonly struct Result<TOk, TError>
+    {
+        internal readonly TError? ErrorValue;
+        internal readonly TOk? OkValue;
+        public readonly bool IsOk;
+        public bool IsError => !IsOk;
+
+        private Result(TError error)
+        {
+            ErrorValue = error;
+            OkValue = default;
+            IsOk = false;
+        }
+
+        private Result(TOk ok)
+        {
+            ErrorValue = default;
+            OkValue = ok;
+            IsOk = true;
+        }
+
+        public static Result<TOk, TError> Ok(TOk right) => new(right);
+        public static Result<TOk, TError> Error(TError left) => new(left);
+
+        public Result<TOk2, TError> Map<TOk2>(Func<TOk, TOk2> projection) =>
+            IsOk ? new Result<TOk2, TError>(projection(OkValue!)) : new Result<TOk2, TError>(ErrorValue!);
+    }
+}
