@@ -26,24 +26,30 @@ namespace DeFuncto
             resultTask.Map(r => r.Map(f));
 
         public AsyncResult<TOk2, TError> Map<TOk2>(Func<TOk, Task<TOk2>> f) =>
-            resultTask.Map(r => r.Match(
+            Match(
                 ok => f(ok).Map(Ok<TOk2, TError>),
                 error => error.Apply(Error<TOk2, TError>).Apply(Task.FromResult)
-            ));
+            );
 
         public AsyncResult<TOk, TError2> MapError<TError2>(Func<TError, TError2> f) =>
-            resultTask.Map(r => r.MapError(f));
+            Match(Ok<TOk, TError2>, e => f(e));
 
         public AsyncResult<TOk, TError2> MapError<TError2>(Func<TError, Task<TError2>> f) =>
-            resultTask.Map(r => r.Match(
+            Match(
                 ok => ok.Apply(Ok<TOk, TError2>).Apply(Task.FromResult),
                 error => f(error).Map(Error<TOk, TError2>)
-            ));
+            );
 
         public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> f) =>
-            resultTask.Map(r => r.Bind(f));
+            Match(f, Error<TOk2, TError>);
 
         public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, Task<Result<TOk2, TError>>> f) =>
-            resultTask.Map(r => r.Match(f, error => error.Apply(Error<TOk2, TError>).Apply(Task.FromResult)));
+            Match(f, error => error.Apply(Error<TOk2, TError>).Apply(Task.FromResult));
+
+        public Task<TOut> Match<TOut>(Func<TOk, TOut> fOk, Func<TError, TOut> fError) =>
+            resultTask.Map(r => r.Match(fOk, fError));
+
+        public async Task<TOut> Match<TOut>(Func<TOk, Task<TOut>> fOk, Func<TError, Task<TOut>> fError) =>
+            await resultTask.Map(r => r.Match(fOk, fError));
     }
 }

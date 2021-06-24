@@ -30,18 +30,18 @@ namespace DeFuncto
         public static Result<TOk, TError> Error(TError left) => new(left);
 
         public Result<TOk2, TError> Map<TOk2>(Func<TOk, TOk2> projection) =>
-            IsOk ? Ok<TOk2, TError>(projection(OkValue!)) : Error<TOk2, TError>(ErrorValue!);
+            Match(ok => projection(ok).Apply(Ok<TOk2, TError>), Error<TOk2, TError>);
 
         public Result<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
         public Result<TOk, TError2> MapError<TError2>(Func<TError, TError2> projection) =>
-            IsError ? Error<TOk, TError2>(projection(ErrorValue!)) : Ok<TOk, TError2>(OkValue!);
+            Match(Ok<TOk, TError2>, error => projection(error).Apply(Error<TOk, TError2>));
 
         public Result<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> binder) =>
-            IsOk ? binder(OkValue!) : Error<TOk2, TError>(ErrorValue!);
+            Match(binder, Error<TOk2, TError>);
 
         public Result<TOk, TError2> BindError<TError2>(Func<TError, Result<TOk, TError2>> binder) =>
-            IsError ? binder(ErrorValue!) : Ok<TOk, TError2>(OkValue!);
+            Match(Ok<TOk, TError2>, binder);
 
         public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
             Func<TOk, Result<TOkBind, TError>> binder,
@@ -73,11 +73,8 @@ namespace DeFuncto
         public Result<TOk, TError> Iter(Func<TError, Unit> iterator) =>
             Iter(error => { iterator(error); });
 
-        public Result<TOk, TError> Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError)
-        {
-             Match(iteratorOk, iteratorError);
-             return this;
-        }
+        public Result<TOk, TError> Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError) =>
+            this.Apply(self => self.Match(iteratorOk, iteratorError).Apply(_ => self));
 
         public Result<TOk, TError> Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
         {
@@ -116,5 +113,15 @@ namespace DeFuncto
     public static class ResultExtensions
     {
         public static TOut Collapse<TOut>(this Result<TOut, TOut> result) => result.Match(Id, Id);
+        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Task<Result<TOk, TError>> self) => self;
+
+        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Result<TOk, Task<TError>> self) =>
+            self.Match(ok => ok.Apply(Ok<TOk, TError>).ToAsync(), errTsk => errTsk.Map(Error<TOk, TError>));
+
+        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Result<Task<TOk>, TError> self) =>
+            self.Match(okTsk => okTsk.Map(Ok<TOk, TError>).ToAsync(), error => error.Apply(Error<TOk, TError>));
+
+        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Result<Task<TOk>, Task<TError>> self) =>
+            self.Match(okTsk => okTsk.Map(Ok<TOk, TError>), errTsk => errTsk.Map(Error<TOk, TError>));
     }
 }
