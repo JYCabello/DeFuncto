@@ -30,31 +30,25 @@ namespace DeFuncto
         public static Result<TOk, TError> Error(TError left) => new(left);
 
         public Result<TOk2, TError> Map<TOk2>(Func<TOk, TOk2> projection) =>
-            IsOk ? new Result<TOk2, TError>(projection(OkValue!)) : new Result<TOk2, TError>(ErrorValue!);
+            IsOk ? Ok<TOk2, TError>(projection(OkValue!)) : Error<TOk2, TError>(ErrorValue!);
 
         public Result<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
         public Result<TOk, TError2> MapError<TError2>(Func<TError, TError2> projection) =>
-            IsError ? new Result<TOk, TError2>(projection(ErrorValue!)) : new Result<TOk, TError2>(OkValue!);
+            IsError ? Error<TOk, TError2>(projection(ErrorValue!)) : Ok<TOk, TError2>(OkValue!);
 
         public Result<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> binder) =>
-            IsOk ? binder(OkValue!) : new Result<TOk2, TError>(ErrorValue!);
+            IsOk ? binder(OkValue!) : Error<TOk2, TError>(ErrorValue!);
 
         public Result<TOk, TError2> BindError<TError2>(Func<TError, Result<TOk, TError2>> binder) =>
-            IsError ? binder(ErrorValue!) : new Result<TOk, TError2>(OkValue!);
+            IsError ? binder(ErrorValue!) : Ok<TOk, TError2>(OkValue!);
 
         public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
             Func<TOk, Result<TOkBind, TError>> binder,
             Func<TOk, TOkBind, TOkFinal> projection
-        )
-        {
-            if (IsError)
-                return new Result<TOkFinal, TError>(ErrorValue!);
-            var bound = Bind(binder);
-            return bound.IsOk
-                ? new Result<TOkFinal, TError>(projection(OkValue!, bound.OkValue!))
-                : new Result<TOkFinal, TError>(bound.ErrorValue!);
-        }
+        ) =>
+            Bind(ok => binder(ok).Map(okbind => (ok, okbind)))
+                .Match(okTpl => Ok<TOkFinal, TError>(projection(okTpl.ok, okTpl.okbind)), Error<TOkFinal, TError>);
 
         public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
             IsOk ? okProjection(OkValue!) : errorProjection(ErrorValue!);
