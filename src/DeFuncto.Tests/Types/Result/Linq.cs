@@ -10,15 +10,14 @@ namespace DeFuncto.Tests.Types.Result
         [Fact(DisplayName = "Carries along all values")]
         public void AllOk() =>
         (
-            from ok1 in Ok<string, int>("na")
-            from ok2 in Ok<string, int>("na")
-            from ok3 in Ok<string, int>("na")
-            from ok4 in Ok<string, int>("na")
-            from ok5 in Ok<string, int>("na")
-            from ok6 in Ok<string, int>("na")
-            from ok7 in Ok<string, int>("batman")
-            select $"{ok1} {ok2} {ok3} {ok4} {ok5} {ok6} {ok7}!"
-        ).ShouldBeOk("na na na na na na batman!");
+            from ok1 in Ok<string, int>("b")
+            from ok2 in Ok<string, int>("a")
+            from ok3 in Ok<string, int>("n")
+            from ok4 in Ok<string, int>("a")
+            from ok5 in Ok<string, int>("n")
+            from ok6 in Ok<string, int>("a")
+            select $"{ok1}{ok2}{ok3}{ok4}{ok5}{ok6}"
+        ).ShouldBeOk("banana");
 
         [Fact(DisplayName = "Gets the first error found")]
         public void GetsFirstError() =>
