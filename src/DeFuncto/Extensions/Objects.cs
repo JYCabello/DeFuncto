@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Extensions
 {
@@ -17,8 +16,11 @@ namespace DeFuncto.Extensions
 
         public static Task<T> RunAsync<T>(this T self, Func<T, Task> f) => self.Apply(async t =>
         {
-             await f(t);
-             return t;
+            await f(t);
+            return t;
         });
+
+        public static Task<T> RunAsync<T>(this T self, Func<T, Task<Unit>> f) =>
+            self.RunAsync(async t => { await f(t); });
     }
 }
