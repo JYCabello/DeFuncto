@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Assertions
@@ -11,6 +12,15 @@ namespace DeFuncto.Assertions
                 throw new AssertionFailed("Result should be Ok, but it was Error");
             return self;
         }
+
+        public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(this AsyncResult<TOk, TError> self) =>
+            self.MapError(e =>
+            {
+                throw new AssertionFailed("Result should be Ok, but it was Error");
+#pragma warning disable 162
+                return e;
+#pragma warning restore 162
+            }).Result();
 
         public static Result<TOk, TError> ShouldBeOk<TOk, TError>(
             this Result<TOk, TError> self,

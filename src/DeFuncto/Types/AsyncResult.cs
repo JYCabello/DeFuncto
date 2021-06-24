@@ -20,7 +20,7 @@ namespace DeFuncto
         public static implicit operator AsyncResult<TOk, TError>(Task<Result<TOk, TError>> result) =>
             new(result);
 
-        public Task<Result<TOk, TError>> ToResult() => resultTask;
+        public Task<Result<TOk, TError>> Result() => resultTask;
 
         public AsyncResult<TOk2, TError> Map<TOk2>(Func<TOk, TOk2> f) =>
             resultTask.Map(r => r.Map(f));
