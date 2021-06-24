@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DeFuncto.Extensions;
 using static DeFuncto.Prelude;
 
@@ -89,6 +90,8 @@ namespace DeFuncto
             Iter(iteratorOk);
             return Iter(iteratorError);
         }
+
+        public Task<Result<TOk, TError>> ToAsync() => Task.FromResult(this);
 
         public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
         public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
