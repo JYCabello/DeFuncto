@@ -1,5 +1,7 @@
 ﻿using System;
+using DeFuncto.Assertions;
 using Xunit;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Types.Result
 {
@@ -9,36 +11,28 @@ namespace DeFuncto.Tests.Types.Result
         [Fact(DisplayName = "Maps successfully")]
         public void MapsRight()
         {
-            var ok = Result<string, int>.Ok("nana");
+            var ok = Ok<string, int>("nana");
             Test(ok.Map(Projection));
             Test(ok.Select(Projection));
 
             string Projection(string v) =>
                 $"ba{v}";
 
-            void Test(Result<string, int> result)
-            {
-                Assert.True(result.IsOk);
-                Assert.NotNull(result.OkValue);
-                Assert.Equal("banana", result.OkValue!);
-            }
+            void Test(Result<string, int> result) =>
+                result.ShouldBeOk("banana");
         }
 
         [Fact(DisplayName = "Skips mapping")]
         public void SkipsLeft()
         {
-            var error = Result<int, string>.Error("banana");
+            var error = Error<int, string>("banana");
             Test(error.Map(ThrowingProjection));
             Test(error.Select(ThrowingProjection));
 
             int ThrowingProjection(int value) => throw new Exception("Should not throw");
 
-            void Test(Result<int, string> result)
-            {
-                Assert.True(result.IsError);
-                Assert.NotNull(result.ErrorValue);
-                Assert.Equal("banana", result.ErrorValue!);
-            }
+            void Test(Result<int, string> result) =>
+                result.ShouldBeError("banana");
         }
     }
 }

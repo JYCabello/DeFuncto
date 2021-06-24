@@ -1,19 +1,32 @@
-﻿using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Types.Unit
 {
     public class Equality
     {
-        [Fact(DisplayName = "All units are equal")]
-        public void EqualityOverriden()
+        private static readonly Func<DeFuncto.Unit>[] UnitGetters =
         {
-            Assert.Equal(unit, new DeFuncto.Unit());
-            Assert.Equal(unit, DeFuncto.Unit.Default);
-            Assert.Equal(new DeFuncto.Unit(), DeFuncto.Unit.Default);
-            Assert.Equal(new DeFuncto.Unit(), new DeFuncto.Unit());
-            Assert.True(unit.Equals(new DeFuncto.Unit()));
-            Assert.Equal(new DeFuncto.Unit().GetHashCode(), new DeFuncto.Unit().GetHashCode());
+            () => unit,
+            () => new DeFuncto.Unit(),
+            () => DeFuncto.Unit.Default
+        };
+
+        public static IEnumerable<object[]> Units() =>
+            from u1 in UnitGetters
+            from u2 in UnitGetters
+            select new object[] { u1(), u2() };
+
+        [Theory(DisplayName = "All units are equal")]
+        [MemberData(nameof(Units))]
+        public void EqualityOverriden(DeFuncto.Unit a, DeFuncto.Unit b)
+        {
+            Assert.Equal(a, b);
+            Assert.True(a.Equals(b));
+            Assert.Equal(a.GetHashCode(), b.GetHashCode());
         }
     }
 }
