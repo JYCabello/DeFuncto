@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Types.Result
 {
@@ -9,13 +10,13 @@ namespace DeFuncto.Tests.Types.Result
         public void AllOk()
         {
             var result =
-                from ok1 in Result<string, int>.Ok("na")
-                from ok2 in Result<string, int>.Ok("na")
-                from ok3 in Result<string, int>.Ok("na")
-                from ok4 in Result<string, int>.Ok("na")
-                from ok5 in Result<string, int>.Ok("na")
-                from ok6 in Result<string, int>.Ok("na")
-                from ok7 in Result<string, int>.Ok("batman")
+                from ok1 in Ok<string, int>("na")
+                from ok2 in Ok<string, int>("na")
+                from ok3 in Ok<string, int>("na")
+                from ok4 in Ok<string, int>("na")
+                from ok5 in Ok<string, int>("na")
+                from ok6 in Ok<string, int>("na")
+                from ok7 in Ok<string, int>("batman")
                 select $"{ok1} {ok2} {ok3} {ok4} {ok5} {ok6} {ok7}!";
 
             Assert.True(result.IsOk);
@@ -27,13 +28,13 @@ namespace DeFuncto.Tests.Types.Result
         public void GetsFirstError()
         {
             var result =
-                from ok1 in Result<string, int>.Ok("na")
-                from ok2 in Result<string, int>.Ok("na")
-                from ok3 in Result<string, int>.Ok("na")
-                from ok4 in Result<string, int>.Error(42)
-                from ok5 in Result<string, int>.Ok("na")
-                from ok6 in Result<string, int>.Ok("na")
-                from ok7 in Result<string, int>.Ok("batman")
+                from ok1 in Ok<string, int>("na")
+                from ok2 in Ok<string, int>("na")
+                from ok3 in Ok<string, int>("na")
+                from ok4 in Error<string, int>(42)
+                from ok5 in Ok<string, int>("na")
+                from ok6 in Ok<string, int>("na")
+                from ok7 in Ok<string, int>("batman")
                 select $"{ok1} {ok2} {ok3} {ok4} {ok5} {ok6} {ok7}!";
 
             Assert.True(result.IsError);
@@ -44,14 +45,14 @@ namespace DeFuncto.Tests.Types.Result
         public void ShortCircuit()
         {
             var result =
-                from ok1 in Result<string, int>.Ok("na")
-                from ok2 in Result<string, int>.Ok("na")
-                from ok3 in Result<string, int>.Ok("na")
-                from ok4 in Result<string, int>.Error(42)
+                from ok1 in Ok<string, int>("na")
+                from ok2 in Ok<string, int>("na")
+                from ok3 in Ok<string, int>("na")
+                from ok4 in Error<string, int>(42)
                 let boom = Boom()
-                from ok5 in Result<string, int>.Ok("na")
-                from ok6 in Result<string, int>.Ok("na")
-                from ok7 in Result<string, int>.Ok("batman")
+                from ok5 in Ok<string, int>("na")
+                from ok6 in Ok<string, int>("na")
+                from ok7 in Ok<string, int>("batman")
                 select $"{ok1} {ok2} {ok3} {ok4} {ok5} {ok6} {ok7}!";
 
             Assert.True(result.IsError);
