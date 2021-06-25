@@ -113,15 +113,15 @@ namespace DeFuncto
     public static class ResultExtensions
     {
         public static TOut Collapse<TOut>(this Result<TOut, TOut> result) => result.Match(Id, Id);
-        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Task<Result<TOk, TError>> self) => self;
+        public static AsyncResult<TOk, TError> Async<TOk, TError>(this Task<Result<TOk, TError>> self) => self;
 
-        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Result<TOk, Task<TError>> self) =>
+        public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<TOk, Task<TError>> self) =>
             self.Match(ok => ok.Apply(Ok<TOk, TError>).Async(), errTsk => errTsk.Map(Error<TOk, TError>));
 
-        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Result<Task<TOk>, TError> self) =>
-            self.Match(okTsk => okTsk.Map(Ok<TOk, TError>).ToAsync(), error => error.Apply(Error<TOk, TError>));
+        public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<Task<TOk>, TError> self) =>
+            self.Match(okTsk => okTsk.Map(Ok<TOk, TError>).Async(), error => error.Apply(Error<TOk, TError>));
 
-        public static AsyncResult<TOk, TError> ToAsync<TOk, TError>(this Result<Task<TOk>, Task<TError>> self) =>
+        public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<Task<TOk>, Task<TError>> self) =>
             self.Match(okTsk => okTsk.Map(Ok<TOk, TError>), errTsk => errTsk.Map(Error<TOk, TError>));
     }
 }
