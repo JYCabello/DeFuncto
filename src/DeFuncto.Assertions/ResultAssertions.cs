@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DeFuncto.Extensions;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Assertions
@@ -14,19 +15,19 @@ namespace DeFuncto.Assertions
         }
 
         public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(this AsyncResult<TOk, TError> self) =>
-            self.MapError(e =>
-            {
-                throw new AssertionFailed("Result should be Ok, but it was Error");
-#pragma warning disable 162
-                return e;
-#pragma warning restore 162
-            }).Result();
+            self.Result().Map(ShouldBeOk);
 
         public static Result<TOk, TError> ShouldBeOk<TOk, TError>(
             this Result<TOk, TError> self,
             Func<TOk, Unit> assertion
         ) =>
             self.ShouldBeOk().Iter(assertion);
+
+        public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(
+            this AsyncResult<TOk, TError> self,
+            Func<TOk, Unit> assertion
+        ) =>
+            self.Result().Map(result => result.ShouldBeOk(assertion));
 
         public static Result<TOk, TError> ShouldBeOk<TOk, TError>(
             this Result<TOk, TError> self,
@@ -38,6 +39,12 @@ namespace DeFuncto.Assertions
                     throw new AssertionFailed($"Ok value should be {expected} but it was {val}");
                 return unit;
             });
+
+        public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(
+            this AsyncResult<TOk, TError> self,
+            TOk ok
+        ) =>
+            self.Result().Map(result => result.ShouldBeOk(ok));
 
         public static Result<TOk, TError> ShouldBeError<TOk, TError>(this Result<TOk, TError> self)
         {

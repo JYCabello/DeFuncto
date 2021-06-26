@@ -82,7 +82,7 @@ namespace DeFuncto
             return Iter(iteratorError);
         }
 
-        public Task<Result<TOk, TError>> Async() => Task.FromResult(this);
+        public AsyncResult<TOk, TError> Async() => Task.FromResult(this);
 
         public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
         public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);

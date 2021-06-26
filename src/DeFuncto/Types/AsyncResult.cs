@@ -61,6 +61,20 @@ namespace DeFuncto
         public Task<TOut> Match<TOut>(Func<TOk, TOut> fOk, Func<TError, TOut> fError) =>
             resultTask.Map(r => r.Match(fOk, fError));
 
+        public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk) =>
+            Map(async ok =>
+            {
+                await fOk(ok);
+                return ok;
+            }).Result();
+
+        public Task<Result<TOk, TError>> Iter(Func<TOk, Unit> fOk) =>
+            Map(ok =>
+            {
+                fOk(ok);
+                return ok;
+            }).Result();
+
         public async Task<TOut> Match<TOut>(Func<TOk, Task<TOut>> fOk, Func<TError, Task<TOut>> fError) =>
             await resultTask.Map(r => r.Match(fOk, fError));
     }
