@@ -58,6 +58,9 @@ namespace DeFuncto
         public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, Task<Result<TOk2, TError>>> f) =>
             Match(f, error => error.Apply(Error<TOk2, TError>).Apply(Task.FromResult));
 
+        public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, AsyncResult<TOk2, TError>> f) =>
+            Bind(ok => f(ok).Result());
+
         public Task<TOut> Match<TOut>(Func<TOk, TOut> fOk, Func<TError, TOut> fError) =>
             resultTask.Map(r => r.Match(fOk, fError));
 
