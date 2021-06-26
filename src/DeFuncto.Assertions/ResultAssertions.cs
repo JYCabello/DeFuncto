@@ -17,22 +17,13 @@ namespace DeFuncto.Assertions
         public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(this AsyncResult<TOk, TError> self) =>
             self.Result().Map(ShouldBeOk);
 
-        public static Result<TOk, TError> ShouldBeOk<TOk, TError>(
-            this Result<TOk, TError> self,
-            Func<TOk, Unit> assertion
-        ) =>
+        public static Result<TOk, TError> ShouldBeOk<TOk, TError>(this Result<TOk, TError> self, Func<TOk, Unit> assertion) =>
             self.ShouldBeOk().Iter(assertion);
 
-        public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(
-            this AsyncResult<TOk, TError> self,
-            Func<TOk, Unit> assertion
-        ) =>
+        public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(this AsyncResult<TOk, TError> self, Func<TOk, Unit> assertion) =>
             self.Result().Map(result => result.ShouldBeOk(assertion));
 
-        public static Result<TOk, TError> ShouldBeOk<TOk, TError>(
-            this Result<TOk, TError> self,
-            TOk expected
-        ) =>
+        public static Result<TOk, TError> ShouldBeOk<TOk, TError>(this Result<TOk, TError> self, TOk expected) =>
             self.ShouldBeOk(val =>
             {
                 if (!val.Equals(expected))
@@ -40,11 +31,8 @@ namespace DeFuncto.Assertions
                 return unit;
             });
 
-        public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(
-            this AsyncResult<TOk, TError> self,
-            TOk ok
-        ) =>
-            self.Result().Map(result => result.ShouldBeOk(ok));
+        public static Task<Result<TOk, TError>> ShouldBeOk<TOk, TError>(this AsyncResult<TOk, TError> self, TOk expected) =>
+            self.Result().Map(result => result.ShouldBeOk(expected));
 
         public static Result<TOk, TError> ShouldBeError<TOk, TError>(this Result<TOk, TError> self)
         {
@@ -53,11 +41,14 @@ namespace DeFuncto.Assertions
             return self;
         }
 
-        public static Result<TOk, TError> ShouldBeError<TOk, TError>(
-            this Result<TOk, TError> self,
-            Func<TError, Unit> assertion
-        ) =>
+        public static Task<Result<TOk, TError>> ShouldBeError<TOk, TError>(this AsyncResult<TOk, TError> self) =>
+            self.Result().Map(ShouldBeError);
+
+        public static Result<TOk, TError> ShouldBeError<TOk, TError>(this Result<TOk, TError> self, Func<TError, Unit> assertion) =>
             self.ShouldBeError().Iter(assertion);
+
+        public static Task<Result<TOk, TError>> ShouldBeError<TOk, TError>(this AsyncResult<TOk, TError> self, Func<TError, Unit> assertion) =>
+            self.Result().Map(result => result.ShouldBeError(assertion));
 
         public static Result<TOk, TError> ShouldBeError<TOk, TError>(
             this Result<TOk, TError> self,
@@ -69,5 +60,9 @@ namespace DeFuncto.Assertions
                     throw new AssertionFailed($"Error value should be {expected} but it was {val}");
                 return unit;
             });
+
+        public static Task<Result<TOk, TError>> ShouldBeError<TOk, TError>(this AsyncResult<TOk, TError> self, TError expected) =>
+            self.Result().Map(result => result.ShouldBeError(expected));
+
     }
 }
