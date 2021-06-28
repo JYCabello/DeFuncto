@@ -1,4 +1,5 @@
-﻿using DeFuncto.Extensions;
+﻿using DeFuncto.Assertions;
+using DeFuncto.Extensions;
 using Xunit;
 
 namespace DeFuncto.Tests.Extensions.Objects

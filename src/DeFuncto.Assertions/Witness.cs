@@ -1,6 +1,6 @@
 ﻿using static DeFuncto.Prelude;
 
-namespace DeFuncto.Tests
+namespace DeFuncto.Assertions
 {
     public class Witness
     {

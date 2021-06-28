@@ -64,19 +64,54 @@ namespace DeFuncto
         public Task<TOut> Match<TOut>(Func<TOk, TOut> fOk, Func<TError, TOut> fError) =>
             resultTask.Map(r => r.Match(fOk, fError));
 
+        public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk, Func<TError, Task<Unit>> fError) =>
+            Iter(async ok => { await fOk(ok); }, async error => { await fError(error); });
+
+        public Task<Result<TOk, TError>> Iter(Func<TOk, Task> fOk, Func<TError, Task> fError) =>
+            Match(
+                async ok =>
+                {
+                    await fOk(ok);
+                    return Ok<TOk, TError>(ok);
+                },
+                async error =>
+                {
+                    await fError(error);
+                    return Error<TOk, TError>(error);
+                }
+            );
+
         public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk) =>
-            Map(async ok =>
-            {
-                await fOk(ok);
-                return ok;
-            }).Result();
+            Iter(fOk, _ => unit.Apply(Task.FromResult));
+
+        public Task<Result<TOk, TError>> Iter(Func<TOk, Task> fOk) =>
+            Iter(fOk, _ => unit.Apply(Task.FromResult));
 
         public Task<Result<TOk, TError>> Iter(Func<TOk, Unit> fOk) =>
-            Map(ok =>
+            Iter(ok => fOk(ok).Apply(Task.FromResult));
+
+        public Task<Result<TOk, TError>> Iter(Action<TOk> fOk) =>
+            Iter(ok =>
             {
                 fOk(ok);
-                return ok;
-            }).Result();
+                return unit;
+            });
+
+        public Task<Result<TOk, TError>> Iter(Func<TError, Task<Unit>> fError) =>
+            Iter(_ => unit.Apply(Task.FromResult), fError);
+
+        public Task<Result<TOk, TError>> Iter(Func<TError, Task> fError) =>
+            Iter(_ => unit.Apply(Task.FromResult), fError);
+
+        public Task<Result<TOk, TError>> Iter(Func<TError, Unit> fError) =>
+            Iter(ok => fError(ok).Apply(Task.FromResult));
+
+        public Task<Result<TOk, TError>> Iter(Action<TError> fError) =>
+            Iter(ok =>
+            {
+                fError(ok);
+                return unit;
+            });
 
         public async Task<TOut> Match<TOut>(Func<TOk, Task<TOut>> fOk, Func<TError, Task<TOut>> fError) =>
             await resultTask.Map(r => r.Match(fOk, fError));
