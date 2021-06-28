@@ -82,7 +82,7 @@ namespace DeFuncto
             return Iter(iteratorError);
         }
 
-        public AsyncResult<TOk, TError> Async() => Task.FromResult(this);
+        internal AsyncResult<TOk, TError> ToAsync() => Task.FromResult(this);
 
         public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
         public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
@@ -114,14 +114,18 @@ namespace DeFuncto
     {
         public static TOut Collapse<TOut>(this Result<TOut, TOut> result) => result.Match(Id, Id);
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Task<Result<TOk, TError>> self) => self;
+        public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<TOk, TError> self) => self;
 
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<TOk, Task<TError>> self) =>
-            self.Match(ok => ok.Apply(Ok<TOk, TError>).Async(), errTsk => errTsk.Map(Error<TOk, TError>));
+            self.Match(ok => ok.Apply(Ok<TOk, TError>).ToAsync(), errTsk => errTsk.Map(Error<TOk, TError>));
 
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<Task<TOk>, TError> self) =>
             self.Match(okTsk => okTsk.Map(Ok<TOk, TError>).Async(), error => error.Apply(Error<TOk, TError>));
 
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<Task<TOk>, Task<TError>> self) =>
             self.Match(okTsk => okTsk.Map(Ok<TOk, TError>), errTsk => errTsk.Map(Error<TOk, TError>));
+
+        public static AsyncResult<TOk, TError> Async<TOk, TError>(this Task<Result<Task<TOk>, Task<TError>>> self) =>
+            self.Map(r => r.Async().Result());
     }
 }
