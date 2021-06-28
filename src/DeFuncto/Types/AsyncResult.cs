@@ -124,6 +124,9 @@ namespace DeFuncto
         ) =>
             Bind(ok => binder(ok).Map(okbind => (ok, okbind)))
                 .Match(okTpl => Ok<TOkFinal, TError>(projection(okTpl.ok, okTpl.okbind)), Error<TOkFinal, TError>);
+
+        public Task<bool> IsOk => resultTask.Map(r => r.IsOk);
+        public Task<bool> IsError => resultTask.Map(r => r.IsError);
     }
 
     public static class AsyncResultExtensions
