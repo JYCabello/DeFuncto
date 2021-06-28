@@ -14,6 +14,12 @@ namespace DeFuncto.Extensions
             return t;
         });
 
+        public static Task<T> Run<T>(this Task<T> self, Action<T> f) => self.Map(t =>
+        {
+            f(t);
+            return t;
+        });
+
         public static Task<T> RunAsync<T>(this T self, Func<T, Task> f) => self.Apply(async t =>
         {
             await f(t);
