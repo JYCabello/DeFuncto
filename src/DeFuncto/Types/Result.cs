@@ -82,8 +82,6 @@ namespace DeFuncto
             return Iter(iteratorError);
         }
 
-        internal AsyncResult<TOk, TError> ToAsync() => Task.FromResult(this);
-
         public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
         public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
         public static implicit operator Result<TOk, TError>(ResultError<TError> resultError) => Error(resultError.ErrorValue);
@@ -117,7 +115,7 @@ namespace DeFuncto
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<TOk, TError> self) => self;
 
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<TOk, Task<TError>> self) =>
-            self.Match(ok => ok.Apply(Ok<TOk, TError>).ToAsync(), errTsk => errTsk.Map(Error<TOk, TError>));
+            self.Match(ok => ok.Apply(Ok<TOk, TError>).Async(), errTsk => errTsk.Map(Error<TOk, TError>));
 
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<Task<TOk>, TError> self) =>
             self.Match(okTsk => okTsk.Map(Ok<TOk, TError>).Async(), error => error.Apply(Error<TOk, TError>));

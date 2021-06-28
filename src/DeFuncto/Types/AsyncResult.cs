@@ -115,5 +115,14 @@ namespace DeFuncto
 
         public async Task<TOut> Match<TOut>(Func<TOk, Task<TOut>> fOk, Func<TError, Task<TOut>> fError) =>
             await resultTask.Map(r => r.Match(fOk, fError));
+
+        public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
+
+        public AsyncResult<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+            Func<TOk, AsyncResult<TOkBind, TError>> binder,
+            Func<TOk, TOkBind, TOkFinal> projection
+        ) =>
+            Bind(ok => binder(ok).Map(okbind => (ok, okbind)))
+                .Match(okTpl => Ok<TOkFinal, TError>(projection(okTpl.ok, okTpl.okbind)), Error<TOkFinal, TError>);
     }
 }
