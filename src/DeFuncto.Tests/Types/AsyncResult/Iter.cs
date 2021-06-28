@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Types.AsyncResult
 {
@@ -13,7 +12,15 @@ namespace DeFuncto.Tests.Types.AsyncResult
             AsyncResult<string, int> ok = "banana";
             var witness = new Witness();
 
-            witness.ShouldHaveBeenCalled(1);
+            await ok.Iter((string _) => witness.Touch());
+            await ok.Iter((string _) => { witness.Touch(); });
+            await ok.Iter((string _) =>
+            {
+                witness.Touch();
+                return Task.CompletedTask;
+            });
+
+            witness.ShouldHaveBeenCalled(3);
             await ok.ShouldBeOk("banana");
         }
     }
