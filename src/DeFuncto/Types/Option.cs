@@ -1,4 +1,5 @@
 ﻿using System;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
@@ -14,12 +15,14 @@ namespace DeFuncto
         public TOut Match<TOut>(Func<T, TOut> fSome, Func<TOut> fNone) =>
             IsSome ? fSome(Value!) : fNone();
 
+        public Option<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
+
+        public Option<TOut> Map<TOut>(Func<T, TOut> f) =>
+            Match(f.Compose(Option<TOut>.Some), () => Option<TOut>.None);
+
         public static Option<T> Some(T value) => value;
-
         public static Option<T> None => new OptionNone();
-
         public static implicit operator Option<T>(T value) => new(value);
-
         public static implicit operator Option<T>(OptionNone _) => new();
     }
 
