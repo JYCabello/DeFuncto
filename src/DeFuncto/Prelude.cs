@@ -9,5 +9,7 @@
         public static T Id<T>(T t) => t;
         // ReSharper disable once InconsistentNaming
         public static Unit unit => Unit.Default;
+        public static OptionNone None => new();
+        public static Option<T> Some<T>(T value) => Option<T>.Some(value);
     }
 }

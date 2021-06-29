@@ -12,14 +12,14 @@ namespace DeFuncto
         public readonly bool IsOk;
         public bool IsError => !IsOk;
 
-        private Result(TError error)
+        public Result(TError error)
         {
             ErrorValue = error;
             OkValue = default;
             IsOk = false;
         }
 
-        private Result(TOk ok)
+        public Result(TOk ok)
         {
             ErrorValue = default;
             OkValue = ok;

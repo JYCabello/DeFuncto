@@ -9,9 +9,9 @@ namespace DeFuncto
     {
         private readonly Task<Result<TOk, TError>> resultTask;
 
-        private AsyncResult(Result<TOk, TError> result) : this(Task.FromResult(result)) { }
+        public AsyncResult(Result<TOk, TError> result) : this(Task.FromResult(result)) { }
 
-        private AsyncResult(Task<Result<TOk, TError>> resultTask) =>
+        public AsyncResult(Task<Result<TOk, TError>> resultTask) =>
             this.resultTask = resultTask;
 
         public static implicit operator AsyncResult<TOk, TError>(Result<TOk, TError> result) =>
