@@ -33,11 +33,11 @@ namespace DeFuncto
         public T DefaultValue(T t) =>
             DefaultValue(() => t);
 
-        public Result<T, TError> ToResult<TError>(Func<TError> f) =>
+        public Result<T, TError> Result<TError>(Func<TError> f) =>
             Map(Ok<T, TError>).DefaultValue(f().Apply(Error<T, TError>));
 
-        public Result<T, TError> ToResult<TError>(TError terror) =>
-            ToResult(() => terror);
+        public Result<T, TError> Result<TError>(TError terror) =>
+            Result(() => terror);
 
         public static Option<T> Some(T value) => value;
         public static Option<T> None => new OptionNone();

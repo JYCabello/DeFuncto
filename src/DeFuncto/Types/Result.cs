@@ -82,6 +82,8 @@ namespace DeFuncto
             return Iter(iteratorError);
         }
 
+        public Option<TOk> Option => Match(Some, _ => None);
+
         public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
         public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
         public static implicit operator Result<TOk, TError>(ResultError<TError> resultError) => Error(resultError.ErrorValue);

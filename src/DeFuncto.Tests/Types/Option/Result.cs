@@ -4,18 +4,18 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Types.Option
 {
-    public class ToResult
+    public class Result
     {
         [Fact(DisplayName = "Converts some into success result")]
         public void SomeToSuccess() =>
-            Some("banana")
-                .ToResult(42)
-                .ShouldBeOk("banana");
+            Some("take a deep breath and relax")
+                .Result(42)
+                .ShouldBeOk("take a deep breath and relax");
 
         [Fact(DisplayName = "Converts none into error result")]
         public void NoneToEror() =>
             None.Option<int>()
-                .ToResult("banana")
+                .Result("banana")
                 .ShouldBeError("banana");
     }
 }
