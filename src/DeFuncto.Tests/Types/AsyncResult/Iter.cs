@@ -26,7 +26,7 @@ namespace DeFuncto.Tests.Types.AsyncResult
                 return Task.CompletedTask;
             });
 
-            witness.ShouldHaveBeenCalled(3);
+            witness.ShouldHaveBeenTouched(3);
             await ok.ShouldBeOk("banana");
         }
 
@@ -50,7 +50,7 @@ namespace DeFuncto.Tests.Types.AsyncResult
                 return Task.CompletedTask;
             });
 
-            witness.ShouldHaveBeenCalled(3);
+            witness.ShouldHaveBeenTouched(3);
             await ok.ShouldBeError("banana");
         }
     }
