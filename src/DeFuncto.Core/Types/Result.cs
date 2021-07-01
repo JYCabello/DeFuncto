@@ -73,7 +73,6 @@ namespace DeFuncto
         public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
             IsOk ? okProjection(okValue!) : errorProjection(errorValue!);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Action<TOk> iterator)
         {
@@ -82,12 +81,10 @@ namespace DeFuncto
             return this;
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Func<TOk, Unit> iterator) =>
             Iter(ok => { iterator(ok); });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Action<TError> iterator)
         {
@@ -96,17 +93,14 @@ namespace DeFuncto
             return this;
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Func<TError, Unit> iterator) =>
             Iter(error => { iterator(error); });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError) =>
             this.Apply(self => self.Match(iteratorOk, iteratorError).Apply(_ => self));
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
         {

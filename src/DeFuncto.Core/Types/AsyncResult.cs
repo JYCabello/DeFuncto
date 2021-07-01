@@ -111,12 +111,10 @@ namespace DeFuncto
         public Task<TOut> Match<TOut>(Func<TOk, TOut> fOk, Func<TError, TOut> fError) =>
             resultTask.Map(r => r.Match(fOk, fError));
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk, Func<TError, Task<Unit>> fError) =>
             Iter(async ok => { await fOk(ok); }, async error => { await fError(error); });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Task> fOk, Func<TError, Task> fError) =>
             Match(
@@ -132,22 +130,18 @@ namespace DeFuncto
                 }
             );
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk) =>
             Iter(fOk, _ => unit.Apply(Task.FromResult));
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Task> fOk) =>
             Iter(fOk, _ => unit.Apply(Task.FromResult));
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Unit> fOk) =>
             Iter(ok => fOk(ok).Apply(Task.FromResult));
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Action<TOk> fOk) =>
             Iter(ok =>
@@ -156,22 +150,18 @@ namespace DeFuncto
                 return unit;
             });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TError, Task<Unit>> fError) =>
             Iter(_ => unit.Apply(Task.FromResult), fError);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TError, Task> fError) =>
             Iter(_ => unit.Apply(Task.FromResult), fError);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TError, Unit> fError) =>
             Iter(ok => fError(ok).Apply(Task.FromResult));
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Action<TError> fError) =>
             Iter(ok =>

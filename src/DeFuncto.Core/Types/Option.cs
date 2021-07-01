@@ -83,27 +83,22 @@ namespace DeFuncto
                     return None;
                 });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<T> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
             Iter(t => { fSome(t); }, () => { fNone(); });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<T> Iter(Func<Unit> fNone) =>
             Iter(() => { fNone(); });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<T> Iter(Action fNone) =>
             Iter(_ => { }, fNone);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<T> Iter(Func<T, Unit> fSome) =>
             Iter(t => { fSome(t); });
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<T> Iter(Action<T> fSome) =>
             Iter(fSome, () => { });
