@@ -7,22 +7,22 @@ namespace DeFuncto
 {
     public readonly struct Result<TOk, TError>
     {
-        internal readonly TError? ErrorValue;
-        internal readonly TOk? OkValue;
+        private readonly TError? errorValue;
+        private readonly TOk? okValue;
         public readonly bool IsOk;
         public bool IsError => !IsOk;
 
         public Result(TError error)
         {
-            ErrorValue = error;
-            OkValue = default;
+            errorValue = error;
+            okValue = default;
             IsOk = false;
         }
 
         public Result(TOk ok)
         {
-            ErrorValue = default;
-            OkValue = ok;
+            errorValue = default;
+            okValue = ok;
             IsOk = true;
         }
 
@@ -51,12 +51,12 @@ namespace DeFuncto
                 .Match(okTpl => Ok<TOkFinal, TError>(projection(okTpl.ok, okTpl.okbind)), Error<TOkFinal, TError>);
 
         public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
-            IsOk ? okProjection(OkValue!) : errorProjection(ErrorValue!);
+            IsOk ? okProjection(okValue!) : errorProjection(errorValue!);
 
         public Result<TOk, TError> Iter(Action<TOk> iterator)
         {
             if (IsOk)
-                iterator(OkValue!);
+                iterator(okValue!);
             return this;
         }
 
@@ -66,7 +66,7 @@ namespace DeFuncto
         public Result<TOk, TError> Iter(Action<TError> iterator)
         {
             if (IsError)
-                iterator(ErrorValue!);
+                iterator(errorValue!);
             return this;
         }
 

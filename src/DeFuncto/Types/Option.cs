@@ -1,22 +1,23 @@
 ﻿using System;
+using DeFuncto.Extensions;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
     public readonly struct Option<T>
     {
-        private readonly T? Value;
+        private readonly T? value;
         public readonly bool IsSome;
         public bool IsNone => !IsSome;
 
         public Option(T value)
         {
-            Value = value;
+            this.value = value;
             IsSome = true;
         }
 
         public TOut Match<TOut>(Func<T, TOut> fSome, Func<TOut> fNone) =>
-            IsSome ? fSome(Value!) : fNone();
+            IsSome ? fSome(value!) : fNone();
 
         public Option<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
 
@@ -28,8 +29,15 @@ namespace DeFuncto
 
         public T DefaultValue(Func<T> f) =>
             Match(Id, f);
+
         public T DefaultValue(T t) =>
             DefaultValue(() => t);
+
+        public Result<T, TError> ToResult<TError>(Func<TError> f) =>
+            Map(Ok<T, TError>).DefaultValue(f().Apply(Error<T, TError>));
+
+        public Result<T, TError> ToResult<TError>(TError terror) =>
+            ToResult(() => terror);
 
         public static Option<T> Some(T value) => value;
         public static Option<T> None => new OptionNone();
