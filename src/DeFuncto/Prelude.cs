@@ -1,4 +1,5 @@
 ﻿using System;
+using DeFuncto.Extensions;
 
 namespace DeFuncto
 {
@@ -19,5 +20,8 @@ namespace DeFuncto
 
         public static Func<T1, T3> Compose<T1, T2, T3>(this Func<T1, T2> f1, Func<T2, T3> f2) =>
             t1 => f2(f1(t1));
+
+        public static Func<T2> Compose<T1, T2>(this Func<T1> f1, Func<T1, T2> f2) =>
+            () => f1().Apply(f2);
     }
 }

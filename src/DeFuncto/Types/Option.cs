@@ -34,7 +34,7 @@ namespace DeFuncto
             DefaultValue(() => t);
 
         public Result<T, TError> Result<TError>(Func<TError> f) =>
-            Map(Ok<T, TError>).DefaultValue(f().Apply(Error<T, TError>));
+            Map(Ok<T, TError>).DefaultValue(f.Compose(Error<T, TError>));
 
         public Result<T, TError> Result<TError>(TError terror) =>
             Result(() => terror);
