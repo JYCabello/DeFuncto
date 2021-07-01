@@ -26,6 +26,11 @@ namespace DeFuncto
         public Option<TOut> Bind<TOut>(Func<T, Option<TOut>> f) =>
             Map(f).Flatten();
 
+        public T DefaultValue(Func<T> f) =>
+            Match(Id, f);
+        public T DefaultValue(T t) =>
+            DefaultValue(() => t);
+
         public static Option<T> Some(T value) => value;
         public static Option<T> None => new OptionNone();
         public static implicit operator Option<T>(T value) => new(value);
