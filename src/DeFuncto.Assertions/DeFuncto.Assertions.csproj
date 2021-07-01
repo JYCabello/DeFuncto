@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DeFuncto\DeFuncto.csproj" />
+      <ProjectReference Include="..\DeFuncto.Core\DeFuncto.Core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@
 	  <Nullable>enable</Nullable>
       <WarningsAsErrors>nullable</WarningsAsErrors>
       <TargetFramework>netstandard2.0</TargetFramework>
+      <RootNamespace>DeFuncto</RootNamespace>
   </PropertyGroup>
 
 </Project>

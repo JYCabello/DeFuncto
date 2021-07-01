@@ -21,7 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DeFuncto.Assertions\DeFuncto.Assertions.csproj" />
-      <ProjectReference Include="..\DeFuncto\DeFuncto.csproj" />
+      <ProjectReference Include="..\DeFuncto.Core\DeFuncto.Core.csproj" />
     </ItemGroup>
 
 </Project>
