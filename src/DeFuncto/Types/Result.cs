@@ -47,8 +47,7 @@ namespace DeFuncto
             Func<TOk, Result<TOkBind, TError>> binder,
             Func<TOk, TOkBind, TOkFinal> projection
         ) =>
-            Bind(ok => binder(ok).Map(okbind => (ok, okbind)))
-                .Match(okTpl => Ok<TOkFinal, TError>(projection(okTpl.ok, okTpl.okbind)), Error<TOkFinal, TError>);
+            Bind(ok => binder(ok).Map(okbind => projection(ok, okbind)));
 
         public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
             IsOk ? okProjection(okValue!) : errorProjection(errorValue!);

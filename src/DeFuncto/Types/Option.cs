@@ -19,7 +19,6 @@ namespace DeFuncto
         public TOut Match<TOut>(Func<T, TOut> fSome, Func<TOut> fNone) =>
             IsSome ? fSome(value!) : fNone();
 
-        public Option<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
 
         public Option<TOut> Map<TOut>(Func<T, TOut> f) =>
             Match(f.Compose(Option<TOut>.Some), () => Option<TOut>.None);
@@ -38,6 +37,14 @@ namespace DeFuncto
 
         public Result<T, TError> Result<TError>(TError terror) =>
             Result(() => terror);
+
+        public Option<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
+
+        public Option<TFinal> SelectMany<TBind, TFinal>(
+            Func<T, Option<TBind>> binder,
+            Func<T, TBind, TFinal> projection
+        ) =>
+            Bind(t => binder(t).Map(tBind => projection(t, tBind)));
 
         public static Option<T> Some(T value) => value;
         public static Option<T> None => new OptionNone();
