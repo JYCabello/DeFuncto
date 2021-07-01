@@ -8,13 +8,13 @@ namespace DeFuncto.Tests.Types.Option
     {
         [Fact(DisplayName = "Converts some into success result")]
         public void SomeToSuccess() =>
-            Some("take a deep breath and relax")
+            Optional("take a deep breath and relax")
                 .Result(42)
                 .ShouldBeOk("take a deep breath and relax");
 
         [Fact(DisplayName = "Converts none into error result")]
         public void NoneToEror() =>
-            None.Option<int>()
+            Optional((int?) null)
                 .Result("banana")
                 .ShouldBeError("banana");
     }
