@@ -12,12 +12,6 @@ namespace DeFuncto.Tests.Types.Option
                 .Map(val => $"{val}ana")
                 .ShouldBeSome("banana");
 
-        [Fact(DisplayName = "Selects Some")]
-        public void OnSomeSelect() =>
-            Some("ban")
-                .Select(val => $"{val}ana")
-                .ShouldBeSome("banana");
-
         [Fact(DisplayName = "Skips mapping on None")]
         public void OnNone() =>
             None

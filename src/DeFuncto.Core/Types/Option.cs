@@ -46,6 +46,9 @@ namespace DeFuncto
         ) =>
             Bind(t => binder(t).Map(tBind => projection(t, tBind)));
 
+        public Option<T> Where(Func<T, bool> filter) =>
+            IsSome && filter(value!) ? this : default;
+
         public static Option<T> Some(T value) => value;
         public static Option<T> None => new OptionNone();
         public static implicit operator Option<T>(T value) => new(value);
