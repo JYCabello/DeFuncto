@@ -53,12 +53,12 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> binder) =>
-            Match(binder, Error<TOk2, TError>);
+            Map(binder).Flatten();
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError2> BindError<TError2>(Func<TError, Result<TOk, TError2>> binder) =>
-            Match(Ok<TOk, TError2>, binder);
+            MapError(binder).Flatten();
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -184,5 +184,15 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Task<Result<Task<TOk>, Task<TError>>> self) =>
             self.Map(r => r.Async().Result());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Result<TOk, TError> Flatten<TOk, TError>(this Result<TOk, Result<TOk, TError>> self) =>
+            self.Match(Ok<TOk, TError>, Id);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Result<TOk, TError> Flatten<TOk, TError>(this Result<Result<TOk, TError>, TError> self) =>
+            self.Match(Id, Error<TOk, TError>);
     }
 }
