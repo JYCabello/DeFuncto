@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using DeFuncto.Extensions;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto
@@ -135,5 +137,14 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncOption<T> Async<T>(this Option<T> opt) => opt;
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncOption<T> Async<T>(this Task<Option<T>> opt) => opt;
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncOption<T> Async<T>(this Option<Task<T>> opt) =>
+            opt.Match(t => t.Map(Some), () => None.Option<T>().Apply(Task.FromResult));
     }
 }
