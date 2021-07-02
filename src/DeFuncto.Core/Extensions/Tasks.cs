@@ -10,5 +10,8 @@ namespace DeFuncto.Extensions
 
         public static async Task<TOut> Map<TIn, TOut>(this Task<TIn> self, Func<TIn, Task<TOut>> f) =>
             await f(await self);
+
+        public static async Task<T> Flatten<T>(this Task<Task<T>> self) =>
+            await await self;
     }
 }

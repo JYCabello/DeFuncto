@@ -79,32 +79,32 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> f) =>
-            Match(f, Error<TOk2, TError>);
+            Bind(ok => f(ok).Async());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, Task<Result<TOk2, TError>>> f) =>
-            Match(f, error => error.Apply(Error<TOk2, TError>).Apply(Task.FromResult));
+            Bind(ok => f(ok).Async());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, AsyncResult<TOk2, TError>> f) =>
-            Bind(ok => f(ok).Result());
+            Map(f).Flatten();
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<TOk, TError2> BindError<TError2>(Func<TError, Result<TOk, TError2>> f) =>
-            Match(Ok<TOk, TError2>, f);
+            BindError(error => f(error).Async());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<TOk, TError2> BindError<TError2>(Func<TError, Task<Result<TOk, TError2>>> f) =>
-            Match(ok => Ok<TOk, TError2>(ok).Apply(Task.FromResult), f);
+            BindError(error => f(error).Async());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<TOk, TError2> BindError<TError2>(Func<TError, AsyncResult<TOk, TError2>> f) =>
-            BindError(error => f(error).Result());
+            MapError(f).Flatten();
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -196,6 +196,17 @@ namespace DeFuncto
     {
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<T> Collapse<T>(this AsyncResult<T, T> self) => self.Match(Id, Id);
+        public static Task<T> Collapse<T>(this AsyncResult<T, T> self) =>
+            self.Match(Id, Id);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncResult<TOk, TError> Flatten<TOk, TError>(this AsyncResult<TOk, AsyncResult<TOk, TError>> self) =>
+            self.Match(ok => Ok<TOk, TError>(ok).Apply(Task.FromResult), error => error.Result());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncResult<TOk, TError> Flatten<TOk, TError>(this AsyncResult<AsyncResult<TOk, TError>, TError> self) =>
+            self.Match(ok => ok.Result(), error => Error<TOk, TError>(error).Apply(Task.FromResult));
     }
 }

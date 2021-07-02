@@ -39,8 +39,14 @@ namespace DeFuncto.Tests.Types.AsyncResult
         [Fact(DisplayName = "Asynchronously binds ok with ok")]
         public Task AsyncOkOk() =>
             ((AsyncResult<string, int>) "ban".Apply(Task.FromResult))
-                .Bind(val => $"{val}ana".Apply(Ok<string, int>).Async())
-                .ShouldBeOk("banana");
+            .Bind(val => $"{val}ana".Apply(Ok<string, int>).Async())
+            .ShouldBeOk("banana");
+
+        [Fact(DisplayName = "Asynchronously binds ok with ok but as a task")]
+        public Task AsyncOkOkTask() =>
+            ((AsyncResult<string, int>) "ban".Apply(Task.FromResult))
+            .Bind(val => $"{val}ana".Apply(Ok<string, int>).Apply(Task.FromResult))
+            .ShouldBeOk("banana");
 
         [Fact(DisplayName = "Asynchronously binds ok with error")]
         public Task AsyncOkError() =>
