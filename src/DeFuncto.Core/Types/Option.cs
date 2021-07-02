@@ -131,5 +131,9 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> Flatten<T>(this Option<Option<T>> opt) =>
             opt.Match(Id, () => Option<T>.None);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncOption<T> Async<T>(this Option<T> opt) => opt;
     }
 }
