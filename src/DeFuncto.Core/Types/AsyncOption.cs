@@ -99,6 +99,8 @@ namespace DeFuncto
 
     public static class AsyncOptionExtensions
     {
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncOption<T> Flatten<T>(this AsyncOption<AsyncOption<T>> self) =>
             self.Match(t => t.Option, () => None.Option<T>().ToTask());
     }
