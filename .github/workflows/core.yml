@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore ./src/DeFuncto.Core/DeFuncto.Core.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./src/
+      run: dotnet test --no-build --verbosity normal **.Tests.csproj
