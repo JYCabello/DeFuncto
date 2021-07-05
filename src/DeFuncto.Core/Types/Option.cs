@@ -145,6 +145,6 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncOption<T> Async<T>(this Option<Task<T>> opt) =>
-            opt.Match(t => t.Map(Some), () => None.Option<T>().Apply(Task.FromResult));
+            opt.Match(t => t.Map(Some), () => None.Option<T>().ToTask());
     }
 }

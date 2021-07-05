@@ -19,7 +19,7 @@ namespace DeFuncto.Tests.Types.AsyncOption
         public void NoneOnSome() =>
             Some("banana")
                 .Async()
-                .Bind(_ => None.Option<int>().Apply(Task.FromResult))
+                .Bind(_ => None.Option<int>().ToTask())
                 .ShouldBeNone();
 
         [Fact(DisplayName = "Skips none after none")]

@@ -12,7 +12,7 @@ namespace DeFuncto
         public Task<bool> IsSome => Option.Map(option => option.IsSome);
         public Task<bool> IsNone => Option.Map(option => option.IsNone);
 
-        public AsyncOption(Option<T> option) : this(option.Apply(Task.FromResult)) { }
+        public AsyncOption(Option<T> option) : this(option.ToTask()) { }
 
         public AsyncOption(Task<Option<T>> optionTask) =>
             Option = optionTask;
@@ -37,7 +37,7 @@ namespace DeFuncto
         public AsyncOption<TOut> Map<TOut>(Func<T, Task<TOut>> f) =>
             Match(
                 t => f(t).Map(Some),
-                () => Option<TOut>.None.Apply(Task.FromResult)
+                () => Option<TOut>.None.ToTask()
             );
 
         [Pure]
@@ -55,12 +55,32 @@ namespace DeFuncto
         public AsyncOption<TOut> Bind<TOut>(Func<T, Task<Option<TOut>>> f) =>
             Bind(f.Compose(OptionExtensions.Async));
 
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<T> DefaultValue(T t) =>
+            DefaultValue(() => t);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<T> DefaultValue(Func<T> f) =>
+            DefaultValue(f.Compose(Task.FromResult));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<T> DefaultValue(Task<T> task) =>
+            DefaultValue(() => task);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<T> DefaultValue(Func<Task<T>> f) =>
+            Match(Prelude.Compose<T, T, Task<T>>(Id, Task.FromResult), f);
+
         public Task<Option<T>> Option { get; }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<T, TError> Result<TError>(Func<Task<TError>> fError) =>
-            Match(t => Ok<T, TError>(t).Apply(Task.FromResult), () => fError().Map(Error<T, TError>));
+            Match(t => Ok<T, TError>(t).ToTask(), () => fError().Map(Error<T, TError>));
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -80,6 +100,6 @@ namespace DeFuncto
     public static class AsyncOptionExtensions
     {
         public static AsyncOption<T> Flatten<T>(this AsyncOption<AsyncOption<T>> self) =>
-            self.Match(t => t.Option, () => None.Option<T>().Apply(Task.FromResult));
+            self.Match(t => t.Option, () => None.Option<T>().ToTask());
     }
 }

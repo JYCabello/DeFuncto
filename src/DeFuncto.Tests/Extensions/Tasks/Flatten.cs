@@ -9,7 +9,7 @@ namespace DeFuncto.Tests.Extensions.Tasks
         [Fact(DisplayName = "Flattens")]
         public async Task Flattens()
         {
-            var nestedTask = "banana".Apply(Task.FromResult).Apply(Task.FromResult);
+            var nestedTask = "banana".ToTask().ToTask();
             var result = await nestedTask.Flatten();
             Assert.Equal("banana", result);
         }

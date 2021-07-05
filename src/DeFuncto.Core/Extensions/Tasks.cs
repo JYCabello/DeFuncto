@@ -17,6 +17,8 @@ namespace DeFuncto.Extensions
         public static async Task<T> Flatten<T>(this Task<Task<T>> self) =>
             await await self;
 
+        public static Task<T> ToTask<T>(this T self) => self.Apply(Task.FromResult);
+
         public static Task<T[]> Parallel<T>(this IEnumerable<Func<Task<T>>> self, int maxDegreeOfParalellism = 5)
         {
             var semaphore = new SemaphoreSlim(maxDegreeOfParalellism);
