@@ -24,3 +24,10 @@ jobs:
     - name: Test
       working-directory: ./src
       run: dotnet test
+    - name: Publish NuGet
+      if: github.ref == 'refs/heads/master'
+      uses: brandedoutcast/publish-nuget@v2.5.5
+      with:
+        PROJECT_FILE_PATH: ./src/DeFuncto.Core/DeFuncto.Core.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
