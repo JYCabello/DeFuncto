@@ -9,15 +9,13 @@ namespace DeFuncto
 {
     public readonly struct AsyncOption<T>
     {
-        private readonly Task<Option<T>> optionTask;
-
-        public Task<bool> IsSome => optionTask.Map(option => option.IsSome);
-        public Task<bool> IsNone => optionTask.Map(option => option.IsNone);
+        public Task<bool> IsSome => Option.Map(option => option.IsSome);
+        public Task<bool> IsNone => Option.Map(option => option.IsNone);
 
         public AsyncOption(Option<T> option) : this(option.Apply(Task.FromResult)) { }
 
         public AsyncOption(Task<Option<T>> optionTask) =>
-            this.optionTask = optionTask;
+            this.Option = optionTask;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -27,18 +25,37 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<TOut> Match<TOut>(Func<T, Task<TOut>> fSome, Func<Task<TOut>> fNone) =>
-            optionTask.Map(option => option.Match(fSome, fNone));
+            Option.Map(option => option.Match(fSome, fNone));
 
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncOption<TOut> Map<TOut>(Func<T, TOut> f) =>
-            optionTask.Map(opt => opt.Map(f));
+            Option.Map(opt => opt.Map(f));
 
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncOption<TOut> Map<TOut>(Func<T, Task<TOut>> f) =>
             Match(
                 t => f(t).Map(Some),
                 () => Option<TOut>.None.Apply(Task.FromResult)
             );
 
-        public Task<Option<T>> Option => optionTask;
+        public Task<Option<T>> Option { get; }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncResult<T, TError> Result<TError>(Func<Task<TError>> fError) =>
+            Match(t => Ok<T, TError>(t).Apply(Task.FromResult), () => fError().Map(Error<T, TError>));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncResult<T, TError> Result<TError>(Func<TError> fError) =>
+            fError.Compose(Task.FromResult).Apply(Result);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncResult<T, TError> Result<TError>(TError error) =>
+            Result(() => error);
 
         public static implicit operator AsyncOption<T>(T val) => new(val);
         public static implicit operator AsyncOption<T>(Option<T> option) => new(option);

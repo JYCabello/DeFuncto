@@ -136,7 +136,7 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> ToResult<TError>() => this;
+        public Result<TOk, TError> Result<TError>() => this;
     }
 
     public readonly struct ResultError<TError>
@@ -148,7 +148,7 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> ToResult<TOk>() => this;
+        public Result<TOk, TError> Result<TOk>() => this;
     }
 
     public static class ResultExtensions

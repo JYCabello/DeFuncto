@@ -8,7 +8,7 @@ namespace DeFuncto.Tests.Prelude
     {
         [Fact(DisplayName = "Instantiates a ResultOk")]
         public void Works() =>
-            Ok("banana").ToResult<int>().ShouldBeOk("banana");
+            Ok("banana").Result<int>().ShouldBeOk("banana");
 
         [Fact(DisplayName = "Instantiates a result that is Ok")]
         public void WorksWithBoth() =>

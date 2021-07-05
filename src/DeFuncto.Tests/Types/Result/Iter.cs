@@ -10,7 +10,7 @@ namespace DeFuncto.Tests.Types.Result
         public void OnOk()
         {
             var witness = 0;
-            Ok("banana").ToResult<int>()
+            Ok("banana").Result<int>()
                 .Iter(str =>
                 {
                     witness += str.Length;
@@ -33,7 +33,7 @@ namespace DeFuncto.Tests.Types.Result
         public void OnError()
         {
             var witness = 0;
-            Error("banana").ToResult<int>()
+            Error("banana").Result<int>()
                 .Iter(str => { witness += str.Length; })
                 .Iter(str =>
                 {

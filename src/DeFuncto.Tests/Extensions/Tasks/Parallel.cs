@@ -15,7 +15,7 @@ namespace DeFuncto.Tests.Extensions.Tasks
         [InlineData(10, 25)]
         [InlineData(100, 10)]
         [InlineData(850, 150)]
-        [InlineData(3000, 200)]
+        [InlineData(5_000, 100)]
         public async Task InParallel(int total, int parallelism)
         {
             var witness = new ConcurrentWitness();
@@ -24,7 +24,7 @@ namespace DeFuncto.Tests.Extensions.Tasks
                 {
                     using (witness.Grab())
                     {
-                        await Task.Delay(2);
+                        await Task.Delay(TimeSpan.FromTicks(1));
                         return unit;
                     }
                 }).Parallel(parallelism);

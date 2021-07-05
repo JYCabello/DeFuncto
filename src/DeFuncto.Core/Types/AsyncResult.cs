@@ -190,6 +190,8 @@ namespace DeFuncto
 
         public Task<bool> IsOk => resultTask.Map(r => r.IsOk);
         public Task<bool> IsError => resultTask.Map(r => r.IsError);
+
+        public AsyncOption<TOk> Option => Match(Some, _ => None);
     }
 
     public static class AsyncResultExtensions

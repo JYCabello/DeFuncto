@@ -8,7 +8,7 @@ namespace DeFuncto.Tests.Prelude
     {
         [Fact(DisplayName = "Instantiates a ResultError")]
         public void Works() =>
-            Error("banana").ToResult<int>()
+            Error("banana").Result<int>()
                 .ShouldBeError("banana");
 
         [Fact(DisplayName = "Instantiates a Result that is an Error")]
