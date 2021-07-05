@@ -15,7 +15,7 @@ namespace DeFuncto
         public AsyncOption(Option<T> option) : this(option.Apply(Task.FromResult)) { }
 
         public AsyncOption(Task<Option<T>> optionTask) =>
-            this.Option = optionTask;
+            Option = optionTask;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -40,6 +40,21 @@ namespace DeFuncto
                 () => Option<TOut>.None.Apply(Task.FromResult)
             );
 
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<TOut> Bind<TOut>(Func<T, AsyncOption<TOut>> f) =>
+            Map(f).Flatten();
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<TOut> Bind<TOut>(Func<T, Option<TOut>> f) =>
+            Bind(f.Compose(OptionExtensions.Async));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<TOut> Bind<TOut>(Func<T, Task<Option<TOut>>> f) =>
+            Bind(f.Compose(OptionExtensions.Async));
+
         public Task<Option<T>> Option { get; }
 
         [Pure]
@@ -60,5 +75,11 @@ namespace DeFuncto
         public static implicit operator AsyncOption<T>(T val) => new(val);
         public static implicit operator AsyncOption<T>(Option<T> option) => new(option);
         public static implicit operator AsyncOption<T>(Task<Option<T>> option) => new(option);
+    }
+
+    public static class AsyncOptionExtensions
+    {
+        public static AsyncOption<T> Flatten<T>(this AsyncOption<AsyncOption<T>> self) =>
+            self.Match(t => t.Option, () => None.Option<T>().Apply(Task.FromResult));
     }
 }
