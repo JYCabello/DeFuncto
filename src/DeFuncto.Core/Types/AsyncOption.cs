@@ -75,6 +75,23 @@ namespace DeFuncto
         public Task<T> DefaultValue(Func<Task<T>> f) =>
             Match(Prelude.Compose<T, T, Task<T>>(Id, Task.FromResult), f);
 
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<TFinal> SelectMany<TBind, TFinal>(
+            Func<T, AsyncOption<TBind>> binder,
+            Func<T, TBind, TFinal> projection
+        ) =>
+            Bind(t => binder(t).Map(tBind => projection(t, tBind)));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<T> Where(Func<T, bool> filter) =>
+            Option.Map(opt => opt.Where(filter));
+
         public Task<Option<T>> Option { get; }
 
         [Pure]
