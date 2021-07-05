@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
+using DeFuncto.Extensions;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -14,10 +15,23 @@ namespace DeFuncto.Tests.Types.AsyncOption
                 .Map(val => $"{val}ana")
                 .ShouldBeSome("banana");
 
-        [Fact(DisplayName = "Skips on None async")]
+        [Fact(DisplayName = "Maps Some async")]
+        public Task OnSomeAsync() =>
+            Some("ban")
+                .Async()
+                .Map(val => $"{val}ana".Apply(Task.FromResult))
+                .ShouldBeSome("banana");
+
+        [Fact(DisplayName = "Skips on None")]
         public Task OnNone() =>
             None.Option<Task<string>>().Async()
-                .Map(_ => Task.FromResult("banana"))
+                .Map(_ => "banana")
+                .ShouldBeNone();
+
+        [Fact(DisplayName = "Skips on None async")]
+        public Task OnNoneAsync() =>
+            None.Option<Task<string>>().Async()
+                .Map(_ => "banana".Apply(Task.FromResult))
                 .ShouldBeNone();
     }
 }
