@@ -92,6 +92,26 @@ namespace DeFuncto
         public AsyncOption<T> Where(Func<T, bool> filter) =>
             Option.Map(opt => opt.Where(filter));
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Action<T> f) =>
+            Option.Run(opt => opt.Iter(f));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Func<Unit> f) =>
+            Iter(f.Action());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Action f) =>
+            Option.Run(opt => opt.Iter(f));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Func<Task> f) =>
+            Option.Map(async opt =>
+            {
+                await f();
+                return opt;
+            });
+
         public Task<Option<T>> Option { get; }
 
         [Pure]
