@@ -9,20 +9,20 @@ namespace DeFuncto
 {
     public readonly struct Option<T>
     {
-        private readonly T? value;
+        internal readonly T? Value;
         public readonly bool IsSome;
         public bool IsNone => !IsSome;
 
         public Option(T value)
         {
-            this.value = value;
+            Value = value;
             IsSome = true;
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TOut Match<TOut>(Func<T, TOut> fSome, Func<TOut> fNone) =>
-            IsSome ? fSome(value!) : fNone();
+            IsSome ? fSome(Value!) : fNone();
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -69,7 +69,7 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<T> Where(Func<T, bool> filter) =>
-            IsSome && filter(value!) ? this : default;
+            IsSome && filter(Value!) ? this : default;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

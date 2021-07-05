@@ -19,6 +19,7 @@ namespace DeFuncto.Tests.Extensions.Tasks
         public async Task InParallel(int total, int parallelism)
         {
             var witness = new ConcurrentWitness();
+
             await Enumerable.Range(0, total)
                 .Select<int, Func<Task<Unit>>>(_ => async () =>
                 {
@@ -28,6 +29,7 @@ namespace DeFuncto.Tests.Extensions.Tasks
                         return unit;
                     }
                 }).Parallel(parallelism);
+
             witness
                 .ShouldBeenHeldMax(parallelism)
                 .ShouldBeenHeldTotal(total);
