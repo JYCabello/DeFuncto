@@ -19,7 +19,7 @@ namespace DeFuncto.Tests.Types.AsyncOption
         public Task OnSomeAsync() =>
             Some("ban")
                 .Async()
-                .Map(val => $"{val}ana".Apply(Task.FromResult))
+                .Map(val => $"{val}ana".ToTask())
                 .ShouldBeSome("banana");
 
         [Fact(DisplayName = "Skips on None")]
@@ -31,7 +31,7 @@ namespace DeFuncto.Tests.Types.AsyncOption
         [Fact(DisplayName = "Skips on None async")]
         public Task OnNoneAsync() =>
             None.Option<Task<string>>().Async()
-                .Map(_ => "banana".Apply(Task.FromResult))
+                .Map(_ => "banana".ToTask())
                 .ShouldBeNone();
     }
 }

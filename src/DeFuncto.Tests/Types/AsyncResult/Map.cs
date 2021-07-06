@@ -26,14 +26,14 @@ namespace DeFuncto.Tests.Types.AsyncResult
         public Task Asnchronous() =>
             Ok<string, int>("ban")
                 .Async()
-                .Map(val => $"{val}ana".Apply(Task.FromResult))
+                .Map(val => $"{val}ana".ToTask())
                 .ShouldBeOk("banana");
 
         [Fact(DisplayName = "Skips with an asynchronous projection")]
         public Task AsyncError() =>
             Error<int, string>("banana")
                 .Async()
-                .Map(_ => "pear".Apply(Task.FromResult))
+                .Map(_ => "pear".ToTask())
                 .ShouldBeError("banana");
 
     }

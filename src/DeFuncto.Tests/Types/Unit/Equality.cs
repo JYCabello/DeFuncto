@@ -4,15 +4,15 @@ using System.Linq;
 using Xunit;
 using static DeFuncto.Prelude;
 
-namespace DeFuncto.Tests.Types.Unit
+namespace DeFuncto.Tests.Types
 {
     public class Equality
     {
-        private static readonly Func<DeFuncto.Unit>[] UnitGetters =
+        private static readonly Func<Unit>[] UnitGetters =
         {
             () => unit,
-            () => new DeFuncto.Unit(),
-            () => DeFuncto.Unit.Default
+            () => new Unit(),
+            () => Unit.Default
         };
 
         public static IEnumerable<object[]> Units() =>
@@ -22,7 +22,7 @@ namespace DeFuncto.Tests.Types.Unit
 
         [Theory(DisplayName = "All units are equal")]
         [MemberData(nameof(Units))]
-        public void EqualityOverriden(DeFuncto.Unit a, DeFuncto.Unit b)
+        public void EqualityOverriden(Unit a, Unit b)
         {
             Assert.Equal(a, b);
             Assert.True(a.Equals(b));

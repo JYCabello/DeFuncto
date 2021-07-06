@@ -27,21 +27,21 @@ namespace DeFuncto.Tests.Types.AsyncResult
         public void FirstErrorSecondOk() =>
             Error<int, string>("banana")
                 .Async()
-                .BindError(_ => Ok<int, string>(42).Apply(Task.FromResult))
+                .BindError(_ => Ok<int, string>(42).ToTask())
                 .ShouldBeError("banana");
 
         [Fact(DisplayName = "Gives first error on second error with task")]
         public void FirstErrorSecondAlso() =>
             Error<int, string>("banana")
                 .Async()
-                .BindError(_ => Error<int, string>("pear").Apply(Task.FromResult))
+                .BindError(_ => Error<int, string>("pear").ToTask())
                 .ShouldBeError("banana");
 
         [Fact(DisplayName = "Keeps being OK while trying to bind an error in a task")]
         public void FirstOkSecondTaskError() =>
             Ok<string, int>("banana")
                 .Async()
-                .BindError(_ => Error<string, int>(42).Apply(Task.FromResult))
+                .BindError(_ => Error<string, int>(42).ToTask())
                 .ShouldBeOk("banana");
     }
 }

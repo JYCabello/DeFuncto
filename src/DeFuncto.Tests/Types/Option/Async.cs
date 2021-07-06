@@ -10,7 +10,7 @@ namespace DeFuncto.Tests.Types.Option
     {
         [Fact(DisplayName = "From option of a task")]
         public Task OptionOfTask() =>
-            Some("banana".Apply(Task.FromResult))
+            Some("banana".ToTask())
                 .Async()
                 .ShouldBeSome("banana");
     }

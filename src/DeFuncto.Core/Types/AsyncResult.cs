@@ -60,7 +60,7 @@ namespace DeFuncto
         public AsyncResult<TOk2, TError> Map<TOk2>(Func<TOk, Task<TOk2>> f) =>
             Match(
                 ok => f(ok).Map(Ok<TOk2, TError>),
-                error => error.Apply(Error<TOk2, TError>).Apply(Task.FromResult)
+                error => error.Apply(Error<TOk2, TError>).ToTask()
             );
 
         [Pure]
@@ -72,7 +72,7 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncResult<TOk, TError2> MapError<TError2>(Func<TError, Task<TError2>> f) =>
             Match(
-                ok => ok.Apply(Ok<TOk, TError2>).Apply(Task.FromResult),
+                ok => ok.Apply(Ok<TOk, TError2>).ToTask(),
                 error => f(error).Map(Error<TOk, TError2>)
             );
 
@@ -132,15 +132,15 @@ namespace DeFuncto
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk) =>
-            Iter(fOk, _ => unit.Apply(Task.FromResult));
+            Iter(fOk, _ => unit.ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Task> fOk) =>
-            Iter(fOk, _ => unit.Apply(Task.FromResult));
+            Iter(fOk, _ => unit.ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TOk, Unit> fOk) =>
-            Iter(ok => fOk(ok).Apply(Task.FromResult));
+            Iter(ok => fOk(ok).ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Action<TOk> fOk) =>
@@ -152,15 +152,15 @@ namespace DeFuncto
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TError, Task<Unit>> fError) =>
-            Iter(_ => unit.Apply(Task.FromResult), fError);
+            Iter(_ => unit.ToTask(), fError);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TError, Task> fError) =>
-            Iter(_ => unit.Apply(Task.FromResult), fError);
+            Iter(_ => unit.ToTask(), fError);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Func<TError, Unit> fError) =>
-            Iter(ok => fError(ok).Apply(Task.FromResult));
+            Iter(ok => fError(ok).ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Result<TOk, TError>> Iter(Action<TError> fError) =>
@@ -204,11 +204,11 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncResult<TOk, TError> Flatten<TOk, TError>(this AsyncResult<TOk, AsyncResult<TOk, TError>> self) =>
-            self.Match(ok => Ok<TOk, TError>(ok).Apply(Task.FromResult), error => error.Result());
+            self.Match(ok => Ok<TOk, TError>(ok).ToTask(), error => error.Result());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncResult<TOk, TError> Flatten<TOk, TError>(this AsyncResult<AsyncResult<TOk, TError>, TError> self) =>
-            self.Match(ok => ok.Result(), error => Error<TOk, TError>(error).Apply(Task.FromResult));
+            self.Match(ok => ok.Result(), error => Error<TOk, TError>(error).ToTask());
     }
 }
