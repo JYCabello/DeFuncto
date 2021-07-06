@@ -124,13 +124,29 @@ namespace DeFuncto
         public Task<Option<T>> Iter(Func<Task> f) =>
             Option.Map(async opt =>
             {
-                await f();
+                await opt.Match(_ => Task.CompletedTask, f);
                 return opt;
             });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Option<T>> Iter(Func<Task<Unit>> f) =>
             Iter(f.AsyncAction());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Action<T> fSome, Action fNone) =>
+            Iter(fSome).Async().Iter(fNone);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
+            Iter(fSome.Action(), fNone.Action());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Func<T, Task> fSome, Func<Task> fNone) =>
+            Iter(fSome).Async().Iter(fNone);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<Option<T>> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>
+            Iter(fSome.AsyncAction(), fNone.AsyncAction());
 
         public Task<Option<T>> Option { get; }
 
