@@ -29,12 +29,11 @@ namespace DeFuncto.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<T> ToTask<T>(this T self) => self.Apply(Task.FromResult);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<T[]> Parallel<T>(this IEnumerable<Func<Task<T>>> self, int maxDegreeOfParalellism = 5)
+        public static async Task<T[]> Parallel<T>(this IEnumerable<Func<Task<T>>> self, int maxDegreeOfParalellism = 5)
         {
-            var semaphore = new SemaphoreSlim(maxDegreeOfParalellism);
-            return self
+            using var semaphore = new SemaphoreSlim(maxDegreeOfParalellism);
+            return await self
                 .Select(WrapInSemaphore)
                 .Apply(Task.WhenAll);
 
