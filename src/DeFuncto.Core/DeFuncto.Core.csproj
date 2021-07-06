@@ -9,7 +9,7 @@
       <Authors>Yeray Cabello</Authors>
       <Company>Yeray Cabello</Company>
       <Description>Simple functional library, aimed for simplicity and ease of maintenance</Description>
-      <Version>0.1.1</Version>
+      <Version>0.1.2</Version>
       <RepositoryUrl>https://github.com/JYCabello/DeFuncto</RepositoryUrl>
       <PackageTags>Functional Monad Option Result Either Parallel</PackageTags>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
