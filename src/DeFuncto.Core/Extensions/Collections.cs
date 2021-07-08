@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Extensions
 {
@@ -11,7 +12,7 @@ namespace DeFuncto.Extensions
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> Choose<T>(this IEnumerable<Option<T>> self) =>
-            self.Where(opt => opt.IsSome).Select(opt => opt.Value!);
+            self.Where(opt => opt.IsSome).Select(opt => opt.Match(Id, () => default!));
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
