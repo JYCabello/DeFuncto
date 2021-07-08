@@ -50,5 +50,27 @@ namespace DeFuncto.Tests.Types.Result
                 .Iter(_ => throw new Exception("Should not run"), str => { witness += str.Length; });
             Assert.Equal(24, witness);
         }
+
+        [Fact(DisplayName = "Skips Error iter on Ok")]
+        public void OnOkSkipError()
+        {
+            var witness = 0;
+            Ok("banana").Result<int>()
+                .Iter(str => { witness += str.Length; })
+                .Iter(str =>
+                {
+                    witness += str.Length;
+                    return unit;
+                })
+                .Iter(
+                    str =>
+                    {
+                        witness += str.Length;
+                        return unit;
+                    },
+                    _ => throw new Exception("Should not run"))
+                .Iter(str => { witness += str.Length; }, _ => throw new Exception("Should not run"));
+            Assert.Equal(24, witness);
+        }
     }
 }
