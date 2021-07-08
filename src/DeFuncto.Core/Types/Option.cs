@@ -47,7 +47,7 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<T> DefaultBind(Option<T> opt) =>
-            Match(Some, () => opt);
+            DefaultBind(() => opt);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

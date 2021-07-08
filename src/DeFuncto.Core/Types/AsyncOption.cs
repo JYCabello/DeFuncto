@@ -57,6 +57,36 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<T> DefaultBind(Option<T> option) =>
+            DefaultBind(() => option);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<T> DefaultBind(Func<Option<T>> fOption) =>
+            Match(Some, fOption);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<T> DefaultBind(Task<Option<T>> taskOption) =>
+            DefaultBind(() => taskOption);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<T> DefaultBind(Func<Task<Option<T>>> fTaskOption) =>
+            Match(val => Some(val).ToTask(), fTaskOption);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<T> DefaultBind(AsyncOption<T> asyncOption) =>
+            DefaultBind(() => asyncOption);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncOption<T> DefaultBind(Func<AsyncOption<T>> fAsyncOption) =>
+            Match(val => Some(val).ToTask(), () => fAsyncOption().Option);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<T> DefaultValue(T t) =>
             DefaultValue(() => t);
 
