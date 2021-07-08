@@ -5,42 +5,42 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Types.AsyncOption
 {
-    public class DefaultBind
+    public class BindNone
     {
         [Fact(DisplayName = "Binds with an option")]
         public void NoneOption() =>
             None.Option<string>().Async()
-                .DefaultBind(Some("banana"))
+                .BindNone(Some("banana"))
                 .ShouldBeSome("banana");
 
         [Fact(DisplayName = "Binds with an option task")]
         public void NoneTaskOption() =>
             None.Option<string>().Async()
-                .DefaultBind(Some("banana").ToTask())
+                .BindNone(Some("banana").ToTask())
                 .ShouldBeSome("banana");
 
         [Fact(DisplayName = "Binds with an async option")]
         public void NoneAsyncOption() =>
             None.Option<string>().Async()
-                .DefaultBind(Some("banana").Async())
+                .BindNone(Some("banana").Async())
                 .ShouldBeSome("banana");
 
         [Fact(DisplayName = "Skips with an option")]
         public void SomeOption() =>
             Some("banana").Async()
-                .DefaultBind(Some("pear"))
+                .BindNone(Some("pear"))
                 .ShouldBeSome("banana");
 
         [Fact(DisplayName = "Binds with an option task")]
         public void SomeTaskOption() =>
             Some("banana").Async()
-                .DefaultBind(Some("pear").ToTask())
+                .BindNone(Some("pear").ToTask())
                 .ShouldBeSome("banana");
 
         [Fact(DisplayName = "Binds with an async option")]
         public void SomeAsyncOption() =>
             Some("banana").Async()
-                .DefaultBind(Some("pear").Async())
+                .BindNone(Some("pear").Async())
                 .ShouldBeSome("banana");
     }
 }

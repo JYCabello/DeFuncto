@@ -57,32 +57,32 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AsyncOption<T> DefaultBind(Option<T> option) =>
-            DefaultBind(() => option);
+        public AsyncOption<T> BindNone(Option<T> option) =>
+            BindNone(() => option);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AsyncOption<T> DefaultBind(Func<Option<T>> fOption) =>
+        public AsyncOption<T> BindNone(Func<Option<T>> fOption) =>
             Match(Some, fOption);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AsyncOption<T> DefaultBind(Task<Option<T>> taskOption) =>
-            DefaultBind(() => taskOption);
+        public AsyncOption<T> BindNone(Task<Option<T>> taskOption) =>
+            BindNone(() => taskOption);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AsyncOption<T> DefaultBind(Func<Task<Option<T>>> fTaskOption) =>
+        public AsyncOption<T> BindNone(Func<Task<Option<T>>> fTaskOption) =>
             Match(val => Some(val).ToTask(), fTaskOption);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AsyncOption<T> DefaultBind(AsyncOption<T> asyncOption) =>
-            DefaultBind(() => asyncOption);
+        public AsyncOption<T> BindNone(AsyncOption<T> asyncOption) =>
+            BindNone(() => asyncOption);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AsyncOption<T> DefaultBind(Func<AsyncOption<T>> fAsyncOption) =>
+        public AsyncOption<T> BindNone(Func<AsyncOption<T>> fAsyncOption) =>
             Match(val => Some(val).ToTask(), () => fAsyncOption().Option);
 
         [Pure]
