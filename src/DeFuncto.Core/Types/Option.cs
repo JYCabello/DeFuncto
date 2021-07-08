@@ -46,6 +46,16 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Option<T> DefaultBind(Option<T> opt) =>
+            Match(Some, () => opt);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Option<T> DefaultBind(Func<Option<T>> opt) =>
+            Match(Some, opt);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<T, TError> Result<TError>(Func<TError> f) =>
             Map(Ok<T, TError>).DefaultValue(f.Compose(Error<T, TError>));
 
