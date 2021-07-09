@@ -73,6 +73,26 @@ namespace DeFuncto
         
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du5<T1, T2, T3, T4, T5> First<T1, T2, T3, T4, T5>(T1 t1) => Du5<T1, T2, T3, T4, T5>.First(t1);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du5<T1, T2, T3, T4, T5> Second<T1, T2, T3, T4, T5>(T2 t2) => Du5<T1, T2, T3, T4, T5>.Second(t2);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du5<T1, T2, T3, T4, T5> Third<T1, T2, T3, T4, T5>(T3 t3) => Du5<T1, T2, T3, T4, T5>.Third(t3);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du5<T1, T2, T3, T4, T5> Fourth<T1, T2, T3, T4, T5>(T4 t4) => Du5<T1, T2, T3, T4, T5>.Fourth(t4);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du5<T1, T2, T3, T4, T5> Fifth<T1, T2, T3, T4, T5>(T5 t5) => Du5<T1, T2, T3, T4, T5>.Fifth(t5);
+        
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Du6<T1, T2, T3, T4, T5, T6> First<T1, T2, T3, T4, T5, T6>(T1 t1) => Du6<T1, T2, T3, T4, T5, T6>.First(t1);
 
         [Pure]
