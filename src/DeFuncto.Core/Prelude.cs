@@ -73,6 +73,22 @@ namespace DeFuncto
         
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du4<T1, T2, T3, T4> First<T1, T2, T3, T4>(T1 t1) => Du4<T1, T2, T3, T4>.First(t1);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du4<T1, T2, T3, T4> Second<T1, T2, T3, T4>(T2 t2) => Du4<T1, T2, T3, T4>.Second(t2);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du4<T1, T2, T3, T4> Third<T1, T2, T3, T4>(T3 t3) => Du4<T1, T2, T3, T4>.Third(t3);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du4<T1, T2, T3, T4> Fourth<T1, T2, T3, T4>(T4 t4) => Du4<T1, T2, T3, T4>.Fourth(t4);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Du5<T1, T2, T3, T4, T5> First<T1, T2, T3, T4, T5>(T1 t1) => Du5<T1, T2, T3, T4, T5>.First(t1);
 
         [Pure]
