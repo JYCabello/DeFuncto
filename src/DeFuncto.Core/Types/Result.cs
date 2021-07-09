@@ -9,22 +9,19 @@ namespace DeFuncto
 {
     public readonly struct Result<TOk, TError>
     {
-        private readonly TError? errorValue;
-        private readonly TOk? okValue;
+        private readonly Du<TOk, TError> value;
         public readonly bool IsOk;
         public bool IsError => !IsOk;
 
         public Result(TError error)
         {
-            errorValue = error;
-            okValue = default;
+            value = Second<TOk, TError>(error);
             IsOk = false;
         }
 
         public Result(TOk ok)
         {
-            errorValue = default;
-            okValue = ok;
+            value = First<TOk, TError>(ok);
             IsOk = true;
         }
 
@@ -71,13 +68,17 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
-            IsOk ? okProjection(okValue!) : errorProjection(errorValue!);
+            value.Match(okProjection, errorProjection);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Action<TOk> iterator)
         {
-            if (IsOk)
-                iterator(okValue!);
+            value.Match(ok =>
+                {
+                    iterator(ok);
+                    return unit;
+                },
+                _ => unit);
             return this;
         }
 
@@ -88,8 +89,13 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Result<TOk, TError> Iter(Action<TError> iterator)
         {
-            if (IsError)
-                iterator(errorValue!);
+            value.Match(
+                _ => unit,
+                error =>
+                {
+                    iterator(error);
+                    return unit;
+                });
             return this;
         }
 

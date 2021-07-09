@@ -1,0 +1,2 @@
+# Discriminated unions
+*stub*

@@ -9,26 +9,26 @@ namespace DeFuncto
 {
     public readonly struct Option<T>
     {
-        internal readonly Du<T, Unit> Value;
+        private readonly Du<T, Unit> value;
         public readonly bool IsSome;
         public bool IsNone => !IsSome;
 
         public Option(T value)
         {
-            Value = value;
+            this.value = value;
             IsSome = true;
         }
 
         private Option(Unit none)
         {
-            Value = none;
+            value = none;
             IsSome = false;
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TOut Match<TOut>(Func<T, TOut> fSome, Func<TOut> fNone) =>
-            Value.Match(fSome, _ => fNone());
+            value.Match(fSome, _ => fNone());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
