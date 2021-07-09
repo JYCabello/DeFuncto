@@ -70,5 +70,33 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Du3<T1, T2, T3> Third<T1, T2, T3>(T3 t3) => Du3<T1, T2, T3>.Third(t3);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du7<T1, T2, T3, T4, T5, T6, T7> First<T1, T2, T3, T4, T5, T6, T7>(T1 t1) => Du7<T1, T2, T3, T4, T5, T6, T7>.First(t1);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du7<T1, T2, T3, T4, T5, T6, T7> Second<T1, T2, T3, T4, T5, T6, T7>(T2 t2) => Du7<T1, T2, T3, T4, T5, T6, T7>.Second(t2);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du7<T1, T2, T3, T4, T5, T6, T7> Third<T1, T2, T3, T4, T5, T6, T7>(T3 t3) => Du7<T1, T2, T3, T4, T5, T6, T7>.Third(t3);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du7<T1, T2, T3, T4, T5, T6, T7> Fourth<T1, T2, T3, T4, T5, T6, T7>(T4 t4) => Du7<T1, T2, T3, T4, T5, T6, T7>.Fourth(t4);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du7<T1, T2, T3, T4, T5, T6, T7> Fifth<T1, T2, T3, T4, T5, T6, T7>(T5 t5) => Du7<T1, T2, T3, T4, T5, T6, T7>.Fifth(t5);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du7<T1, T2, T3, T4, T5, T6, T7> Sixth<T1, T2, T3, T4, T5, T6, T7>(T6 t6) => Du7<T1, T2, T3, T4, T5, T6, T7>.Sixth(t6);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du7<T1, T2, T3, T4, T5, T6, T7> Seventh<T1, T2, T3, T4, T5, T6, T7>(T7 t7) => Du7<T1, T2, T3, T4, T5, T6, T7>.Seventh(t7);
     }
 }
