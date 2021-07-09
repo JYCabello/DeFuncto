@@ -15,13 +15,13 @@ namespace DeFuncto
 
         public Result(TError error)
         {
-            value = error;
+            value = Second<TOk, TError>(error);
             IsOk = false;
         }
 
         public Result(TOk ok)
         {
-            value = ok;
+            value = First<TOk, TError>(ok);
             IsOk = true;
         }
 

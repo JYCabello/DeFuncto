@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using DeFuncto.Extensions;
 
@@ -52,5 +50,25 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Func<T2> Compose<T1, T2>(this Func<T1> f1, Func<T1, T2> f2) =>
             () => f1().Apply(f2);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du<T1, T2> First<T1, T2>(T1 t1) => Du<T1, T2>.First(t1);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du<T1, T2> Second<T1, T2>(T2 t2) => Du<T1, T2>.Second(t2);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du3<T1, T2, T3> First<T1, T2, T3>(T1 t1) => Du3<T1, T2, T3>.First(t1);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du3<T1, T2, T3> Second<T1, T2, T3>(T2 t2) => Du3<T1, T2, T3>.Second(t2);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Du3<T1, T2, T3> Third<T1, T2, T3>(T3 t3) => Du3<T1, T2, T3>.Third(t3);
     }
 }
