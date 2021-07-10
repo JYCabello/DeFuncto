@@ -21,6 +21,24 @@ public user Get(Du<string, int> emailOrId) => emailOrId.Match(email => GetByEmai
 public user Get(Du<string, int> emailOrId) => emailOrId.Match(GetByEmail, GetByID);
 ```
 ## The caveat
+If you were to do this in F#, it would look something like this.
+```fs
+type Identifier =
+  | Email of string
+  | Id of int
 
+let getByEmail email = users |> List.find (fun u -> u.Email = email)
+let getById id = users |> List.find (fun u -> u.ID = id)
+
+let get (term: Identifier) =
+  match term with
+    | Email email -> getByEmail email
+    | Id id -> getById id
+// Which can be simplified as:
+let get =
+  function
+    | Email email -> getByEmail email
+    | Id id -> getById id
+```
 
 Most of what this library is made by biased discriminated unions. An [Option](option.md) is just
