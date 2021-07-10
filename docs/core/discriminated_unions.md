@@ -20,7 +20,7 @@ public user Get(Du<string, int> emailOrId) => emailOrId.Match(email => GetByEmai
 // Which can be simplified as:
 public user Get(Du<string, int> emailOrId) => emailOrId.Match(GetByEmail, GetByID);
 ```
-
+## The caveat
 
 
 Most of what this library is made by biased discriminated unions. An [Option](option.md) is just
