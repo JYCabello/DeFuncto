@@ -40,5 +40,15 @@ let get =
     | Email email -> getByEmail email
     | Id id -> getById id
 ```
+You might notice that while the final match looks a bit noisier than our final version, the definition of the union is precise an succint. Ignoring that we can pass any email as a string (which we would solve with a Validation or a Result, but it's out of scope here), we have an structure telling us that you need to pass a number that represents a user ID or an Email.
+
+To achieve the same in C#, we have to add a bit of noise:
+```cs
+public record UserEmail(string Value);
+public record UserID(int Value);
+public User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
+public User Get(UserID id) => users.Single(u => u.ID == id.Value);
+public user Get(Du<UserEmail, UserID> emailOrId) => emailOrId.Match(Get, Get);
+```
 
 Most of what this library is made by biased discriminated unions. An [Option](option.md) is just
