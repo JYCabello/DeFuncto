@@ -68,7 +68,7 @@ public User Get(UserIdentifier identifier) =>
         _ => throw new ArgumentException(nameof(identifier))
     }
 ```
-Which has the drawback of not being exhaustive, and this is the one and only real win with discriminated unions, you cannot forget to map one of the possible types. If I decide to make phone numbers unique either in F# or C#:
+Which has the drawback of not being exhaustive, and this is the big win with discriminated unions, you cannot forget to map one of the possible types. If I decide to make phone numbers unique in either F# or C#:
 ```cs
 public record UserEmail(string Value);
 public record UserID(int Value);
