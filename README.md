@@ -19,8 +19,47 @@ There IS a way around it, and [language-ext](https://github.com/louthy/language-
 
 If you want and can, yeah, do. This is for those of us that want to make our C# journey a little bit easier.
 
-## Functional Programming as a concept: Making your little dev world safer
-I'm taking
+## Functional Programming as a tool: Making your little dev world safer
+The goal is not to make a full introduction to functional programming. When you arrived here I assumed that you already have heard of the word [Monad](https://mikhail.io/2018/07/monads-explained-in-csharp-again/) and/or you might be interested in [railway oriented programming](https://fsharpforfunandprofit.com/rop/). This library aims EXACTLY to give you the tools to do railway oriented programming and nothing else. The idea is that you will end up writing the majority of your programs in a DSL fashion. Defining your work as events that should happen instead of how they happen.
+
+Let's say that your services all return `AsyncResult<Something, Error>`, this is what a login program would look like (for the hardcore FPers: I am aware that this is using old fashioned dependency-injected services) in your session handler:
+```cs
+public AsyncResult<SessionToken, Error> Login(string name, string password) =>
+    from user in userService.FindUser(name)
+    from authenticatedUser in cryptoService.Validate(user, password)
+    from token in sessionService.TryCreateToken(authenticatedUser)
+    select token;
+```
+> What? That's a query, not a method executing logic.
+It's not only executing logic, but doing so asynchronously, this chunk of logic is abstracting away:
+- Error handling
+- Tasks
+
+The first method called could look something like this:
+```cs
+public AsyncResult<User, Error> FindUser(string name)
+{
+    // Some verbosity that you might grow used to, if you don't, you can always make this return
+    // Task<Result<User, Error>> and invoke .Async() in the caller.
+    return Go().Async();
+
+    async Task<Result<User, Error>> Go()
+    {
+        var possibleUser = await db.Users.FirstOrDefaultAsync(u => u.Name == name);
+        return possibleUser is not null
+            ? Result<User, Error>.Ok(user)
+            : Result<User, Error>.Error(new Error.EntityNotFound($"User named {name} was not found in the database"));
+    }
+}
+```
+Then, the data type takes care of consuming the user in the next method or circuit breaking in case of an error.
+> But I don't like magic! I want to see my control flow.
+
+This is not magic, if you change the type returned from `FindUser` this will stop compiling, wether you return something different than `User` on  the `Ok` case or something that is not an `Error` on the `Error` side. The control flow itself happens internally in the data structure just like it happens in the CLI when you do an `if else`, except that this is a "conditional" that you have to work REALLY hard to type wrong and have it compile.
+
+It's all about having the compiler hold your hand for as long as possible. Want to know more? Dive into the docs.
+
 
 ## Documentation
+1. [Fundamentals](docs/fundamentals/index.md)
 1. [DeFuncto.Core](docs/core/index.md)

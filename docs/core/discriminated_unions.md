@@ -114,6 +114,8 @@ public User Get(UserIdentifier identifier) =>
 ```
 Which means that we have to carefully investigate where our class is being used and make sure that every switch expression consuming our type is handling the new case, which can be trivial in small simple applications, which are prone not to exist, but it's from daunting in a large codebase to plain impossible if our type is exposed in a library.
 
+Again, it's all about having the compiler hold your hand: If you change the signature of a method to return a `Discriminated Union` that has different type parameters, the compiler will kick and scream until you have solved every inconsistency instead of having your production code crash when your ~~money bags~~ customers are using the product.
+
 ## TL; DR
 A discriminated union is a type that can be one of many other types, until you call `Match` on it, forcing you to handle every possible type, is a Schrödinger's variable, representing the uncertainty of which is it, allowing you to leave the decision of what to do to the latest stage of the flow you're working on.
 
