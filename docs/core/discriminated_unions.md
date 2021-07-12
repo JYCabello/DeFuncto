@@ -103,6 +103,7 @@ public record UserIdentifier
 }
 public User Get(UserIdentifier.UserEmail email) => users.Single(u => u.Email == email.Value);
 public User Get(UserIdentifier.UserID id) => users.Single(u => u.ID == id.Value);
+// DOES compile, no bueno.
 public User Get(UserIdentifier identifier) =>
     identifier switch
     {
