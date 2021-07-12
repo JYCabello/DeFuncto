@@ -31,6 +31,7 @@ public AsyncResult<SessionToken, Error> Login(string name, string password) =>
     select token;
 ```
 > What? That's a query, not a method executing logic.
+
 It's not only executing logic, but doing so asynchronously, this chunk of logic is abstracting away:
 - Error handling
 - Tasks
