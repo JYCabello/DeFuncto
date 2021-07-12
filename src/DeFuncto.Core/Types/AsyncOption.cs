@@ -9,13 +9,13 @@ namespace DeFuncto
 {
     public readonly struct AsyncOption<T>
     {
-        public Task<bool> IsSome => Option.Map(option => option.IsSome);
-        public Task<bool> IsNone => Option.Map(option => option.IsNone);
+        public Task<bool> IsSome => Option.Map(opt => opt.IsSome);
+        public Task<bool> IsNone => Option.Map(opt => opt.IsNone);
 
         public AsyncOption(Option<T> option) : this(option.ToTask()) { }
 
         public AsyncOption(Task<Option<T>> optionTask) =>
-            Option = optionTask;
+            option = optionTask;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -25,7 +25,7 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<TOut> Match<TOut>(Func<T, Task<TOut>> fSome, Func<Task<TOut>> fNone) =>
-            Option.Map(option => option.Match(fSome, fNone));
+            Option.Map(opt => opt.Match(fSome, fNone));
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -57,8 +57,8 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AsyncOption<T> BindNone(Option<T> option) =>
-            BindNone(() => option);
+        public AsyncOption<T> BindNone(Option<T> opt) =>
+            BindNone(() => opt);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -136,10 +136,10 @@ namespace DeFuncto
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Option<T>> Iter(Func<T, Task> f) =>
-            Option.Map(async option =>
+            Option.Map(async opt =>
             {
-                await option.Match(f, () => Task.CompletedTask);
-                return option;
+                await opt.Match(f, () => Task.CompletedTask);
+                return opt;
             });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -178,7 +178,8 @@ namespace DeFuncto
         public Task<Option<T>> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>
             Iter(fSome.AsyncAction(), fNone.AsyncAction());
 
-        public Task<Option<T>> Option { get; }
+        private readonly Task<Option<T>>? option;
+        public Task<Option<T>> Option => option ?? Task.FromResult(None.Option<T>());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
