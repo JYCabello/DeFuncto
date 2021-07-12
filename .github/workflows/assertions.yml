@@ -1,0 +1,33 @@
+name: Defuncto.Assertions
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./src/DeFuncto.sln
+    - name: Build
+      run: dotnet build --no-restore ./src/DeFuncto.Core/DeFuncto.Core.csproj
+    - name: Test
+      working-directory: ./src
+      run: dotnet test
+    - name: Publish NuGet
+      if: github.ref == 'refs/heads/master'
+      uses: brandedoutcast/publish-nuget@v2.5.5
+      with:
+        PROJECT_FILE_PATH: ./src/DeFuncto.Assertions/DeFuncto.Assertions.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
