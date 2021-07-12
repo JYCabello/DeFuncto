@@ -40,8 +40,8 @@ let get =
     | Email email -> getByEmail email
     | Id id -> getById id
 ```
-You might notice that while the final match looks a bit noisier than our final version, the definition of the union is precise and succint. Ignoring that we can pass any email as a string (which we would solve with a Validation or a Result, but it's out of scope here), we have a structure telling us that you need to pass a number that represents a user ID or an Email.
-
+You might notice that while the final match looks a bit more verbose than our C# version, the definition of the union is precise and succint. Ignoring that we can pass any email as a string or a negative number as an ID (which we would solve with a Validation or a Result, but it's out of scope here), we have a structure telling us that you need to pass a number that represents a user ID or an Email.
+### The workaround
 To achieve the same in C#, we have to add a bit of noise:
 ```cs
 public record UserEmail(string Value);
@@ -50,5 +50,70 @@ public User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
 public User Get(UserID id) => users.Single(u => u.ID == id.Value);
 public user Get(Du<UserEmail, UserID> identifier) => identifier.Match(Get, Get);
 ```
+## Exhaustive matchin, the core issue
+If you are in a version of C# that does not have records, you're bound to use classes for that, which would make for a few extra lines, and there's also that if you are in C# 9, you might be tempted to use a nested record and a switch expression.
+```cs
+public record UserIdentifier
+{
+    public record UserEmail(string Value) : UserIdentifier;
+    public record UserID(int Value) : UserIdentifier;
+}
+public User Get(UserIdentifier.UserEmail email) => users.Single(u => u.Email == email.Value);
+public User Get(UserIdentifier.UserID id) => users.Single(u => u.ID == id.Value);
+public User Get(UserIdentifier identifier) =>
+    identifier switch
+    {
+        UserIdentifier.UserEmail email => Get(email),
+        UserIdentifier.UserID id => Get(id),
+        _ => throw new ArgumentException(nameof(identifier))
+    }
+```
+Which has the drawback of not being exhaustive, and this is the one and only real win with discriminated unions, you cannot forget to map one of the possible types. If I decide to make phone numbers unique either in F# or C#:
+```cs
+public record UserEmail(string Value);
+public record UserID(int Value);
+public record PhoneNumber(string Value);
+public User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
+public User Get(UserID id) => users.Single(u => u.ID == id.Value);
+// Does not compile!
+public user Get(Du3<UserEmail, UserID, PhoneNumber> identifier) => identifier.Match(Get, Get);
+```
+```fs
+type Identifier =
+  | Email of string
+  | Id of int
+  | PhoneNumber of string
 
-Most of what this library is made by biased discriminated unions. An [Option](option.md) is just
+let getByEmail email = users |> List.find (fun u -> u.Email = email)
+let getById id = users |> List.find (fun u -> u.ID = id)
+
+// Does not compile!
+let get =
+  function
+    | Email email -> getByEmail email
+    | Id id -> getById id
+```
+None of these options is valid code anymore, while this one is:
+```cs
+public record UserIdentifier
+{
+    public record UserEmail(string Value) : UserIdentifier;
+    public record UserID(int Value) : UserIdentifier;
+    public record PhoneNumber(string Value) : UserIdentifier;
+}
+public User Get(UserIdentifier.UserEmail email) => users.Single(u => u.Email == email.Value);
+public User Get(UserIdentifier.UserID id) => users.Single(u => u.ID == id.Value);
+public User Get(UserIdentifier identifier) =>
+    identifier switch
+    {
+        UserIdentifier.UserEmail email => Get(email),
+        UserIdentifier.UserID id => Get(id),
+        _ => throw new ArgumentException(nameof(identifier))
+    }
+```
+Which means that we have to carefully investigate where our class is being used and make sure that every switch expression consuming our type is handling the new case, which can be trivial in small simple applications, which are prone not to exist, but it's from daunting in a large codebase to plain impossible if our type is exposed in a library.
+
+## TL; DR
+A discriminated union is a type that can be one of many other types, until you call `Match` on it, forcing you to handle every possible type, is a Schrödinger's variable, representing the uncertainty of which is it, allowing you to leave the decision of what to do to the latest stage of the flow you're working on.
+
+Most of what this library has to offer is made by biased discriminated unions. An [Option](option.md) is just a discriminated union that considers one side "Something" (`Some`) and the other side "Nothing" (`None`). Likewise, a [Result](result.md) considers one of the values the desired result (hence, the name) of an operation (`Ok`), and the other one an error (`Error`).
