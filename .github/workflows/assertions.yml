@@ -1,4 +1,4 @@
-name: Defuncto.Core
+name: Defuncto.Assertions
 
 on:
   push:
@@ -28,6 +28,6 @@ jobs:
       if: github.ref == 'refs/heads/master'
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
-        PROJECT_FILE_PATH: ./src/DeFuncto.Core/DeFuncto.Assertions.csproj
+        PROJECT_FILE_PATH: ./src/DeFuncto.Assertions/DeFuncto.Assertions.csproj
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
