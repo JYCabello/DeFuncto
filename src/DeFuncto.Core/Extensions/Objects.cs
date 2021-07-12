@@ -40,6 +40,14 @@ namespace DeFuncto.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T> RunAsync<T>(this Task<T> self, Func<T, Task> f) => self.Map(async t =>
+        {
+            await f(t);
+            return t;
+        });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<T> RunAsync<T>(this T self, Func<T, Task<Unit>> f) =>
             self.RunAsync(async t => { await f(t); });
     }
