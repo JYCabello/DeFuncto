@@ -1,17 +1,19 @@
-﻿using Xunit;
+﻿using FsCheck;
+using FsCheck.Xunit;
+using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Result
 {
     public class IsLeft
     {
-        [Fact(DisplayName = "Detects that is left correctly")]
-        public void TrueOnLeft() =>
-            Assert.True(Error<int, string>("banana").IsError);
+        [Property(DisplayName = "Detects that is Error correctly")]
+        public void TrueOnError(NonNull<string> a) =>
+            Assert.True(Error<int, string>(a.Get).IsError);
 
 
-        [Fact(DisplayName = "Detects that is not left correctly")]
-        public void FalseOnRight() =>
-            Assert.False(Ok<string, int>("banana").IsError);
+        [Property(DisplayName = "Detects that is not Error correctly")]
+        public void FalseOnOk(NonNull<string> a) =>
+            Assert.False(Ok<string, int>(a.Get).IsError);
     }
 }
