@@ -9,7 +9,7 @@
       <Authors>Yeray Cabello</Authors>
       <Company>Yeray Cabello</Company>
       <Description>Simple functional library, aimed for simplicity and ease of maintenance, trying to mimic what F# has to offer in terms of error handling. Heavily inspired by language-ext</Description>
-      <Version>0.2.2</Version>
+      <Version>0.2.3</Version>
       <RepositoryUrl>https://github.com/JYCabello/DeFuncto</RepositoryUrl>
       <PackageTags>Functional Monad Option Result Either Parallel</PackageTags>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
