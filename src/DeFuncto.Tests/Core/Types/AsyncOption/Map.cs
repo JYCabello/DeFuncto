@@ -10,40 +10,34 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class Map
     {
-        // [Property(DisplayName = "Maps Some")]
-        // public Property OnSome(string a, string b) =>
-        //     Some(a)
-        //         .Async()
-        //         .Map(val => $"{val}{b}")
-        //         .Match(result => ($"{a}{b}" == result).ToProperty(),
-        //             () => false.ToProperty())
-        //         .Result;
-
         [Property(DisplayName = "Maps Some")]
         public void OnSome(string a, string b) =>
             Some(a)
                 .Async()
                 .Map(val => $"{val}{b}")
                 .ShouldBeSome($"{a}{b}")
-                .Void();
+                .SyncVoid();
 
-        [Fact(DisplayName = "Maps Some async")]
-        public Task OnSomeAsync() =>
-            Some("ban")
+        [Property(DisplayName = "Maps Some async")]
+        public void OnSomeAsync(string a, string b) =>
+            Some(a)
                 .Async()
-                .Map(val => $"{val}ana".ToTask())
-                .ShouldBeSome("banana");
+                .Map(val => $"{val}{b}".ToTask())
+                .ShouldBeSome($"{a}{b}")
+                .SyncVoid();
 
-        [Fact(DisplayName = "Skips on None")]
-        public Task OnNone() =>
+        [Property(DisplayName = "Skips on None")]
+        public void OnNone(string a) =>
             None.Option<Task<string>>().Async()
-                .Map(_ => "banana")
-                .ShouldBeNone();
+                .Map(_ => a)
+                .ShouldBeNone()
+                .SyncVoid();
 
-        [Fact(DisplayName = "Skips on None async")]
-        public Task OnNoneAsync() =>
+        [Property(DisplayName = "Skips on None async")]
+        public void OnNoneAsync(string a) =>
             None.Option<Task<string>>().Async()
-                .Map(_ => "banana".ToTask())
-                .ShouldBeNone();
+                .Map(_ => a.ToTask())
+                .ShouldBeNone()
+                .SyncVoid();
     }
 }
