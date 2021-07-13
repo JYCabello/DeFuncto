@@ -1,5 +1,7 @@
 ﻿using System;
 using DeFuncto.Assertions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -7,34 +9,28 @@ namespace DeFuncto.Tests.Core.Types.Result
 {
     public class BindError
     {
-        [Fact(DisplayName = "Binds on both Error")]
-        public void BothError() =>
-            Error<string, string>("ba")
-                .BindError(val => Error<string, string>($"{val}nana"))
-                .ShouldBeError("banana");
+        [Property(DisplayName = "Binds on both Error")]
+        public void BothError(NonNull<string> a, NonNull<string> b) =>
+            Error<string, string>(a.Get)
+                .BindError(val => Error<string, string>($"{val}{b.Get}"))
+                .ShouldBeError($"{a.Get}{b.Get}");
 
-        [Fact(DisplayName = "Gives second Ok on first error")]
-        public void FirstErrorSecondNot() =>
-            Error<string, string>("pear")
-                .BindError(_ => Ok<string, string>("banana"))
-                .ShouldBeOk("banana");
+        [Property(DisplayName = "Gives second Ok on first error")]
+        public void FirstErrorSecondNot(NonNull<string> a, NonNull<string> b) =>
+            Error<string, string>(a.Get)
+                .BindError(_ => Ok<string, string>(b.Get))
+                .ShouldBeOk(b.Get);
 
-        [Fact(DisplayName = "Gives first error on second Ok")]
-        public void FirstErrorSecondOk() =>
-            Error<int, string>("banana")
-                .Bind(_ => Ok<int, string>(42))
-                .ShouldBeError("banana");
+        [Property(DisplayName = "Skips on first Ok with second error")]
+        public void FirstOkSecondError(NonNull<string> a, int b) =>
+            Ok<string, int>(a.Get)
+                .BindError(_ => Error<string, int>(b))
+                .ShouldBeOk(a.Get);
 
-        [Fact(DisplayName = "Gives first error on second error")]
-        public void FirstErrorSecondAlso() =>
-            Error<int, string>("banana")
-                .Bind(_ => Error<int, string>("pear"))
-                .ShouldBeError("banana");
-
-        [Fact(DisplayName = "Does not run the binder on first error")]
-        public void FirstErrorNoBinderRun() =>
-            Error<int, string>("banana")
-                .Bind<int>(_ => throw new Exception("Should not run"))
-                .ShouldBeError("banana");
+        [Property(DisplayName = "Skips on first Ok with second Ok")]
+        public void FirstOkSecondOk(NonNull<string> a, NonNull<string> b) =>
+            Ok<string, int>(a.Get)
+                .BindError(_ => Ok<string, int>(b.Get))
+                .ShouldBeOk(a.Get);
     }
 }
