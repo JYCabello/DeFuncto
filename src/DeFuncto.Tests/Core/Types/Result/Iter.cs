@@ -1,4 +1,7 @@
 ﻿using System;
+using DeFuncto.Assertions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -6,71 +9,71 @@ namespace DeFuncto.Tests.Core.Types.Result
 {
     public class Iter
     {
-        [Fact(DisplayName = "Iterates on Ok")]
-        public void OnOk()
+        [Property(DisplayName = "Iterates on Ok")]
+        public void OnOk(NonNull<string> a)
         {
-            var witness = 0;
-            Ok("banana").Result<int>()
-                .Iter(str =>
+            var witness = new Witness();
+            Ok(a.Get).Result<int>()
+                .Iter((string _) =>
                 {
-                    witness += str.Length;
+                    witness.Touch();
                 })
-                .Iter(str =>
+                .Iter((string _) =>
                 {
-                    witness += str.Length;
+                    witness.Touch();
                     return unit;
                 })
-                .Iter(str =>
+                .Iter(_ =>
                     {
-                        witness += str.Length;
+                        witness.Touch();
                         return unit;
                     },
                     _ => throw new Exception("Should not run"));
-            Assert.Equal(18, witness);
+            witness.ShouldHaveBeenTouched(3);
         }
 
-        [Fact(DisplayName = "Iterates on Error")]
-        public void OnError()
+        [Property(DisplayName = "Iterates on Error")]
+        public void OnError(NonNull<string> a)
         {
-            var witness = 0;
-            Error("banana").Result<int>()
-                .Iter(str => { witness += str.Length; })
-                .Iter(str =>
+            var witness = new Witness();
+            Error(a.Get).Result<int>()
+                .Iter((string _) => { witness.Touch(); })
+                .Iter((string _) =>
                 {
-                    witness += str.Length;
+                    witness.Touch();
                     return unit;
                 })
                 .Iter(
                     _ => throw new Exception("Should not run"),
-                    str =>
+                    _ =>
                     {
-                        witness += str.Length;
+                        witness.Touch();
                         return unit;
                     })
-                .Iter(_ => throw new Exception("Should not run"), str => { witness += str.Length; });
-            Assert.Equal(24, witness);
+                .Iter(_ => throw new Exception("Should not run"), _ => { witness.Touch(); });
+            witness.ShouldHaveBeenTouched(4);
         }
 
-        [Fact(DisplayName = "Skips Error iter on Ok")]
-        public void OnOkSkipError()
+        [Property(DisplayName = "Skips Error iter on Ok")]
+        public void OnOkSkipError(NonNull<string> a)
         {
-            var witness = 0;
-            Ok("banana").Result<int>()
-                .Iter(str => { witness += str.Length; })
-                .Iter(str =>
+            var witness = new Witness();
+            Ok(a.Get).Result<int>()
+                .Iter((string _) => { witness.Touch(); })
+                .Iter((string _) =>
                 {
-                    witness += str.Length;
+                    witness.Touch();
                     return unit;
                 })
                 .Iter(
-                    str =>
+                    _ =>
                     {
-                        witness += str.Length;
+                        witness.Touch();
                         return unit;
                     },
                     _ => throw new Exception("Should not run"))
-                .Iter(str => { witness += str.Length; }, _ => throw new Exception("Should not run"));
-            Assert.Equal(24, witness);
+                .Iter(_ => { witness.Touch(); }, _ => throw new Exception("Should not run"));
+            witness.ShouldHaveBeenTouched(4);
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using FsCheck;
 using FsCheck.Xunit;
-using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncOption
