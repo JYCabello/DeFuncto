@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -8,12 +10,22 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class Map
     {
-        [Fact(DisplayName = "Maps Some")]
-        public Task OnSome() =>
-            Some("ban")
+        // [Property(DisplayName = "Maps Some")]
+        // public Property OnSome(string a, string b) =>
+        //     Some(a)
+        //         .Async()
+        //         .Map(val => $"{val}{b}")
+        //         .Match(result => ($"{a}{b}" == result).ToProperty(),
+        //             () => false.ToProperty())
+        //         .Result;
+
+        [Property(DisplayName = "Maps Some")]
+        public void OnSome(string a, string b) =>
+            Some(a)
                 .Async()
-                .Map(val => $"{val}ana")
-                .ShouldBeSome("banana");
+                .Map(val => $"{val}{b}")
+                .ShouldBeSome($"{a}{b}")
+                .Void();
 
         [Fact(DisplayName = "Maps Some async")]
         public Task OnSomeAsync() =>
