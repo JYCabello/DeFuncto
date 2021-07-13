@@ -50,5 +50,11 @@ namespace DeFuncto.Extensions
                 }
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Void<T>(this Task<T> self)
+        {
+            var _ = self.Result;
+        }
     }
 }
