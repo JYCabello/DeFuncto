@@ -1,8 +1,6 @@
-﻿using System;
-using DeFuncto.Assertions;
+﻿using DeFuncto.Assertions;
 using FsCheck;
 using FsCheck.Xunit;
-using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Result
