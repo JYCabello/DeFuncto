@@ -17,7 +17,8 @@ namespace DeFuncto.Tests.Core.Types.Du7
             int e,
             int f,
             int g,
-            int h) =>
+            int h
+        ) =>
             First<string, int, int, int, int, int, int>(b.Get).Match(
                 val => $"{val}{a.Get}",
                 _ => $"{c}{a.Get}",

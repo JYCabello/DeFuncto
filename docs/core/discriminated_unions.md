@@ -50,7 +50,7 @@ public User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
 public User Get(UserID id) => users.Single(u => u.ID == id.Value);
 public user Get(Du<UserEmail, UserID> identifier) => identifier.Match(Get, Get);
 ```
-## Exhaustive matchin, the core issue
+## Exhaustive matching, the core issue
 If you are in a version of C# that does not have records, you're bound to use classes for that, which would make for a few extra lines, and there's also that if you are in C# 9, you might be tempted to use a nested record and a switch expression.
 ```cs
 public record UserIdentifier
