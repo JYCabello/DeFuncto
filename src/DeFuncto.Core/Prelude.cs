@@ -39,7 +39,7 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> Optional<T>(T? t) =>
-            t is not null ? Some(t) : None;
+            t is not null ? Some(t!) : None;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -16,14 +16,14 @@ public string? GetLastRenterName(string plateNumber) {
     var lastRental = FindLastRentalForCar(car.ID);
     if (lastRental is null)
         return null;
-    var user = FindUser(lastRental.UserID);
+    var user = GetUser(lastRental.UserID);
     return user.FullName;
 }
 // Now we have to consume it in a defensive way:
 var name = GetLastRenterName("1234AB");
 Console.WriteLine(name is null ? "Name not found" : name);
 ```
-
+WIP
 
 ## How is it solved
 
