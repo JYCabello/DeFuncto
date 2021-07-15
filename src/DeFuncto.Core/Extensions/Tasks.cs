@@ -78,10 +78,6 @@ namespace DeFuncto.Extensions
             self.Map(x => x.Select(mapper));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<List<T>> Flatten<T>(this Task<List<List<T>>> self) =>
-            self.Map(t => t.SelectMany(a => a)).ToList();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<List<T>> Flatten<T>(this Task<List<T>[]> self) =>
             self.Map(t => t.SelectMany(a => a)).ToList();
 
