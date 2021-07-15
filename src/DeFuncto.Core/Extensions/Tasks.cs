@@ -82,8 +82,6 @@ namespace DeFuncto.Extensions
         public static Task<IEnumerable<TResult>> Select<TIn, TResult>(this Task<TIn[]> self, Func<TIn, TResult> mapper) =>
             self.Map(x => x.Select(mapper));
 
-       
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<List<T>> ToList<T>(this Task<IEnumerable<T>> self) =>
             self.Map(t => t.ToList());
