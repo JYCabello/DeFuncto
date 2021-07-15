@@ -1,4 +1,5 @@
 ﻿using DeFuncto.Extensions;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -7,8 +8,8 @@ namespace DeFuncto.Tests.Core.Extensions.Tasks
 {
     public class Select
     {
-        [Fact(DisplayName = "Selects")]
-        public async Task Selects()
+        [Fact(DisplayName = "Selects from array")]
+        public async Task FromArray()
         {
             var multipleLists = new[]
             {
@@ -21,6 +22,23 @@ namespace DeFuncto.Tests.Core.Extensions.Tasks
 
             Assert.Equal(3, result.Count());
             Assert.Contains("Jan", result);
+        }
+
+        [Fact(DisplayName = "Selects from IEnumerable")]
+        public async Task FromIEnumerable()
+        {
+            var result = await GetPeople().ToTask().Select(p => p.Name);
+
+            Assert.Equal(3, result.Count());
+            Assert.Contains("Jan", result);
+
+            IEnumerable<Person> GetPeople() =>
+                new List<Person>
+                {
+                    new Person { Name = "Jan" },
+                    new Person { Name = "Henk" },
+                    new Person { Name = "Klaas" }
+                };
         }
     }
 
