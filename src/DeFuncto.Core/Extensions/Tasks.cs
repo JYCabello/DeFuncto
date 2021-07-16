@@ -88,5 +88,10 @@ namespace DeFuncto.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<List<T>> ToList<T>(this Task<IEnumerable<T>> self) =>
             self.Map(t => t.ToList());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<List<T>> ToList<T>(this Task<T[]> self) =>
+            self.Map(t => t.ToList());
     }
 }

@@ -9,7 +9,7 @@ namespace DeFuncto.Tests.Core.Extensions.Tasks
     public class ToList
     {
         [Property]
-        public void FromTask(int a, int b, int c)
+        public void IEnumerableFromTask(int a, int b, int c)
         {
             var items = GetItems().ToTask().ToList().Result;
 
@@ -18,6 +18,18 @@ namespace DeFuncto.Tests.Core.Extensions.Tasks
 
             IEnumerable<int> GetItems() =>
                 new List<int> { a, b, c };
+        }
+
+        [Property]
+        public void ArrayFromTask(int a, int b, int c)
+        {
+            var items = GetItems().ToTask().ToList().Result;
+
+            Assert.IsType<List<int>>(items);
+            Assert.Equal(3, items.Count);
+
+            int[] GetItems() =>
+                new int[]{ a, b, c };
         }
     }
 }
