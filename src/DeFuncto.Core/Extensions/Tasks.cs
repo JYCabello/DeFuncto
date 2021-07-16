@@ -81,6 +81,11 @@ namespace DeFuncto.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<List<TIn>> self, Func<TIn, TOut> func) =>
+            self.Map(ienumerable => ienumerable.Select(func));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<IEnumerable<TResult>> Select<TIn, TResult>(this Task<TIn[]> self, Func<TIn, TResult> mapper) =>
             self.Map(x => x.Select(mapper));
 
@@ -93,5 +98,15 @@ namespace DeFuncto.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<List<T>> ToList<T>(this Task<T[]> self) =>
             self.Map(t => t.ToList());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T[]> ToArray<T>(this Task<IEnumerable<T>> self) =>
+            self.Map(t => t.ToArray());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T[]> ToArray<T>(this Task<List<T>> self) =>
+           self.Map(t => t.ToArray());
     }
 }

@@ -37,6 +37,18 @@ namespace DeFuncto.Tests.Core.Extensions.Tasks
                 new List<Person> { a, b, c };
         }
 
+        [Property(DisplayName = "Selects from IEnumerable")]
+        public void FromList(Person a, Person b, Person c)
+        {
+            var result = GetPeople().ToTask().Select(p => p.Age).Result;
+
+            Assert.Equal(3, result.Count());
+            Assert.Contains(a.Age, result);
+
+            List<Person> GetPeople() =>
+                new List<Person> { a, b, c };
+        }
+
         public class Person
         {
             public string Name { get; set; }
