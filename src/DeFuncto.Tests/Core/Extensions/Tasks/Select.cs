@@ -1,4 +1,5 @@
 ﻿using DeFuncto.Extensions;
+using FsCheck.Xunit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,41 +9,36 @@ namespace DeFuncto.Tests.Core.Extensions.Tasks
 {
     public class Select
     {
-        [Fact(DisplayName = "Selects from array")]
-        public async Task FromArray()
+        [Property(DisplayName = "Selects from array")]
+        public void FromArray(Person a, Person b, Person c)
         {
             var multipleLists = new[]
             {
-                new Person { Name = "Jan" }.ToTask(),
-                new Person { Name = "Henk" }.ToTask(),
-                new Person { Name = "Klaas" }.ToTask(),
+                a.ToTask(),
+                b.ToTask(),
+                c.ToTask(),
             }.Apply(Task.WhenAll);
 
-            var result = await multipleLists.Select(p => p.Name);
+            var result = multipleLists.Select(p => p.Name).Result;
 
             Assert.Equal(3, result.Count());
-            Assert.Contains("Jan", result);
+            Assert.Contains(a.Name, result);
         }
 
-        [Fact(DisplayName = "Selects from IEnumerable")]
-        public async Task FromIEnumerable()
+        [Property(DisplayName = "Selects from IEnumerable")]
+        public void FromIEnumerable(Person a, Person b, Person c)
         {
-            var result = await GetPeople().ToTask().Select(p => p.Name);
+            var result = GetPeople().ToTask().Select(p => p.Name).Result;
 
             Assert.Equal(3, result.Count());
-            Assert.Contains("Jan", result);
+            Assert.Contains(a.Name, result);
 
             IEnumerable<Person> GetPeople() =>
-                new List<Person>
-                {
-                    new Person { Name = "Jan" },
-                    new Person { Name = "Henk" },
-                    new Person { Name = "Klaas" }
-                };
+                new List<Person> { a, b, c };
         }
     }
 
-    internal class Person
+    public class Person
     {
         public string Name { get; set; }
         public int Age { get; set; }
