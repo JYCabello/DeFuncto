@@ -1,4 +1,5 @@
 ﻿using DeFuncto.Extensions;
+using FsCheck.Xunit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,15 +9,16 @@ namespace DeFuncto.Tests.Core.Extensions.Tasks
 {
     public class ToList
     {
-        [Fact]
-        public async Task FromTask()
+        [Property]
+        public void FromTask(int a, int b, int c)
         {
-            var items = await GetItems().ToTask().ToList();
+            var items = GetItems().ToTask().ToList().Result;
 
             Assert.IsType<List<int>>(items);
+            Assert.Equal(3, items.Count);
 
             IEnumerable<int> GetItems() =>
-                new List<int> { 1, 2, 3, 4, 5 };
+                new List<int> { a, b, c };
         }
     }
 }
