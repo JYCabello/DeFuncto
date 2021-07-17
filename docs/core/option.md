@@ -5,7 +5,7 @@ You have a rent-a-car agency and you want to get the full name of the last rente
 1. The car record, which can or cannot be there.
 1. Its last rental, which again, could not be there.
 1. The user record, which we can guarantee it would be there, due to our database constraints.
-1. The user name, which, due to GDPR regulations, could not be there.
+1. The user name, which has to be there.
 
 Should we solve it in a classical, imperative way:
 ```cs
@@ -53,6 +53,11 @@ GetLastRenterName("1234AB")
     );
 ```
 This returns a data structure that works like the Schrödinger cat's experiment box. The name is there and not there at the same time, and instead of asking for the name, the box asks us what to do in either case, because, without opening it, box states exist within the box.
+> Except, you said that the name could not be there
+#### How does it work
+There you have a decision tree for `Map`:
+- `TryFindLastRentalForCar` returns an `Option<Rental>` in the state:
+    1. `Some`: Means that the rental was found. Get the `UserID` to search for the user and get its name, returning an `Option<string>` in the state `Some`
 ### Binding
 > Wait a second, you quantum charlatan, that only solves part of the problem, I still need to do the null check on the car. This "mapping" thing only works if the next step is guaranteed to be there!
 
