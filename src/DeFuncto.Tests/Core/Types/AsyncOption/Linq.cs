@@ -1,5 +1,6 @@
 ﻿using System;
 using DeFuncto.Assertions;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -7,14 +8,14 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class Linq
     {
-        [Fact(DisplayName = "Binds all somes")]
-        public void AllSome() => (
-                from a in Some("ba").Async()
-                from b in Some("na").Async()
-                from c in Some("na").Async()
-                where c == "na"
-                select $"{a}{b}{c}")
-            .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds all somes")]
+        public void AllSome(string x, string y, string z) => (
+                from a in Some(x).Async()
+                from b in Some(y).Async()
+                from c in Some(z).Async()
+                where c == y
+                select (x + y + z))
+            .ShouldBeSome(x + y + z);
 
         [Fact(DisplayName = "Stops at one none")]
         public void StopsNone() => (
