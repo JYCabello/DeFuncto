@@ -32,12 +32,13 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
                 .ShouldBeError(a.Get)
                 .Result;
 
-        [Fact(DisplayName = "Converts from task result on Error")]
-        public Task OnError() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Converts from task result on Error")]
+        public void OnError(NonNull<string> a) =>
+            _ = Error<int, string>(a.Get)
                 .ToTask()
                 .Async()
-                .ShouldBeError("banana");
+                .ShouldBeError(a.Get)
+                .Result;
 
         [Fact(DisplayName = "Converts from task as Error on Error")]
         public Task OnTaskError() =>
