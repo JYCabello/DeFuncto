@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck;
 using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
@@ -23,25 +24,25 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
                 .Bind(_ => a.Apply(Error<int, string>))
                 .ShouldBeError(a);
 
-        [Fact(DisplayName = "Skips ok after error")]
-        public Task ErrorOk() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Skips ok after error")]
+        public void ErrorOk(string a) =>
+            Error<int, string>(a)
                 .Async()
                 .Bind(_ => 42.Apply(Ok<int, string>))
-                .ShouldBeError("banana");
+                .ShouldBeError(a);
 
-        [Fact(DisplayName = "Skips error after error")]
-        public Task ErrorError() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Skips error after error")]
+        public void ErrorError(string a, string b) =>
+            Error<int, string>(a)
                 .Async()
-                .Bind(_ => "pear".Apply(Error<int, string>))
-                .ShouldBeError("banana");
+                .Bind(_ => b.Apply(Error<int, string>))
+                .ShouldBeError(a);
 
-        [Fact(DisplayName = "Asynchronously binds ok with ok")]
-        public Task AsyncOkOk() =>
-            ((AsyncResult<string, int>) "ban".ToTask())
-            .Bind(val => $"{val}ana".Apply(Ok<string, int>).Async())
-            .ShouldBeOk("banana");
+        [Property(DisplayName = "Asynchronously binds ok with ok")]
+        public void AsyncOkOk(NonNull<string> a, NonNull<string> b) =>
+            ((AsyncResult<NonNull<string>, int>) a.ToTask())
+            .Bind(val => $"{val}{b}".Apply(Ok<string, int>).Async())
+            .ShouldBeOk($"{a}{b}");
 
         [Fact(DisplayName = "Asynchronously binds ok with ok but as a task")]
         public Task AsyncOkOkTask() =>
