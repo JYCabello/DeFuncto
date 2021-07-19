@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -8,19 +9,19 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
 {
     public class Bind
     {
-        [Fact(DisplayName = "Binds ok with ok")]
-        public Task OkOk() =>
-            Ok<string, int>("ban")
+        [Property(DisplayName = "Binds ok with ok")]
+        public void OkOk(string a, string b) =>
+            Ok<string, int>(a)
                 .Async()
-                .Bind(val => $"{val}ana".Apply(Ok<string, int>))
-                .ShouldBeOk("banana");
+                .Bind(val => (val + b).Apply(Ok<string, int>))
+                .ShouldBeOk(a + b);
 
-        [Fact(DisplayName = "Binds ok with error")]
-        public Task OkError() =>
+        [Property(DisplayName = "Binds ok with error")]
+        public void OkError(string a) =>
             Ok<int, string>(42)
                 .Async()
-                .Bind(_ => "banana".Apply(Error<int, string>))
-                .ShouldBeError("banana");
+                .Bind(_ => a.Apply(Error<int, string>))
+                .ShouldBeError(a);
 
         [Fact(DisplayName = "Skips ok after error")]
         public Task ErrorOk() =>
