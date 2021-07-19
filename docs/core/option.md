@@ -196,8 +196,8 @@ If you are at the end of the road, at the point where you are supposed to consum
 Your options, in general, are:
 - Matching (or defaulting): Transforming each possibility into something of a shared type for both states and consume that instead.
 - Iterating: Performing an action on one or both possible states.
-## Matching it out
-### Match
+### Matching it out
+#### Match
 Let's say that you have an ASP.NET Core API and you want to have a standard `Get` endpoint:
 ```cs
 // In the service.
@@ -225,7 +225,7 @@ protected ActionResult OptionResult<T>(Option<T> option) =>
 public ActionResult Get(int id) =>
     OptionResult(service.TryFind(id));
 ```
-### Default
+#### Default
 Another possibility is to simply have a default value in case the desired one was not found, which is fairly straightforward for a situation like getting a user's name:
 ```cs
 public Option<User> TryFind(int id) => /* ... */
@@ -236,5 +236,49 @@ Console.WriteLine(
         .DefaultValue("User not found")
 ); // Will print "Found user with name: The Answer".
 ```
-## Iterating
-### Bonus track: Choose
+### Iterating
+Sometimes we want to perform an action only if the value is there, only if it's absent or one action for each case. As explained before, this works exactly like `List<T>.ForEach`, in an empty list, no action is performed while for one that has elements, the code is executed once per element:
+```cs
+public Option<Order> TryFind(int id) => /* ... */
+public void Process(Order order) { /* ... */ }
+
+// Acting on not found:
+TryFind(1).Match(() => logger.Log($"Could not find order number {id}"));
+// On found:
+TryFind(2).Match(Process);
+// On either:
+TryFind(3).Match(
+    Process,
+    () => logger.Log($"Could not find order number {id}")
+);
+```
+## Bonus track: Choose
+Choose offers us the possibility of optionally constructing collections or even doing filtering an transformations in a single step.
+### Optional construction
+```cs
+using static DeFuncto.Prelude;
+//...
+
+// This will return a list with:
+// a, if it was a multiple of three
+// b, if it was greater than 200
+// c, if it was smaller than 75
+public IEnumerable<int> OptionalConstruction(int a, int b, int c) =>
+    new List<Option<int>>
+    {
+        a % 3 == 0 : Some(a) : None,
+        b > 200 : Some(b) : None,
+        c < 75 : Some(c) : None
+    }.Choose();
+```
+### Filter and transform in one go
+
+```cs
+using static DeFuncto.Prelude;
+//...
+
+// This will give a collection of all integers that could be parsed out of the input strings.
+public IEnumerable<int> FilterAndTransform(IEnumerable<string> input) =>
+    inputs.Choose(s => int.TryParse(s, out var result) : Some(result) : None);
+
+```
