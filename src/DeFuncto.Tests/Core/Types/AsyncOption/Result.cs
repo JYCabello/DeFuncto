@@ -1,24 +1,24 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
-using Xunit;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class Result
     {
-        [Fact(DisplayName = "Maps Some to Ok")]
-        public Task SomeToOk() =>
-            Some("banana")
+        [Property(DisplayName = "Maps Some to Ok")]
+        public void SomeToOk(string a, string b) =>
+            Some(a)
                 .Async()
                 .Result(42)
-                .ShouldBeOk("banana");
+                .ShouldBeOk(b);
 
-        [Fact(DisplayName = "Maps None to Error")]
-        public Task NoneToError() =>
+        [Property(DisplayName = "Maps None to Error")]
+        public Task NoneToError(string a) =>
             None.Option<int>()
                 .Async()
-                .Result("banana")
-                .ShouldBeError("banana");
+                .Result(a)
+                .ShouldBeError(a);
     }
 }
