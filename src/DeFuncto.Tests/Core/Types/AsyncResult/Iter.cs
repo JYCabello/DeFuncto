@@ -32,28 +32,28 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
             _ = ok.ShouldBeOk(a.Get).Result;
         }
 
-        [Fact(DisplayName = "Iterates on the Error side and skips on OK")]
-        public async Task OnError()
+        [Property(DisplayName = "Iterates on the Error side and skips on OK")]
+        public void OnError(NonNull<string> a)
         {
-            AsyncResult<int, string> ok = "banana";
+            AsyncResult<int, string> ok = a.Get;
             var witness = new Witness();
 
-            await ok.Iter((string _) => witness.Touch());
-            await ok.Iter((int _) => witness.Touch());
-            await ok.Iter((string _) => { witness.Touch(); });
-            await ok.Iter((string _) =>
+            _ = ok.Iter((string _) => witness.Touch()).Result;
+            _ = ok.Iter((int _) => witness.Touch()).Result;
+            _ = ok.Iter((string _) => { witness.Touch(); }).Result;
+            _ = ok.Iter((string _) =>
             {
                 witness.Touch();
                 return Task.CompletedTask;
-            });
-            await ok.Iter((int _) =>
+            }).Result;
+            _ = ok.Iter((int _) =>
             {
                 witness.Touch();
                 return Task.CompletedTask;
-            });
+            }).Result;
 
             witness.ShouldHaveBeenTouched(3);
-            await ok.ShouldBeError("banana");
+            _ = ok.ShouldBeError(a.Get).Result;
         }
     }
 }
