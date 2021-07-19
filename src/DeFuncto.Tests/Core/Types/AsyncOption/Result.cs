@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using DeFuncto.Assertions;
+﻿using DeFuncto.Assertions;
+using FsCheck;
 using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
@@ -9,16 +9,18 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
     {
         [Property(DisplayName = "Maps Some to Ok")]
         public void SomeToOk(string a, string b) =>
-            Some(a)
+            _ = Some(a)
                 .Async()
                 .Result(42)
-                .ShouldBeOk(b);
+                .ShouldBeOk(b)
+                .Result;
 
         [Property(DisplayName = "Maps None to Error")]
-        public Task NoneToError(string a) =>
-            None.Option<int>()
+        public void NoneToError(NonNull<string> a) =>
+           _= None.Option<int>()
                 .Async()
-                .Result(a)
-                .ShouldBeError(a);
+                .Result(a.Get)
+                .ShouldBeError(a.Get)
+                .Result;
     }
 }
