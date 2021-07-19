@@ -14,8 +14,8 @@ It is, save that thought for the last bit. Every step will be explained in detai
 __- - {            \
      /             \
     /       ;o    o }
-    |              ;
-                   '
+    |_             ;
+      \            '
        \_       (..)
          ''-_ _ _ /
            /
