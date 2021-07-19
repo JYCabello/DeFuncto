@@ -1,30 +1,32 @@
-﻿using Xunit;
+﻿using FsCheck;
+using FsCheck.Xunit;
+using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Result
 {
     public class Match
     {
-        [Fact(DisplayName = "Matches with OK")]
-        public void WithOk()
+        [Property(DisplayName = "Matches with OK")]
+        public void WithOk(NonNull<string> a, NonNull<string> b, int c)
         {
-            var result = Ok<string, int>("nana")
+            var result = Ok<string, int>(a.Get)
                 .Match(
-                    ok => $"ba{ok}",
-                    error => (error / error - 1 + 42).ToString()
+                    ok => $"{b.Get}{ok}",
+                    error => (error + c).ToString()
                 );
-            Assert.Equal("banana", result);
+            Assert.Equal($"{b.Get}{a.Get}", result);
         }
 
-        [Fact(DisplayName = "Matches with Error")]
-        public void WithError()
+        [Property(DisplayName = "Matches with Error")]
+        public void WithError(NonNull<string> a, NonNull<string> b, int c)
         {
-            var result = Error<int, string>("nana")
+            var result = Error<int, string>(a.Get)
                 .Match(
-                    ok => (ok / ok - 1 + 42).ToString(),
-                    error => $"ba{error}"
+                    ok => (ok + c).ToString(),
+                    error => $"{b.Get}{error}"
                 );
-            Assert.Equal("banana", result);
+            Assert.Equal($"{b.Get}{a.Get}", result);
         }
     }
 }

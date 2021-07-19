@@ -1,4 +1,6 @@
 ﻿using DeFuncto.Assertions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -6,15 +8,15 @@ namespace DeFuncto.Tests.Core.Types.Result
 {
     public class Option
     {
-        [Fact(DisplayName = "Turns Ok into Some")]
-        public void OkToSome() =>
-            Ok<string, int>("banana")
+        [Property(DisplayName = "Turns Ok into Some")]
+        public void OkToSome(NonNull<string> a) =>
+            Ok<string, int>(a.Get)
                 .Option
-                .ShouldBeSome("banana");
+                .ShouldBeSome(a.Get);
 
-        [Fact(DisplayName = "Turns Error into None")]
-        public void ErrorToNone() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Turns Error into None")]
+        public void ErrorToNone(NonNull<string> a) =>
+            Error<int, string>(a.Get)
                 .Option
                 .ShouldBeNone();
     }

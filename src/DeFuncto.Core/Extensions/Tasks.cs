@@ -57,6 +57,12 @@ namespace DeFuncto.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SyncVoid<T>(this Task<T> self)
+        {
+            var _ = self.Result;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<T> RunAsync<T>(this T self, Func<T, Task> f) => self.Apply(async t =>
         {
             await f(t);
