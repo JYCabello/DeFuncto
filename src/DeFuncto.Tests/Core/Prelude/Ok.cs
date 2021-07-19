@@ -13,6 +13,6 @@ namespace DeFuncto.Tests.Core.Prelude
 
         [Property(DisplayName = "Instantiates a result that is Ok")]
         public void WorksWithBoth(NonNull<string> a) =>
-            Ok<NonNull<string>, int>(a).ShouldBeOk(a);
+            Ok<string, int>(a.Get).ShouldBeOk(a.Get);
     }
 }
