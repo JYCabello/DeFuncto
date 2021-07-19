@@ -18,17 +18,19 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
                 .ShouldBeOk(a.Get)
                 .Result;
 
-        [Fact(DisplayName = "Converts from task as Ok on Ok")]
-        public Task OnTaskOk() =>
-            Ok<Task<string>, int>("banana".ToTask())
+        [Property(DisplayName = "Converts from task as Ok on Ok")]
+        public void OnTaskOk(NonNull<string> a) =>
+            _ = Ok<Task<string>, int>(a.Get.ToTask())
                 .Async()
-                .ShouldBeOk("banana");
+                .ShouldBeOk(a.Get)
+                .Result;
 
-        [Fact(DisplayName = "Converts from task as Ok on Error")]
-        public Task OnTaskOkWithError() =>
-            Error<Task<int>, string>("banana")
+        [Property(DisplayName = "Converts from task as Ok on Error")]
+        public void OnTaskOkWithError(NonNull<string> a) =>
+            _ = Error<Task<int>, string>(a.Get)
                 .Async()
-                .ShouldBeError("banana");
+                .ShouldBeError(a.Get)
+                .Result;
 
         [Fact(DisplayName = "Converts from task result on Error")]
         public Task OnError() =>
