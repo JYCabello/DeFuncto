@@ -27,6 +27,11 @@ namespace DeFuncto.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<List<T>> Flatten<T>(this Task<List<T>[]> self) =>
+           self.Map(t => t.SelectMany(a => a)).ToList();
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<T> ToTask<T>(this T self) => self.Apply(Task.FromResult);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -56,5 +61,58 @@ namespace DeFuncto.Extensions
         {
             var _ = self.Result;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T> RunAsync<T>(this T self, Func<T, Task> f) => self.Apply(async t =>
+        {
+            await f(t);
+            return t;
+        });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T> RunAsync<T>(this Task<T> self, Func<T, Task> f) => self.Map(async t =>
+        {
+            await f(t);
+            return t;
+        });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T> RunAsync<T>(this T self, Func<T, Task<Unit>> f) =>
+            self.RunAsync(async t => { await f(t); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<IEnumerable<TIn>> self, Func<TIn, TOut> func) =>
+            self.Map(ienumerable => ienumerable.Select(func));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<List<TIn>> self, Func<TIn, TOut> func) =>
+            self.Map(ienumerable => ienumerable.Select(func));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<IEnumerable<TResult>> Select<TIn, TResult>(this Task<TIn[]> self, Func<TIn, TResult> mapper) =>
+            self.Map(x => x.Select(mapper));
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<List<T>> ToList<T>(this Task<IEnumerable<T>> self) =>
+            self.Map(t => t.ToList());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<List<T>> ToList<T>(this Task<T[]> self) =>
+            self.Map(t => t.ToList());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T[]> ToArray<T>(this Task<IEnumerable<T>> self) =>
+            self.Map(t => t.ToArray());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<T[]> ToArray<T>(this Task<List<T>> self) =>
+           self.Map(t => t.ToArray());
     }
 }
