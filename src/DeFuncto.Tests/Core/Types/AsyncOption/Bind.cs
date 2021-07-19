@@ -15,9 +15,9 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
                 .Bind(number => number == 42 ? Some(a) : Some(b))
                 .ShouldBeSome(a);
 
-        [Fact(DisplayName = "Binds none after some")]
-        public void NoneOnSome() =>
-            Some("banana")
+        [Property(DisplayName = "Binds none after some")]
+        public void NoneOnSome(string a) =>
+            Some(a)
                 .Async()
                 .Bind(_ => None.Option<int>().ToTask())
                 .ShouldBeNone();
