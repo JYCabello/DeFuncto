@@ -10,10 +10,11 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
     {
         [Property(DisplayName = "Binds on both Error with a sync bind")]
         public void BothError(string a, string b) =>
-            Error<string, string>(a)
+            _ = Error<string, string>(a)
                 .Async()
                 .BindError(val => Error<string, string>(val + b))
-                .ShouldBeError(a + b);
+                .ShouldBeError(a + b)
+                .Result;
 
         [Property(DisplayName = "Gives second Ok on first error with a sync bind")]
         public void FirstErrorSecondNot(NonNull<string> a, NonNull<string> b) =>
