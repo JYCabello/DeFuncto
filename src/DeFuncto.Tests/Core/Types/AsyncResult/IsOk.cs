@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using DeFuncto.Extensions;
+﻿using DeFuncto.Extensions;
 using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
