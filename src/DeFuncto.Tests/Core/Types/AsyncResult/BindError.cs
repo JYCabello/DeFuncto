@@ -1,5 +1,6 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -7,26 +8,26 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
 {
     public class BindError
     {
-        [Fact(DisplayName = "Binds on both Error with a sync bind")]
-        public void BothError() =>
-            Error<string, string>("ba")
+        [Property(DisplayName = "Binds on both Error with a sync bind")]
+        public void BothError(string a, string b) =>
+            Error<string, string>(a)
                 .Async()
-                .BindError(val => Error<string, string>($"{val}nana"))
-                .ShouldBeError("banana");
+                .BindError(val => Error<string, string>(val + b))
+                .ShouldBeError(a + b);
 
-        [Fact(DisplayName = "Gives second Ok on first error with a sync bind")]
-        public void FirstErrorSecondNot() =>
-            Error<string, string>("pear")
+        [Property(DisplayName = "Gives second Ok on first error with a sync bind")]
+        public void FirstErrorSecondNot(string a, string b) =>
+            Error<string, string>(a)
                 .Async()
-                .BindError(_ => Ok<string, string>("banana").Async())
-                .ShouldBeOk("banana");
+                .BindError(_ => Ok<string, string>(b).Async())
+                .ShouldBeOk(b);
 
-        [Fact(DisplayName = "Gives first error on second Ok with task")]
-        public void FirstErrorSecondOk() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Gives first error on second Ok with task")]
+        public void FirstErrorSecondOk(string a) =>
+            Error<int, string>(a)
                 .Async()
                 .BindError(_ => Ok<int, string>(42).ToTask())
-                .ShouldBeError("banana");
+                .ShouldBeError(a);
 
         [Fact(DisplayName = "Gives first error on second error with task")]
         public void FirstErrorSecondAlso() =>
