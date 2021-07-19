@@ -1,7 +1,7 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck;
 using FsCheck.Xunit;
-using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncResult
@@ -16,31 +16,35 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
                 .ShouldBeError(a + b);
 
         [Property(DisplayName = "Gives second Ok on first error with a sync bind")]
-        public void FirstErrorSecondNot(string a, string b) =>
-            Error<string, string>(a)
+        public void FirstErrorSecondNot(NonNull<string> a, NonNull<string> b) =>
+            _ = Error<string, string>(a.Get)
                 .Async()
-                .BindError(_ => Ok<string, string>(b).Async())
-                .ShouldBeOk(b);
+                .BindError(_ => Ok<string, string>(b.Get).Async())
+                .ShouldBeOk(b.Get)
+                .Result;
 
         [Property(DisplayName = "Gives first error on second Ok with task")]
-        public void FirstErrorSecondOk(string a) =>
-            Error<int, string>(a)
+        public void FirstErrorSecondOk(NonNull<string> a, int ok) =>
+            _ = Error<int, string>(a.ToString())
                 .Async()
-                .BindError(_ => Ok<int, string>(42).ToTask())
-                .ShouldBeError(a);
+                .BindError(_ => Ok<int, string>(ok).ToTask())
+                .ShouldBeOk(ok)
+                .Result;
 
-        [Fact(DisplayName = "Gives first error on second error with task")]
-        public void FirstErrorSecondAlso() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Gives first error on second error with task")]
+        public void FirstErrorSecondAlso(NonNull<string> a, NonNull<string> b) =>
+            _ = Error<int, string>(a.Get)
                 .Async()
-                .BindError(_ => Error<int, string>("pear").ToTask())
-                .ShouldBeError("banana");
+                .BindError(_ => Error<int, string>(b.Get).ToTask())
+                .ShouldBeError(b.Get)
+                .Result;
 
-        [Fact(DisplayName = "Keeps being OK while trying to bind an error in a task")]
-        public void FirstOkSecondTaskError() =>
-            Ok<string, int>("banana")
+        [Property(DisplayName = "Keeps being OK while trying to bind an error in a task")]
+        public void FirstOkSecondTaskError(NonNull<string> a) =>
+            _ = Ok<string, int>(a.Get)
                 .Async()
                 .BindError(_ => Error<string, int>(42).ToTask())
-                .ShouldBeOk("banana");
+                .ShouldBeOk(a.Get)
+                .Result;
     }
 }
