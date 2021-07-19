@@ -14,17 +14,17 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
                 .BindNone(Some(a))
                 .ShouldBeSome(a);
 
-        [Fact(DisplayName = "Binds with an option task")]
-        public void NoneTaskOption() =>
+        [Property(DisplayName = "Binds with an option task")]
+        public void NoneTaskOption(string a) =>
             None.Option<string>().Async()
-                .BindNone(Some("banana").ToTask())
-                .ShouldBeSome("banana");
+                .BindNone(Some(a).ToTask())
+                .ShouldBeSome(a);
 
-        [Fact(DisplayName = "Binds with an async option")]
-        public void NoneAsyncOption() =>
+        [Property(DisplayName = "Binds with an async option")]
+        public void NoneAsyncOption(string a) =>
             None.Option<string>().Async()
-                .BindNone(Some("banana").Async())
-                .ShouldBeSome("banana");
+                .BindNone(Some(a).Async())
+                .ShouldBeSome(a);
 
         [Fact(DisplayName = "Skips with an option")]
         public void SomeOption() =>
