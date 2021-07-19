@@ -14,7 +14,7 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
                 from b in Some(y).Async()
                 from c in Some(z).Async()
                 where c == y
-                select (x + y + z))
+                select (a + b + c))
             .ShouldBeSome(x + y + z);
 
         [Fact(DisplayName = "Stops at one none")]
