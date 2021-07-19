@@ -39,39 +39,38 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
                 .ShouldBeError(a);
 
         [Property(DisplayName = "Asynchronously binds ok with ok")]
-        public void AsyncOkOk(NonNull<string> a, NonNull<string> b)
-        {
+        public void AsyncOkOk(NonNull<string> a, NonNull<string> b) => 
             _ = ((AsyncResult<NonNull<string>, int>)a.ToTask())
                .Bind(val => $"{val}{b}".Apply(Ok<string, int>).Async())
                .ShouldBeOk($"{a}{b}")
                .Result;
-        }
 
         [Property(DisplayName = "Asynchronously binds ok with ok but as a task")]
-        public void AsyncOkOkTask(string a, string b)
-        {
+        public void AsyncOkOkTask(string a, string b) => 
             _ = ((AsyncResult<string, int>)a.ToTask())
                .Bind(val => $"{val}{b}".Apply(Ok<string, int>).ToTask())
                .ShouldBeOk(a + b)
                .Result;
-        }
 
-        [Fact(DisplayName = "Asynchronously binds ok with error")]
-        public Task AsyncOkError() =>
-            ((AsyncResult<int, string>)42)
-                .Bind(_ => "banana".Apply(Error<int, string>).Async())
-                .ShouldBeError("banana");
+        [Property(DisplayName = "Asynchronously binds ok with error")]
+        public void AsyncOkError(NonNull<string> a) => 
+            _ = ((AsyncResult<int, string>)42)
+                .Bind(_ => a.ToString().Apply(Error<int, string>).Async())
+                .ShouldBeError(a.ToString())
+                .Result;
 
-        [Fact(DisplayName = "Asynchronously skips ok after error")]
-        public Task AsyncErrorOk() =>
-            ((AsyncResult<int, string>)"banana")
+        [Property(DisplayName = "Asynchronously skips ok after error")]
+        public void AsyncErrorOk(NonNull<string> a) =>
+            _ = ((AsyncResult<int, string>)a.ToString())
                 .Bind(_ => 42.Apply(Ok<int, string>).Async())
-                .ShouldBeError("banana");
+                .ShouldBeError(a.ToString())
+                .Result;
 
-        [Fact(DisplayName = "Asynchronously skips error after error")]
-        public Task AsyncErrorError() =>
-            ((AsyncResult<int, string>)"banana".ToTask())
-                .Bind(_ => "pear".Apply(Error<int, string>).Async())
-                .ShouldBeError("banana");
+        [Property(DisplayName = "Asynchronously skips error after error")]
+        public void AsyncErrorError(NonNull<string> a, string b) => 
+            _ = ((AsyncResult<int, string>)a.ToString().ToTask())
+                .Bind(_ => b.Apply(Error<int, string>).Async())
+                .ShouldBeError(a.ToString())
+                .Result;
     }
 }
