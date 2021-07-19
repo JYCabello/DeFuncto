@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -8,10 +9,10 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class Iter
     {
-        [Fact(DisplayName = "Iterates on Some synchronously with both iterators")]
-        public async Task SomeSync()
+        [Property(DisplayName = "Iterates on Some synchronously with both iterators")]
+        public async void SomeSync(string a)
         {
-            var some = Some("banana").Async();
+            var some = Some(a).Async();
             var witness = new Witness();
             await some.Iter(
                 _ => witness.Touch(),
@@ -22,10 +23,10 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
             witness.ShouldHaveBeenTouched(2);
         }
 
-        [Fact(DisplayName = "Iterates on None synchronously with both iterators")]
-        public async Task NoneSync()
+        [Property(DisplayName = "Iterates on None synchronously with both iterators")]
+        public async void NoneSync(string a)
         {
-            var some = Some("banana").Async();
+            var some = Some(a).Async();
             var witness = new Witness();
             await some.Iter(
                 _ => witness.Touch(),
@@ -34,10 +35,10 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
             witness.ShouldHaveBeenTouched(1);
         }
 
-        [Fact(DisplayName = "Iterates on Some asynchronously with both iterators")]
-        public async Task SomeAsyncDouble()
+        [Property(DisplayName = "Iterates on Some asynchronously with both iterators")]
+        public async void SomeAsyncDouble(string a)
         {
-            var some = Some("banana").Async();
+            var some = Some(a).Async();
             var witness = new Witness();
             await some.Iter(
                 _ => witness.Touch().ToTask(),
