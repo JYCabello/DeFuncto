@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
