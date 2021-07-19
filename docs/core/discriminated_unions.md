@@ -3,8 +3,8 @@ Data structure representing one of many values which can be folded over a final 
 
 Let's say that you have these two methods:
 ```cs
-public User GetByEmail(string email) => users.Single(u => u.Email == email);
-public User GetByID(int id) => users.Single(u => u.ID == id);
+private User GetByEmail(string email) => users.Single(u => u.Email == email);
+private User GetByID(int id) => users.Single(u => u.ID == id);
 ```
 Fair and simple: You call one of them if you get one of the values, or the other if you get the other. A method orchestrating this, might look something in this line:
 ```cs
@@ -46,11 +46,16 @@ To achieve the same in C#, we have to add a bit of noise:
 ```cs
 public record UserEmail(string Value);
 public record UserID(int Value);
-public User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
-public User Get(UserID id) => users.Single(u => u.ID == id.Value);
-public user Get(Du<UserEmail, UserID> identifier) => identifier.Match(Get, Get);
+private User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
+private User Get(UserID id) => users.Single(u => u.ID == id.Value);
+public User Get(Du<UserEmail, UserID> identifier) => identifier.Match(Get, Get);
+// Which, thanks to our prelude class, would be called like this:
+using static DeFuncto.Prelude;
+var user = Get(First<UserEmail, UserID>(new UserEmail("email@email.com")));
+// Or, thanks to our implicit casting operations:
+var user = Get(new UserEmail("email@email.com")); // Mind you, only the discriminated union version is visible here.
 ```
-## Exhaustive matchin, the core issue
+## Exhaustive matching, the core issue
 If you are in a version of C# that does not have records, you're bound to use classes for that, which would make for a few extra lines, and there's also that if you are in C# 9, you might be tempted to use a nested record and a switch expression.
 ```cs
 public record UserIdentifier
@@ -73,8 +78,8 @@ Which has the drawback of not being exhaustive, and this is the big win with dis
 public record UserEmail(string Value);
 public record UserID(int Value);
 public record PhoneNumber(string Value);
-public User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
-public User Get(UserID id) => users.Single(u => u.ID == id.Value);
+private User Get(UserEmail email) => users.Single(u => u.Email == email.Value);
+private User Get(UserID id) => users.Single(u => u.ID == id.Value);
 // Does not compile!
 public user Get(Du3<UserEmail, UserID, PhoneNumber> identifier) => identifier.Match(Get, Get);
 ```

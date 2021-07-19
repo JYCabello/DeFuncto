@@ -1,14 +1,18 @@
-﻿using Xunit;
+﻿using FsCheck;
+using FsCheck.Xunit;
+using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Result
 {
     public class Collapse
     {
-        [Fact(DisplayName = "Collapses OK")]
-        public void OkValue() => Assert.Equal("banana", Ok<string, string>("banana").Collapse());
+        [Property(DisplayName = "Collapses OK")]
+        public void OkValue(NonNull<string> a) =>
+            Assert.Equal(a.Get, Ok<string, string>(a.Get).Collapse());
 
-        [Fact(DisplayName = "Collapses Error")]
-        public void ErrorValue() => Assert.Equal("banana", Error<string, string>("banana").Collapse());
+        [Property(DisplayName = "Collapses Error")]
+        public void ErrorValue(NonNull<string> a) =>
+            Assert.Equal(a.Get, Error<string, string>(a.Get).Collapse());
     }
 }
