@@ -8,11 +8,11 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
     public class Result
     {
         [Property(DisplayName = "Maps Some to Ok")]
-        public void SomeToOk(string a, string b) =>
-            _ = Some(a)
+        public void SomeToOk(NonNull<string> a) =>
+            _ = Some(a.Get)
                 .Async()
                 .Result(42)
-                .ShouldBeOk(b)
+                .ShouldBeOk(a.Get)
                 .Result;
 
         [Property(DisplayName = "Maps None to Error")]
