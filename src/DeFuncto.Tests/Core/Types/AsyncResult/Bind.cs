@@ -12,31 +12,35 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
     {
         [Property(DisplayName = "Binds ok with ok")]
         public void OkOk(string a, string b) =>
-            Ok<string, int>(a)
+            _ = Ok<string, int>(a)
                 .Async()
                 .Bind(val => (val + b).Apply(Ok<string, int>))
-                .ShouldBeOk(a + b);
+                .ShouldBeOk(a + b)
+                .Result;
 
         [Property(DisplayName = "Binds ok with error")]
-        public void OkError(string a) =>
-            Ok<int, string>(42)
+        public void OkError(NonNull<string> a) =>
+            _ = Ok<int, string>(42)
                 .Async()
-                .Bind(_ => a.Apply(Error<int, string>))
-                .ShouldBeError(a);
+                .Bind(_ => a.Get.Apply(Error<int, string>))
+                .ShouldBeError(a.Get)
+                .Result;
 
         [Property(DisplayName = "Skips ok after error")]
-        public void ErrorOk(string a) =>
-            Error<int, string>(a)
+        public void ErrorOk(NonNull<string> a) =>
+            _ = Error<int, string>(a.Get)
                 .Async()
                 .Bind(_ => 42.Apply(Ok<int, string>))
-                .ShouldBeError(a);
+                .ShouldBeError(a.Get)
+                .Result;
 
         [Property(DisplayName = "Skips error after error")]
-        public void ErrorError(string a, string b) =>
-            Error<int, string>(a)
+        public void ErrorError(NonNull<string> a, NonNull<string> b) =>
+            _ = Error<int, string>(a.Get)
                 .Async()
-                .Bind(_ => b.Apply(Error<int, string>))
-                .ShouldBeError(a);
+                .Bind(_ => b.Get.Apply(Error<int, string>))
+                .ShouldBeError(a.Get)
+                .Result;
 
         [Property(DisplayName = "Asynchronously binds ok with ok")]
         public void AsyncOkOk(NonNull<string> a, NonNull<string> b) => 
