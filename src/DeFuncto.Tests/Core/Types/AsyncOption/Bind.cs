@@ -29,11 +29,11 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
                 .Bind(_ => None.Option<int>())
                 .ShouldBeNone();
 
-        [Fact(DisplayName = "Skips some after none")]
-        public void SomeOnNone() =>
+        [Property(DisplayName = "Skips some after none")]
+        public void SomeOnNone(string a, string b) =>
             None.Option<int>()
                 .Async()
-                .Bind(number => number == 42 ? Some("banana") : Some("pear"))
+                .Bind(number => number == 42 ? Some(a) : Some(b))
                 .ShouldBeNone();
     }
 }
