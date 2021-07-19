@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -8,12 +10,13 @@ namespace DeFuncto.Tests.Core.Types.AsyncResult
 {
     public class ExtensionAsync
     {
-        [Fact(DisplayName = "Converts from task result on Ok")]
-        public Task OnOk() =>
-            Ok<string, int>("banana")
+        [Property(DisplayName = "Converts from task result on Ok")]
+        public void OnOk(NonNull<string> a) =>
+            _ = Ok<string, int>(a.Get)
                 .ToTask()
                 .Async()
-                .ShouldBeOk("banana");
+                .ShouldBeOk(a.Get)
+                .Result;
 
         [Fact(DisplayName = "Converts from task as Ok on Ok")]
         public Task OnTaskOk() =>
