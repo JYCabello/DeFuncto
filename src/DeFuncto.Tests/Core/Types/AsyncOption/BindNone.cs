@@ -1,7 +1,6 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
 using FsCheck.Xunit;
-using Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncOption
@@ -26,22 +25,22 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
                 .BindNone(Some(a).Async())
                 .ShouldBeSome(a);
 
-        [Fact(DisplayName = "Skips with an option")]
-        public void SomeOption() =>
-            Some("banana").Async()
-                .BindNone(Some("pear"))
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Skips with an option")]
+        public void SomeOption(string a, string b) =>
+            Some(a).Async()
+                .BindNone(Some(b))
+                .ShouldBeSome(a);
 
-        [Fact(DisplayName = "Binds with an option task")]
-        public void SomeTaskOption() =>
-            Some("banana").Async()
-                .BindNone(Some("pear").ToTask())
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds with an option task")]
+        public void SomeTaskOption(string a, string b) =>
+            Some(a).Async()
+                .BindNone(Some(b).ToTask())
+                .ShouldBeSome(a);
 
-        [Fact(DisplayName = "Binds with an async option")]
-        public void SomeAsyncOption() =>
-            Some("banana").Async()
-                .BindNone(Some("pear").Async())
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds with an async option")]
+        public void SomeAsyncOption(string a, string b) =>
+            Some(a).Async()
+                .BindNone(Some(b).Async())
+                .ShouldBeSome(a);
     }
 }
