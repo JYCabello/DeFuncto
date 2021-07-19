@@ -1,5 +1,6 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -7,11 +8,11 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class BindNone
     {
-        [Fact(DisplayName = "Binds with an option")]
-        public void NoneOption() =>
+        [Property(DisplayName = "Binds with an option")]
+        public void NoneOption(string a) =>
             None.Option<string>().Async()
-                .BindNone(Some("banana"))
-                .ShouldBeSome("banana");
+                .BindNone(Some(a))
+                .ShouldBeSome(a);
 
         [Fact(DisplayName = "Binds with an option task")]
         public void NoneTaskOption() =>
