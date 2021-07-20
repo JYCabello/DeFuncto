@@ -10,7 +10,7 @@ Such a system needs to listen on a port, where it will **fetch** data from the n
 It is, save that thought for the last bit. Every step will be explained in detail and the iterate one is the least intuitive of the lot if you are heavily object oriented. On the meanwhile, **bear with me**.
 ```
                 __
-     __/~~\-''- _ |
+     __/~~\-''-/_ |
 __- - {            \
      /             \
     /       ;o    o }
@@ -23,5 +23,9 @@ __- - {            \
 ```
 
 ## Fetch
-Getting data from the outside world into the system. Every information processing starts with this step.
+Getting data from the outside world into the system. Every example of information processing starts with this step. From
+## Filter
+## Transform
+## Iterate
+
 
