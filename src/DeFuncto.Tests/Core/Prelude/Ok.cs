@@ -9,7 +9,7 @@ namespace DeFuncto.Tests.Core.Prelude
     {
         [Property(DisplayName = "Instantiates a ResultOk")]
         public void Works(NonNull<string> a) =>
-            Ok(a).Result<int>().ShouldBeOk(a);
+            Ok(a.Get).Result<int>().ShouldBeOk(a.Get);
 
         [Property(DisplayName = "Instantiates a result that is Ok")]
         public void WorksWithBoth(NonNull<string> a) =>
