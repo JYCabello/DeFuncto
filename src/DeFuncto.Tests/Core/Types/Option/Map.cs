@@ -1,22 +1,23 @@
 ﻿using DeFuncto.Assertions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Option
 {
     public class Map
     {
-        [Fact(DisplayName = "Maps Some")]
-        public void OnSome() =>
-            Some("ban")
-                .Map(val => $"{val}ana")
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Maps Some")]
+        public void OnSome(NonNull<string> a, NonNull<string> b) =>
+            Some(a.Get)
+                .Map(val => val + b.Get)
+                .ShouldBeSome(a.Get + b.Get);
 
-        [Fact(DisplayName = "Skips mapping on None")]
-        public void OnNone() =>
+        [Property(DisplayName = "Skips mapping on None")]
+        public void OnNone(NonNull<string> a) =>
             None
                 .Option<string>()
-                .Map(val => $"{val}ana")
+                .Map(val => val + a.Get)
                 .ShouldBeNone();
     }
 }
