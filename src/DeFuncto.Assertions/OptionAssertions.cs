@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DeFuncto.Extensions;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Assertions

@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-using DeFuncto.Extensions;
+﻿using DeFuncto.Extensions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -7,32 +8,36 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class DefaultValue
     {
-        [Fact(DisplayName = "Gets the default value on None")]
-        public Task DefaultsOnNone() =>
+        [Property(DisplayName = "Gets the default value on None")]
+        public void DefaultsOnNone(string a) =>
             None.Option<string>()
                 .Async()
-                .DefaultValue("banana")
-                .Run(val => Assert.Equal("banana", val));
+                .DefaultValue(a)
+                .Result
+                .Run(val => Assert.Equal(a, val));
 
-        [Fact(DisplayName = "Gets the default value on None with a task")]
-        public Task DefaultsOnNoneTask() =>
+        [Property(DisplayName = "Gets the default value on None with a task")]
+        public void DefaultsOnNoneTask(string a) =>
             None.Option<string>()
                 .Async()
-                .DefaultValue("banana".ToTask())
-                .Run(val => Assert.Equal("banana", val));
+                .DefaultValue(a.ToTask())
+                .Result 
+                .Run(val => Assert.Equal(a, val));
 
-        [Fact(DisplayName = "Skips the default value on Some")]
-        public Task SkipsOnSome() =>
-            Some("banana")
+        [Property(DisplayName = "Skips the default value on Some")]
+        public void SkipsOnSome(NonNull<string> a, NonNull<string> b) =>
+            Some(a)
                 .Async()
-                .DefaultValue("pear")
-                .Run(val => Assert.Equal("banana", val));
+                .DefaultValue(b)
+                .Result
+                .Run(val => Assert.Equal(a, val));
 
-        [Fact(DisplayName = "Skips the default value on Some with a task")]
-        public Task SkipsOnSomeTask() =>
-            Some("banana")
+        [Property(DisplayName = "Skips the default value on Some with a task")]
+        public void SkipsOnSomeTask(string a, string b) =>
+            Some(a)
                 .Async()
-                .DefaultValue("pear".ToTask())
-                .Run(val => Assert.Equal("banana", val));
+                .DefaultValue(b.ToTask())
+                .Result
+                .Run(val => Assert.Equal(a, val));
     }
 }

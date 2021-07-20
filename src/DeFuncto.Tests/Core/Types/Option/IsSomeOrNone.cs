@@ -1,4 +1,6 @@
 ﻿using DeFuncto.Extensions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -6,9 +8,9 @@ namespace DeFuncto.Tests.Core.Types.Option
 {
     public class IsSomeOrNone
     {
-        [Fact(DisplayName = "Evaluates Some")]
-        public void IsSome() =>
-            Some("banana")
+        [Property(DisplayName = "Evaluates Some")]
+        public void IsSome(NonNull<string> a) =>
+            Some(a.Get)
                 .IsSome
                 .Run(Assert.True);
 
