@@ -1,7 +1,4 @@
 ﻿namespace DeFuncto.Types
 {
-    internal class Box<T> : TypedValue<T>
-    {
-        public Box(T value) : base(value) { }
-    }
+    internal record Box<T>(T Value);
 }
