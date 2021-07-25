@@ -48,5 +48,31 @@ namespace DeFuncto.Tests.Core.Extensions.Collection
                 .AsQueryable()
                 .SingleOrNone()
                 .ShouldBeNone();
+
+        [Property(DisplayName = "Get Some from List")]
+        public void GetSomeFromListWithPredicate(int a) =>
+            _ = new List<int> { a }
+                .SingleOrNone(x => x == a)
+                .ShouldBeSome(a);
+
+        [Fact(DisplayName = "Get None from List")]
+        public void GetNoneFromListWithPredicate() =>
+            _ = new List<int>()
+                .SingleOrNone(x => x == 1)
+                .ShouldBeNone();
+
+        [Property(DisplayName = "Get Some from IEnumerable")]
+        public void GetSomeFromIEnumerableWithPredicate(int a) =>
+            _ = new List<int> { a }
+                .AsEnumerable()
+                .SingleOrNone(x => x == a)
+                .ShouldBeSome(a);
+
+        [Fact(DisplayName = "Get None from IEnumerable")]
+        public void GetNoneFromIEnumerableWithPredicate() =>
+            _ = new List<int>()
+                .AsEnumerable()
+                .SingleOrNone(x => x == 1)
+                .ShouldBeNone();        
     }
 }
