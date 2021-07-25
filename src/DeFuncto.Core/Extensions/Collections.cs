@@ -65,5 +65,20 @@ namespace DeFuncto.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> SingleOrNone<T>(this List<T> self) =>
             self.Select(t => new Box<T>(t)).SingleOrDefault().Apply(Optional).Map(box => box.Value);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> SingleOrNone<T>(this IQueryable<T> query, Func<T, bool> filter) =>
+            query.Where(filter).SingleOrNone();
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> SingleOrNone<T>(this IEnumerable<T> self, Func<T, bool> filter) =>
+            self.Where(filter).SingleOrNone();
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> SingleOrNone<T>(this List<T> self, Func<T, bool> filter) =>
+            self.Where(filter).SingleOrNone();
     }
 }
