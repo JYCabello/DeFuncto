@@ -47,7 +47,9 @@ namespace DeFuncto.Tests.Core.Extensions.Collection
             _ = new List<int>()
                 .AsQueryable()
                 .FirstOrNone()
-                .ShouldBeNone();[Property(DisplayName = "Get Some from List")]
+                .ShouldBeNone();
+        
+        [Property(DisplayName = "Get Some from List")]
         public void GetSomeFromListWithPredicate(int a) =>
             _ = new List<int> { a }
                 .FirstOrNone(x => x == a)
@@ -71,20 +73,6 @@ namespace DeFuncto.Tests.Core.Extensions.Collection
             _ = new List<int>()
                 .AsEnumerable()
                 .FirstOrNone(x => x == 1)
-                .ShouldBeNone();
-
-        [Property(DisplayName = "Get Some from IQueryable")]
-        public void GetSomeFromIQueryableWithPredicate(int a) =>
-            _ = new List<int> { a }
-                .AsQueryable()
-                .FirstOrNone(x => x == a)
-                .ShouldBeSome(a);
-
-        [Fact(DisplayName = "Get None from IQueryable")]
-        public void GetNoneFromIQueryableWithPredicate() =>
-            _ = new List<int>()
-                .AsQueryable()
-                .FirstOrNone(x => x == 1)
-                .ShouldBeNone();
+                .ShouldBeNone();               
     }
 }
