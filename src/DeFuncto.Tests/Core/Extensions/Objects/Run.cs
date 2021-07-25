@@ -11,9 +11,8 @@ namespace DeFuncto.Tests.Core.Extensions.Objects
         {
             var witness = new Witness();
             witness
-                .Run(w => w.Touch())
-                .Run(w => { w.Touch(); });
-            Assert.Equal(2, witness.TimesCalled);
+                .Run(w => w.Touch());
+            Assert.Equal(1, witness.TimesCalled);
         }
     }
 }
