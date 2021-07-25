@@ -1,5 +1,6 @@
 ﻿using DeFuncto.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -33,7 +34,22 @@ namespace DeFuncto.Extensions
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> FirstOrNone<T>(this List<T> self) =>
-            self.Select(t => new Box<T>(t)).FirstOrDefault().Apply(Optional).Map(box => box.Value);
+            self. Select(t => new Box<T>(t)).FirstOrDefault().Apply(Optional).Map(box => box.Value);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> FirstOrNone<T>(this IQueryable<T> query, Func<T, bool> filter) =>
+            query.Where(filter).FirstOrNone();
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> FirstOrNone<T>(this IEnumerable<T> self, Func<T, bool> filter) =>
+            self.Where(filter).FirstOrNone();
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> FirstOrNone<T>(this List<T> self, Func<T, bool> filter) =>
+            self.Where(filter).FirstOrNone();
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
