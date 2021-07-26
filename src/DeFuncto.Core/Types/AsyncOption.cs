@@ -164,15 +164,15 @@ namespace DeFuncto
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Unit> Iter(Action<T> fSome, Action fNone) =>
-            Iter(fSome).Async().Iter(fNone);
+            Match(fSome.Function(), fNone.Function());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Unit> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
-            Iter(fSome.Action(), fNone.Action());
+            Match(fSome, fNone);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Unit> Iter(Func<T, Task> fSome, Func<Task> fNone) =>
-            Iter(fSome).Async().Iter(fNone);
+            Match(fSome.AsyncFunction(), fNone.AsyncFunction());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Unit> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>

@@ -36,6 +36,23 @@ namespace DeFuncto.Extensions
                 return unit;
             };
 
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Func<T, Task<Unit>> AsyncFunction<T>(this Func<T, Task> f) =>
+           async t =>
+           {
+               await f(t);
+               return unit;
+           };
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Func<Task<Unit>> AsyncFunction(this Func<Task> f) =>
+            async () =>
+            {
+                await f();
+                return unit;
+            };
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

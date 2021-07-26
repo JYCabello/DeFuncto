@@ -13,13 +13,12 @@ namespace DeFuncto.Tests.Core.Types.Option
             var witness = new Witness();
 
             Some(a.Get)
-                .Iter(_ => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
-            None.Option<string>()
-                .Iter(_ => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
+                .Iter(_ => witness.Touch());
+            witness.ShouldHaveBeenTouched(1);
 
-            witness.ShouldHaveBeenTouched(3);
+            None.Option<string>()
+                .Iter(_ => witness.Touch());
+            witness.ShouldHaveBeenTouched(1);
         }
 
         [Property(DisplayName = "Iterates on none")]
@@ -28,13 +27,12 @@ namespace DeFuncto.Tests.Core.Types.Option
             var witness = new Witness();
 
             Some(a.Get)
-                .Iter(() => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
-            None.Option<string>()
-                .Iter(() => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
+                .Iter(() => witness.Touch());
+            witness.ShouldHaveBeenTouched(0);
 
-            witness.ShouldHaveBeenTouched(3);
+            None.Option<string>()
+                .Iter(() => witness.Touch());
+            witness.ShouldHaveBeenTouched(1);
         }
     }
 }
