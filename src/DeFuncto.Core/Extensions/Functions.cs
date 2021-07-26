@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Extensions
 {
@@ -16,6 +17,25 @@ namespace DeFuncto.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Action<T> Action<T>(this Func<T, Unit> f) =>
             t => f(t);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Func<T, Unit> Function<T>(this Action<T> f) =>
+            t =>
+            {
+                f(t);
+                return unit;
+            };
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Func<Unit> Function(this Action f) =>
+            () =>
+            {
+                f();
+                return unit;
+            };
+
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
