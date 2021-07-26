@@ -102,8 +102,16 @@ namespace DeFuncto
                 });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<Unit> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
-            Iter(t => { fSome(t); }, () => { fNone(); });
+        public Unit Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
+            Iter(t =>
+            {
+                fSome(t);
+                return Unit.Default;
+            }, () =>
+            {
+                fNone();
+                return Unit.Default;
+            });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Option<Unit> Iter(Func<Unit> fNone) =>
