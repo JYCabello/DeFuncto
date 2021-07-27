@@ -16,18 +16,21 @@ namespace DeFuncto.Tests.Core.Types.Result
                 .Iter((string _) =>
                 {
                     witness.Touch();
-                })
-                .Iter((string _) =>
+                });
+
+            Ok(a.Get).Result<int>().Iter((string _) =>
                 {
                     witness.Touch();
                     return unit;
-                })
-                .Iter(_ =>
+                });
+
+            Ok(a.Get).Result<int>().Iter(_ =>
                     {
                         witness.Touch();
                         return unit;
                     },
                     _ => throw new Exception("Should not run"));
+
             witness.ShouldHaveBeenTouched(3);
         }
 
@@ -35,21 +38,20 @@ namespace DeFuncto.Tests.Core.Types.Result
         public void OnError(NonNull<string> a)
         {
             var witness = new Witness();
-            Error(a.Get).Result<int>()
-                .Iter((string _) => { witness.Touch(); })
-                .Iter((string _) =>
+            Error(a.Get).Result<int>().Iter((string _) => { witness.Touch(); });
+            Error(a.Get).Result<int>().Iter((string _) =>
                 {
                     witness.Touch();
                     return unit;
-                })
-                .Iter(
+                });
+            Error(a.Get).Result<int>().Iter(
                     _ => throw new Exception("Should not run"),
                     _ =>
                     {
                         witness.Touch();
                         return unit;
-                    })
-                .Iter(_ => throw new Exception("Should not run"), _ => { witness.Touch(); });
+                    });
+            Error(a.Get).Result<int>().Iter(_ => throw new Exception("Should not run"), _ => { witness.Touch(); });
             witness.ShouldHaveBeenTouched(4);
         }
 
@@ -57,21 +59,20 @@ namespace DeFuncto.Tests.Core.Types.Result
         public void OnOkSkipError(NonNull<string> a)
         {
             var witness = new Witness();
-            Ok(a.Get).Result<int>()
-                .Iter((string _) => { witness.Touch(); })
-                .Iter((string _) =>
+            Ok(a.Get).Result<int>().Iter((string _) => { witness.Touch(); });
+            Ok(a.Get).Result<int>().Iter((string _) =>
                 {
                     witness.Touch();
                     return unit;
-                })
-                .Iter(
+                });
+            Ok(a.Get).Result<int>().Iter(
                     _ =>
                     {
                         witness.Touch();
                         return unit;
                     },
-                    _ => throw new Exception("Should not run"))
-                .Iter(_ => { witness.Touch(); }, _ => throw new Exception("Should not run"));
+                    _ => throw new Exception("Should not run"));
+            Ok(a.Get).Result<int>().Iter(_ => { witness.Touch(); }, _ => throw new Exception("Should not run"));
             witness.ShouldHaveBeenTouched(4);
         }
     }
