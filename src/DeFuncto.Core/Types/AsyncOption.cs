@@ -123,59 +123,59 @@ namespace DeFuncto
             Option.Map(opt => opt.Where(filter));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Action<T> f) =>
-            Option.Run(opt => opt.Iter(f));
+        public Task<Unit> Iter(Action<T> f) =>
+            Option.Map(opt => opt.Iter(f));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<Unit> f) =>
+        public Task<Unit> Iter(Func<Unit> f) =>
             Iter(f.Action());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<T, Unit> f) =>
+        public Task<Unit> Iter(Func<T, Unit> f) =>
             Iter(f.Action());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<T, Task> f) =>
+        public Task<Unit> Iter(Func<T, Task> f) =>
             Option.Map(async opt =>
             {
                 await opt.Match(f, () => Task.CompletedTask);
-                return opt;
+                return unit;
             });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<T, Task<Unit>> f) =>
+        public Task<Unit> Iter(Func<T, Task<Unit>> f) =>
             Iter(f.AsyncAction());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Action f) =>
-            Option.Run(opt => opt.Iter(f));
+        public Task<Unit> Iter(Action f) =>
+            Option.Map(opt => opt.Iter(f));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<Task> f) =>
+        public Task<Unit> Iter(Func<Task> f) =>
             Option.Map(async opt =>
             {
                 await opt.Match(_ => Task.CompletedTask, f);
-                return opt;
+                return unit;
             });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<Task<Unit>> f) =>
+        public Task<Unit> Iter(Func<Task<Unit>> f) =>
             Iter(f.AsyncAction());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Action<T> fSome, Action fNone) =>
-            Iter(fSome).Async().Iter(fNone);
+        public Task<Unit> Iter(Action<T> fSome, Action fNone) =>
+            Match(fSome.Function(), fNone.Function());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
-            Iter(fSome.Action(), fNone.Action());
+        public Task<Unit> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
+            Match(fSome, fNone);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<T, Task> fSome, Func<Task> fNone) =>
-            Iter(fSome).Async().Iter(fNone);
+        public Task<Unit> Iter(Func<T, Task> fSome, Func<Task> fNone) =>
+            Match(fSome.AsyncFunction(), fNone.AsyncFunction());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Option<T>> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>
+        public Task<Unit> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>
             Iter(fSome.AsyncAction(), fNone.AsyncAction());
 
         private readonly Task<Option<T>>? option;
