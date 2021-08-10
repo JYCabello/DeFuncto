@@ -43,6 +43,11 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> Optional<T>(Nullable<T> t) where T : struct =>
+            t.HasValue ? Some(t.Value) : None;
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Func<T1, T3> Compose<T1, T2, T3>(this Func<T1, T2> f1, Func<T2, T3> f2) =>
             t1 => f2(f1(t1));
 
