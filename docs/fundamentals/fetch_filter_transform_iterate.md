@@ -23,9 +23,11 @@ __- - {            \
 ```
 
 ## Fetch
-Getting data from the outside world into the system. Every example of information processing starts with this step. From
+Getting data from the outside world into the system. Every example of information processing starts with this step. Parsing user input in a form or a CLI, processing an HTTP request in your server, making a query to your database or reading the input from an humidity sensor. In general, anything that can fail in a non-deterministic fashion and gives you data on success.
+
+In C#, we usually wrap those in the class `Task<TypeToFetch>`, this is mainly meant to achieve asynchrony [^1]
 ## Filter
 ## Transform
 ## Iterate
 
-
+[^1]: Releasing the current thread
