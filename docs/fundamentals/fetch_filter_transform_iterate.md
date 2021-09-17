@@ -25,9 +25,13 @@ __- - {            \
 ## Fetch
 Getting data from the outside world into the system. Every example of information processing starts with this step. Parsing user input in a form or a CLI, processing an HTTP request in your server, making a query to your database or reading the input from an humidity sensor. In general, anything that can fail in a non-deterministic fashion and gives you data on success.
 
-In C#, we usually wrap those in the class `Task<TypeToFetch>`, this is mainly meant to achieve asynchrony [^1]
-## Filter
-## Transform
-## Iterate
+In C#, we usually wrap those in the class `Task<TypeToFetch>`, this is mainly meant to achieve [asynchrony](asynchrony.md), but it also represents a request that can go wrong for reasons not related to our logic.
 
-[^1]: Releasing the current thread
+From the pragmatic point of view, we do some of these operations as if they were deterministic, like requesting the current system time and move along with our lives.
+## Filter
+Filtering is a deterministic operation we do on data, it consists on making a decision of how or even if we are going to process it.
+
+This is done in [imperative code](imperative.md) by means of conditionals, that will branch our execution path depending on certain checks. When done [declaratively](declarative.md), this is done by wrapping our piece of information in a data structure that represents the path we want to take.
+## Transform
+
+## Iterate
