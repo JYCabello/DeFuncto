@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using DeFuncto.Extensions;
 
 namespace DeFuncto
 {
@@ -56,14 +57,11 @@ namespace DeFuncto
              Discriminator == other.Discriminator
              && Match(v => v!.Equals(other.t1), v => v!.Equals(other.t2));
 
-        public override int GetHashCode()
-        {
-            var hashCode = -1956924612;
-            hashCode = hashCode * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t1);
-            hashCode = hashCode * -1521134295 + EqualityComparer<T2?>.Default.GetHashCode(t2);
-            hashCode = hashCode * -1521134295 + Discriminator.GetHashCode();
-            return hashCode;
-        }
+        public override int GetHashCode() =>
+            (this, -1956924612)
+                .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t.Item1.t1)))
+                .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T2?>.Default.GetHashCode(t.Item1.t2)))
+                .Apply(t => t.Item2 * -1521134295 + t.Item1.Discriminator.GetHashCode());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

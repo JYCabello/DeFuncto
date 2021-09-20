@@ -93,25 +93,17 @@ namespace DeFuncto
             Match(t =>
                 {
                     fSome(t);
-                    return Unit.Default;
+                    return unit;
                 },
                 () =>
                 {
                     fNone();
-                    return Unit.Default;
+                    return unit;
                 });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
-            Iter(t =>
-            {
-                fSome(t);
-                return Unit.Default;
-            }, () =>
-            {
-                fNone();
-                return Unit.Default;
-            });
+            Iter(t => { fSome(t); }, () => { fNone(); });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<Unit> fNone) =>
