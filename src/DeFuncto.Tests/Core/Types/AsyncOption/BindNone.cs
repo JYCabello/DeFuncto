@@ -1,46 +1,53 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncOption
 {
     public class BindNone
     {
-        [Fact(DisplayName = "Binds with an option")]
-        public void NoneOption() =>
-            None.Option<string>().Async()
-                .BindNone(Some("banana"))
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds with an option")]
+        public void NoneOption(NonNull<string> a) =>
+            _ = None.Option<string>().Async()
+                .BindNone(Some(a.Get))
+                .ShouldBeSome(a.Get)
+                .Result;
 
-        [Fact(DisplayName = "Binds with an option task")]
-        public void NoneTaskOption() =>
-            None.Option<string>().Async()
-                .BindNone(Some("banana").ToTask())
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds with an option task")]
+        public void NoneTaskOption(NonNull<string> a) =>
+            _ = None.Option<string>().Async()
+                .BindNone(Some(a.Get).ToTask())
+                .ShouldBeSome(a.Get)
+                .Result;
 
-        [Fact(DisplayName = "Binds with an async option")]
-        public void NoneAsyncOption() =>
-            None.Option<string>().Async()
-                .BindNone(Some("banana").Async())
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds with an async option")]
+        public void NoneAsyncOption(NonNull<string> a) =>
+            _ = None.Option<string>().Async()
+                .BindNone(Some(a.Get).Async())
+                .ShouldBeSome(a.Get)
+                .Result;
 
-        [Fact(DisplayName = "Skips with an option")]
-        public void SomeOption() =>
-            Some("banana").Async()
-                .BindNone(Some("pear"))
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Skips with an option")]
+        public void SomeOption(NonNull<string> a, NonNull<string> b) =>
+            _ = Some(a.Get).Async()
+                .BindNone(Some(b.Get))
+                .ShouldBeSome(a.Get)
+                .Result;
 
-        [Fact(DisplayName = "Binds with an option task")]
-        public void SomeTaskOption() =>
-            Some("banana").Async()
-                .BindNone(Some("pear").ToTask())
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds with an option task")]
+        public void SomeTaskOption(NonNull<string> a, NonNull<string> b) =>
+            _ = Some(a.Get).Async()
+                .BindNone(Some(b.Get).ToTask())
+                .ShouldBeSome(a.Get)
+                .Result;
 
-        [Fact(DisplayName = "Binds with an async option")]
-        public void SomeAsyncOption() =>
-            Some("banana").Async()
-                .BindNone(Some("pear").Async())
-                .ShouldBeSome("banana");
+        [Property(DisplayName = "Binds with an async option")]
+        public void SomeAsyncOption(NonNull<string> a, NonNull<string> b) =>
+            _ = Some(a.Get).Async()
+                .BindNone(Some(b.Get).Async())
+                .ShouldBeSome(a.Get)
+                .Result;
     }
 }

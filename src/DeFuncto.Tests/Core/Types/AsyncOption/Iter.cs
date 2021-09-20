@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
 using Xunit;
@@ -11,7 +12,7 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
         [Fact(DisplayName = "Iterates on Some synchronously with both iterators")]
         public async Task SomeSync()
         {
-            var some = Some("banana").Async();
+            var some = Some(Guid.NewGuid().ToString()).Async();
             var witness = new Witness();
             await some.Iter(
                 _ => witness.Touch(),
@@ -25,7 +26,7 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
         [Fact(DisplayName = "Iterates on None synchronously with both iterators")]
         public async Task NoneSync()
         {
-            var some = Some("banana").Async();
+            var some = Some(Guid.NewGuid().ToString()).Async();
             var witness = new Witness();
             await some.Iter(
                 _ => witness.Touch(),
@@ -37,7 +38,7 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
         [Fact(DisplayName = "Iterates on Some asynchronously with both iterators")]
         public async Task SomeAsyncDouble()
         {
-            var some = Some("banana").Async();
+            var some = Some(Guid.NewGuid().ToString()).Async();
             var witness = new Witness();
             await some.Iter(
                 _ => witness.Touch().ToTask(),

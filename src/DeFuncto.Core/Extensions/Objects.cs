@@ -10,26 +10,25 @@ namespace DeFuncto.Extensions
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Apply<TIn, TOut>(this TIn self, Func<TIn, TOut> f) => f(self);
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Run<T>(this T self, Func<T, Unit> f) => self.Apply(f).Apply(_ => self);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Run<T>(this T self, Action<T> f) => self.Apply(t =>
+        public static Unit Run<T>(this T self, Func<T, Unit> f) => self.Apply(f).Apply(_ => Unit.Default);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Unit Run<T>(this T self, Action<T> f) => self.Apply(t =>
         {
             f(t);
-            return t;
+            return Unit.Default;
         });
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<T> Run<T>(this Task<T> self, Action<T> f) => self.Map(t =>
+        public static Task<Unit> Run<T>(this Task<T> self, Action<T> f) => self.Map(t =>
         {
             f(t);
-            return t;
+            return Unit.Default;
         });
-
-        
     }
 }

@@ -89,36 +89,44 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<T> Iter(Action<T> fSome, Action fNone) =>
+        public Unit Iter(Action<T> fSome, Action fNone) =>
             Match(t =>
                 {
                     fSome(t);
-                    return Some(t);
+                    return Unit.Default;
                 },
                 () =>
                 {
                     fNone();
-                    return None;
+                    return Unit.Default;
                 });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<T> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
-            Iter(t => { fSome(t); }, () => { fNone(); });
+        public Unit Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
+            Iter(t =>
+            {
+                fSome(t);
+                return Unit.Default;
+            }, () =>
+            {
+                fNone();
+                return Unit.Default;
+            });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<T> Iter(Func<Unit> fNone) =>
+        public Unit Iter(Func<Unit> fNone) =>
             Iter(() => { fNone(); });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<T> Iter(Action fNone) =>
+        public Unit Iter(Action fNone) =>
             Iter(_ => { }, fNone);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<T> Iter(Func<T, Unit> fSome) =>
+        public Unit Iter(Func<T, Unit> fSome) =>
             Iter(t => { fSome(t); });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<T> Iter(Action<T> fSome) =>
+        public Unit Iter(Action<T> fSome) =>
             Iter(fSome, () => { });
 
         [Pure]

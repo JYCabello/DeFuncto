@@ -1,40 +1,44 @@
-﻿using System.Threading.Tasks;
-using DeFuncto.Assertions;
+﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncResult
 {
     public class Map
     {
-        [Fact(DisplayName = "Maps with a synchronous projection")]
-        public Task Synchronous() =>
-            Ok<string, int>("ban")
+        [Property(DisplayName = "Maps with a synchronous projection")]
+        public void Synchronous(string a, string b) =>
+           _ = Ok<string, int>(a)
                 .Async()
-                .Map(val => $"{val}ana")
-                .ShouldBeOk("banana");
+                .Map(val => $"{val}{b}")
+                .ShouldBeOk(a + b)
+                .Result;
 
-        [Fact(DisplayName = "Skips with a synchronous projection")]
-        public Task SyncError() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Skips with a synchronous projection")]
+        public void SyncError(NonNull<string> a, NonNull<string> b) =>
+           _ = Error<int, string>(a.Get)
                 .Async()
-                .Map(_ => "pear")
-                .ShouldBeError("banana");
+                .Map(_ => b.Get)
+                .ShouldBeError(a.Get)
+                .Result;
 
-        [Fact(DisplayName = "Maps with an asynchronous projection")]
-        public Task Asnchronous() =>
-            Ok<string, int>("ban")
+        [Property(DisplayName = "Maps with an asynchronous projection")]
+        public void Asnchronous(NonNull<string> a, NonNull<string> b) =>
+            _ = Ok<string, int>(a.Get)
                 .Async()
-                .Map(val => $"{val}ana".ToTask())
-                .ShouldBeOk("banana");
+                .Map(val => $"{val}{b.Get}".ToTask())
+                .ShouldBeOk(a.Get + b.Get)
+                .Result;
 
-        [Fact(DisplayName = "Skips with an asynchronous projection")]
-        public Task AsyncError() =>
-            Error<int, string>("banana")
+        [Property(DisplayName = "Skips with an asynchronous projection")]
+        public void AsyncError(NonNull<string> a, NonNull<string> b) =>
+            _ = Error<int, string>(a.Get)
                 .Async()
-                .Map(_ => "pear".ToTask())
-                .ShouldBeError("banana");
+                .Map(_ => b.Get.ToTask())
+                .ShouldBeError(a.Get)
+                .Result;
 
     }
 }

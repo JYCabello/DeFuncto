@@ -71,44 +71,27 @@ namespace DeFuncto
             value.Match(okProjection, errorProjection);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> Iter(Action<TOk> iterator)
-        {
-            value.Match(ok =>
-                {
-                    iterator(ok);
-                    return unit;
-                },
-                _ => unit);
-            return this;
-        }
+        public Unit Iter(Action<TOk> iterator) =>
+            value.Match(ok => { iterator(ok); return unit; }, _ => unit);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> Iter(Func<TOk, Unit> iterator) =>
+        public Unit Iter(Func<TOk, Unit> iterator) =>
             Iter(ok => { iterator(ok); });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> Iter(Action<TError> iterator)
-        {
-            value.Match(
-                _ => unit,
-                error =>
-                {
-                    iterator(error);
-                    return unit;
-                });
-            return this;
-        }
+        public Unit Iter(Action<TError> iterator) =>
+            value.Match(_ => unit, error => { iterator(error); return unit; });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> Iter(Func<TError, Unit> iterator) =>
+        public Unit Iter(Func<TError, Unit> iterator) =>
             Iter(error => { iterator(error); });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError) =>
-            this.Apply(self => self.Match(iteratorOk, iteratorError).Apply(_ => self));
+        public Unit Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError) =>
+            this.Apply(self => self.Match(iteratorOk, iteratorError).Apply(_ => unit));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Result<TOk, TError> Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
+        public Unit Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
         {
             Iter(iteratorOk);
             return Iter(iteratorError);

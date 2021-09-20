@@ -1,21 +1,22 @@
 ﻿using DeFuncto.Assertions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Option
 {
     public class Result
     {
-        [Fact(DisplayName = "Converts some into success result")]
-        public void SomeToSuccess() =>
-            Optional("take a deep breath and relax")
-                .Result(42)
-                .ShouldBeOk("take a deep breath and relax");
+        [Property(DisplayName = "Converts some into success result")]
+        public void SomeToSuccess(NonNull<string> a, int b) =>
+            Optional(a.Get)
+                .Result(b)
+                .ShouldBeOk(a.Get);
 
-        [Fact(DisplayName = "Converts none into error result")]
-        public void NoneToEror() =>
+        [Property(DisplayName = "Converts none into error result")]
+        public void NoneToEror(NonNull<string> a) =>
             Optional((int?) null)
-                .Result("banana")
-                .ShouldBeError("banana");
+                .Result(a.Get)
+                .ShouldBeError(a.Get);
     }
 }

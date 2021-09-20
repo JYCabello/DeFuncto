@@ -1,39 +1,38 @@
 ﻿using DeFuncto.Assertions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Option
 {
     public class Iter
     {
-        [Fact(DisplayName = "Iterates on some")]
-        public void OnSome()
+        [Property(DisplayName = "Iterates on some")]
+        public void OnSome(NonNull<string> a)
         {
             var witness = new Witness();
 
-            Some("banana")
-                .Iter(_ => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
-            None.Option<string>()
-                .Iter(_ => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
+            Some(a.Get)
+                .Iter(_ => witness.Touch());
+            witness.ShouldHaveBeenTouched(1);
 
-            witness.ShouldHaveBeenTouched(3);
+            None.Option<string>()
+                .Iter(_ => witness.Touch());
+            witness.ShouldHaveBeenTouched(1);
         }
 
-        [Fact(DisplayName = "Iterates on none")]
-        public void OnNone()
+        [Property(DisplayName = "Iterates on none")]
+        public void OnNone(NonNull<string> a)
         {
             var witness = new Witness();
 
-            Some("banana")
-                .Iter(() => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
-            None.Option<string>()
-                .Iter(() => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
+            Some(a.Get)
+                .Iter(() => witness.Touch());
+            witness.ShouldHaveBeenTouched(0);
 
-            witness.ShouldHaveBeenTouched(3);
+            None.Option<string>()
+                .Iter(() => witness.Touch());
+            witness.ShouldHaveBeenTouched(1);
         }
     }
 }
