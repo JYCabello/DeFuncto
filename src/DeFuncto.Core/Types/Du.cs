@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace DeFuncto
 {
-    public readonly struct Du<T1, T2>
+    public readonly struct Du<T1, T2> : IEquatable<Du<T1, T2>>
     {
         public enum DiscriminationValue
         {
@@ -47,6 +48,24 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Du<T1, T2> Second(T2 t2) => t2;
+
+        public override bool Equals(object obj)
+        {
+            var nval = obj as Du<T1, T2>?;
+            return nval != null && Equals((Du<T1, T2>)nval);
+        }
+
+        public bool Equals(Du<T1, T2> other) =>
+             Discriminator == other.Discriminator && Match(v => v!.Equals(other.t1), v => v!.Equals(other.t2));
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1956924612;
+            hashCode = hashCode * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t1);
+            hashCode = hashCode * -1521134295 + EqualityComparer<T2?>.Default.GetHashCode(t2);
+            hashCode = hashCode * -1521134295 + Discriminator.GetHashCode();
+            return hashCode;
+        }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

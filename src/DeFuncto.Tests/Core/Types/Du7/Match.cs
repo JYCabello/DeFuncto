@@ -26,7 +26,7 @@ namespace DeFuncto.Tests.Core.Types.Du7
                 _ => $"{e}{a.Get}",
                 _ => $"{f}{a.Get}",
                 _ => $"{g}{a.Get}",
-                _ => $"{g}{a.Get}"
+                _ => $"{h}{a.Get}"
             ).Run(result => Assert.Equal($"{b.Get}{a.Get}", result));
 
         [Property(DisplayName = "Matches the Second option")]
@@ -47,7 +47,7 @@ namespace DeFuncto.Tests.Core.Types.Du7
                 _ => $"{e}{a.Get}",
                 _ => $"{f}{a.Get}",
                 _ => $"{g}{a.Get}",
-                _ => $"{g}{a.Get}"
+                _ => $"{h}{a.Get}"
             ).Run(result => Assert.Equal($"{c.Get}{a.Get}", result));
 
         [Property(DisplayName = "Matches the Third option")]
@@ -68,55 +68,55 @@ namespace DeFuncto.Tests.Core.Types.Du7
                 _ => $"{e}{a.Get}",
                 _ => $"{f}{a.Get}",
                 _ => $"{g}{a.Get}",
-                _ => $"{g}{a.Get}"
+                _ => $"{h}{a.Get}"
             ).Run(result => Assert.Equal($"{d.Get}{a.Get}", result));
 
-        [Fact(DisplayName = "Matches the Fourth option")]
-        public void OnFourth() =>
-            Fourth<int, int, int, string, int, int, int>("ban").Match(
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana"
-            ).Run(result => Assert.Equal("banana", result));
+        [Property(DisplayName = "Matches the Fourth option")]
+        public void OnFourth(NonNull<string> a, NonNull<string> b, NonNull<string> c) =>
+            Fourth<int, int, int, string, int, int, int>(a.Get).Match(
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{b.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}"
+            ).Run(result => Assert.Equal(a.Get + b.Get, result));
 
-        [Fact(DisplayName = "Matches the Fifth option")]
-        public void OnFifth() =>
-            Fifth<int, int, int, int, string, int, int>("ban").Match(
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana"
-            ).Run(result => Assert.Equal("banana", result));
+        [Property(DisplayName = "Matches the Fifth option")]
+        public void OnFifth(NonNull<string> a, NonNull<string> b, NonNull<string> c) =>
+            Fifth<int, int, int, int, string, int, int>(a.Get).Match(
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{b.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}"
+            ).Run(result => Assert.Equal(a.Get + b.Get, result));
 
-        [Fact(DisplayName = "Matches the Sixth option")]
-        public void OnSixth() =>
-            Sixth<int, int, int, int, int, string, int>("ban").Match(
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana"
-            ).Run(result => Assert.Equal("banana", result));
+        [Property(DisplayName = "Matches the Sixth option")]
+        public void OnSixth(NonNull<string> a, NonNull<string> b, NonNull<string> c) =>
+            Sixth<int, int, int, int, int, string, int>(a.Get).Match(
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{b.Get}",
+                val => $"{val}{c.Get}"
+            ).Run(result => Assert.Equal(a.Get + b.Get, result));
 
-        [Fact(DisplayName = "Matches the Seventh option")]
-        public void OnSeventh() =>
-            Seventh<int, int, int, int, int, int, string>("ban").Match(
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana",
-                val => $"{val}ana"
-            ).Run(result => Assert.Equal("banana", result));
+        [Property(DisplayName = "Matches the Seventh option")]
+        public void OnSeventh(NonNull<string> a, NonNull<string> b, NonNull<string> c) =>
+            Seventh<int, int, int, int, int, int, string>(a.Get).Match(
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{c.Get}",
+                val => $"{val}{b.Get}"
+            ).Run(result => Assert.Equal(a.Get + b.Get, result));
     }
 }

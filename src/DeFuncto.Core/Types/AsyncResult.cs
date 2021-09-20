@@ -112,38 +112,38 @@ namespace DeFuncto
             resultTask.Map(r => r.Match(fOk, fError));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk, Func<TError, Task<Unit>> fError) =>
+        public Task<Unit> Iter(Func<TOk, Task<Unit>> fOk, Func<TError, Task<Unit>> fError) =>
             Iter(async ok => { await fOk(ok); }, async error => { await fError(error); });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TOk, Task> fOk, Func<TError, Task> fError) =>
+        public Task<Unit> Iter(Func<TOk, Task> fOk, Func<TError, Task> fError) =>
             Match(
                 async ok =>
                 {
                     await fOk(ok);
-                    return Ok<TOk, TError>(ok);
+                    return unit;
                 },
                 async error =>
                 {
                     await fError(error);
-                    return Error<TOk, TError>(error);
+                    return unit;
                 }
             );
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TOk, Task<Unit>> fOk) =>
+        public Task<Unit> Iter(Func<TOk, Task<Unit>> fOk) =>
             Iter(fOk, _ => unit.ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TOk, Task> fOk) =>
+        public Task<Unit> Iter(Func<TOk, Task> fOk) =>
             Iter(fOk, _ => unit.ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TOk, Unit> fOk) =>
+        public Task<Unit> Iter(Func<TOk, Unit> fOk) =>
             Iter(ok => fOk(ok).ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Action<TOk> fOk) =>
+        public Task<Unit> Iter(Action<TOk> fOk) =>
             Iter(ok =>
             {
                 fOk(ok);
@@ -151,19 +151,19 @@ namespace DeFuncto
             });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TError, Task<Unit>> fError) =>
+        public Task<Unit> Iter(Func<TError, Task<Unit>> fError) =>
             Iter(_ => unit.ToTask(), fError);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TError, Task> fError) =>
+        public Task<Unit> Iter(Func<TError, Task> fError) =>
             Iter(_ => unit.ToTask(), fError);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Func<TError, Unit> fError) =>
+        public Task<Unit> Iter(Func<TError, Unit> fError) =>
             Iter(ok => fError(ok).ToTask());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Iter(Action<TError> fError) =>
+        public Task<Unit> Iter(Action<TError> fError) =>
             Iter(ok =>
             {
                 fError(ok);
@@ -190,7 +190,6 @@ namespace DeFuncto
 
         public Task<bool> IsOk => resultTask.Map(r => r.IsOk);
         public Task<bool> IsError => resultTask.Map(r => r.IsError);
-
         public AsyncOption<TOk> Option => Match(Some, _ => None);
     }
 
