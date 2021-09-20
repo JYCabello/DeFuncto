@@ -8,7 +8,7 @@ namespace DeFuncto.Tests.Core.Types.Du
 {
     public class Equals
     {
-        [Property(DisplayName = "Equals null")]
+        [Property(DisplayName = "Is not equal to null")]
         public void FalseByNull(NonNull<string> a)
         {
             First<string, int>(a.Get)
@@ -16,7 +16,7 @@ namespace DeFuncto.Tests.Core.Types.Du
                 .Run(result => Assert.False(result));
         }
 
-        [Property(DisplayName = "T1 Equals T2")]
+        [Property(DisplayName = "T1 is not equal to T2")]
         public void FalseT1NotT2(NonNull<string> a, int b)
         {
             First<string, int>(a.Get)
@@ -24,7 +24,7 @@ namespace DeFuncto.Tests.Core.Types.Du
                 .Run(result => Assert.False(result));
         }
 
-        [Property(DisplayName = "T2 Equals T1")]
+        [Property(DisplayName = "T2 is not equal to T1")]
         public void FalseT2NotT1(NonNull<string> a, int b)
         {
             Second<string, int>(b)
@@ -32,7 +32,7 @@ namespace DeFuncto.Tests.Core.Types.Du
                 .Run(result => Assert.False(result));
         }
 
-        [Property(DisplayName = "T1 Equals T1")]
+        [Property(DisplayName = "T1 equals T1")]
         public void TrueT1(NonNull<string> a)
         {
             First<string, int>(a.Get)
@@ -40,7 +40,7 @@ namespace DeFuncto.Tests.Core.Types.Du
                 .Run(result => Assert.True(result));
         }
 
-        [Property(DisplayName = "T1 Equals T1")]
+        [Property(DisplayName = "T2 equals T2")]
         public void TrueT2(int a)
         {
             Second<string, int>(a)
