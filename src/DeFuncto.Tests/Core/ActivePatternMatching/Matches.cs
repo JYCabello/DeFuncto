@@ -8,11 +8,11 @@ namespace DeFuncto.Tests.Core.ActivePatternMatching
         [Fact(DisplayName = "Matches with the correct pattern")]
         public void Works()
         {
-            var result = "input"
+            var result = "correct"
                 .ActMatch(
                     With(
                         Pattern<string, string, string>(_ => None, _ => "incorrect"),
-                        Pattern<string, string, string>(Some, _ => "correct"),
+                        Pattern<string, string, string>(Some, Id),
                         Pattern<string, string, string>(_ => None, _ => "incorrect"),
                         Pattern<string, string, string>(_ => None, _ => "incorrect")
                     ),
