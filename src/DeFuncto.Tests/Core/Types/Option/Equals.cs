@@ -20,14 +20,14 @@ namespace DeFuncto.Tests.Core.Types.Option
         public void SomeNotEqualToNone(NonNull<string> a)
         {
             Some(a.Get)
-                .Equals(new OptionNone())
+                .Equals(Option<string>.None)
                 .Run(result => Assert.False(result));
         }
 
         [Property(DisplayName = "None is not equal to Some")]
         public void NoneNotEqualToSome(NonNull<string> a)
         {
-            None.Equals(Some(a.Get))
+            Option<string>.None.Equals(Some(a.Get))
                 .Run(result => Assert.False(result));
         }
 
@@ -58,7 +58,7 @@ namespace DeFuncto.Tests.Core.Types.Option
         [Fact(DisplayName = "None are equal")]
         public void NoneEqual()
         {
-            None.Equals(None)
+            Option<string>.None.Equals(Option<string>.None)
                 .Run(result => Assert.True(result));
         }
     }

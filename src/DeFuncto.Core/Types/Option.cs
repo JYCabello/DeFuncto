@@ -152,13 +152,8 @@ namespace DeFuncto
         public bool Equals(Option<T> other) =>
             IsSome == other.IsSome && other.value.Equals(value);
 
-        public override int GetHashCode()
-        {
-            int hashCode = 1664380923;
-            hashCode = hashCode * -1521134295 + value.GetHashCode();
-            hashCode = hashCode * -1521134295 + IsSome.GetHashCode();
-            return hashCode;
-        }
+        public override int GetHashCode() =>
+            -1584136870 + value.GetHashCode();
     }
 
     public readonly struct OptionNone
