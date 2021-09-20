@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
@@ -56,6 +57,15 @@ namespace DeFuncto
 
         public bool Equals(Du<T1, T2> other) =>
              Discriminator == other.Discriminator && Match(v => v!.Equals(other.t1), v => v!.Equals(other.t2));
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1956924612;
+            hashCode = hashCode * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t1);
+            hashCode = hashCode * -1521134295 + EqualityComparer<T2?>.Default.GetHashCode(t2);
+            hashCode = hashCode * -1521134295 + Discriminator.GetHashCode();
+            return hashCode;
+        }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
