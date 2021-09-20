@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
 
@@ -15,8 +17,8 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
             var some = Some(Guid.NewGuid().ToString()).Async();
             var witness = new Witness();
             await some.Iter(
-                _ => witness.Touch(),
-                () => witness.Touch()
+                _ => { witness.Touch(); },
+                () => { witness.Touch(); }
             );
             await some.Iter(() => witness.Touch());
             await some.Iter(_ => witness.Touch());
@@ -29,8 +31,8 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
             var some = Some(Guid.NewGuid().ToString()).Async();
             var witness = new Witness();
             await some.Iter(
-                _ => witness.Touch(),
-                () => witness.Touch()
+                _ => { witness.Touch(); },
+                () => { witness.Touch(); }
             );
             witness.ShouldHaveBeenTouched(1);
         }
@@ -50,10 +52,20 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption
         [Fact(DisplayName = "Iterates on None asynchronously")]
         public async Task NoneAsync()
         {
-            var some = None.Option<string>().Async();
+            var none = None.Option<string>().Async();
             var witness = new Witness();
-            await some.Iter(() => witness.Touch().ToTask());
-            await some.Iter(_ => witness.Touch().ToTask());
+            await none.Iter(() => witness.Touch().ToTask());
+            await none.Iter(_ => witness.Touch().ToTask());
+            witness.ShouldHaveBeenTouched(1);
+        }
+
+        [Property(DisplayName = "Iterates on Some asynchronously")]
+        public void SomeAsync(NonNull<string> val)
+        {
+            var some = Some(val).Async();
+            var witness = new Witness();
+            some.Iter(() => witness.Touch().ToTask()).Wait();
+            some.Iter(_ => witness.Touch().ToTask()).Wait();
             witness.ShouldHaveBeenTouched(1);
         }
     }
