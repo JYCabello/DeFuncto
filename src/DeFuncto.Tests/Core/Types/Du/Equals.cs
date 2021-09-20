@@ -32,7 +32,23 @@ namespace DeFuncto.Tests.Core.Types.Du
                 .Run(result => Assert.False(result));
         }
 
-        [Property(DisplayName = "T1 equals T1")]
+        [Property(DisplayName = "T1 are not the same")]
+        public void FalseT1(NonNull<string> a, NonNull<string> b)
+        {
+            First<string, int>($"a{a.Get}")
+                .Equals(First<string, int>($"b{a.Get}"))
+                .Run(result => Assert.False(result));
+        }
+
+        [Property(DisplayName = "T2 are not the same")]
+        public void FalseT2(NonNull<string> a, NonNull<string> b)
+        {
+            Second<int, string>($"a{a.Get}")
+                .Equals(Second<int, string>($"b{a.Get}"))
+                .Run(result => Assert.False(result));
+        }
+
+        [Property(DisplayName = "T1 are equal")]
         public void TrueT1(NonNull<string> a)
         {
             First<string, int>(a.Get)
@@ -40,7 +56,7 @@ namespace DeFuncto.Tests.Core.Types.Du
                 .Run(result => Assert.True(result));
         }
 
-        [Property(DisplayName = "T2 equals T2")]
+        [Property(DisplayName = "T2 are equal")]
         public void TrueT2(int a)
         {
             Second<string, int>(a)
