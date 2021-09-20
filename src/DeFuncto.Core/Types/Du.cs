@@ -56,18 +56,8 @@ namespace DeFuncto
                 : Equals((Du<T1, T2>)nval);
         }
 
-        bool IEquatable<Du<T1, T2>>.Equals(Du<T1, T2> other)
-        {
-            if (Discriminator != other.Discriminator)
-                return false;
-            return Match(ex => ex.Equals(other.t1), val => val.Equals(other.t2));
-            //return Discriminator switch
-            //{
-            //    DiscriminationValue.T1 => other.t1!.Equals(t1),
-            //    DiscriminationValue.T2 => other.t2!.Equals(t2),
-            //    _ => throw new ArgumentException(nameof(Discriminator))
-            //};
-        }
+        bool IEquatable<Du<T1, T2>>.Equals(Du<T1, T2> other) =>
+            Discriminator == other.Discriminator && Match(v => v!.Equals(other.t1), v => v!.Equals(other.t2));
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
