@@ -33,5 +33,13 @@ Filtering is a deterministic operation we do on data, it consists on making a de
 
 This is done in [imperative code](imperative.md) by means of conditionals, that will branch our execution path depending on certain checks. When done [declaratively](declarative.md), this is done by wrapping our piece of information in a data structure that represents the path we want to take.
 ## Transform
+A deterministic operation where we take an input and return an output. Adding two numbers, formatting a string or mapping a model are examples of it.
 
+When working [imperatively](imperative.md) this is often done by mutating values or pointers of existing designations, when working [declaratively](declarative.md) and in many [imperative](imperative.md) cases, this is achieved by creating a new value representing the outcome of the operation, keeping the original reference intact and often even discarding it.
 ## Iterate
+A non-deterministic operation where we execute an action over data. Saving to any form of storage, returning the response to an API call or writing in a console.
+
+Bear in mind that it's easy to mix it up with iterating over a collection to filter and/or transform in [imperative](imperative.md) code, iterating over a list to render table rows in html is not really iterating in this definition, but writing the whole html to the http response is (or altering the DOM to introduce those rows in a client side scenario).
+
+### Use of these definitions
+A big win coming from Functional Programming is that you get to write functions with one and only one concern. It's taking single responsibility to the extreme. Using these definitions will help you in this endeavor. Try to never fetch and transform or filter and iterate in the same function and you will be one step closer to write the most decoupled code you have ever written. I will not defend you from doing two different transformations in one go, but quality in software development is pretty much about compounding practices. Every bit you do, will multiply the outcome.
