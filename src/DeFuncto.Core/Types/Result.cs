@@ -123,6 +123,9 @@ namespace DeFuncto
 
         public bool Equals(Result<TOk, TError> other) =>
             IsOk == other.IsOk && other.value.Equals(value);
+
+        public override int GetHashCode() =>
+            -1584136870 + value.GetHashCode();
     }
 
     public readonly struct ResultOk<TOk>
