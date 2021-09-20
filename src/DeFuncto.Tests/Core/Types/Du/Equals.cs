@@ -31,5 +31,21 @@ namespace DeFuncto.Tests.Core.Types.Du
                 .Equals(First<string, int>(a.Get))
                 .Run(result => Assert.False(result));
         }
+
+        [Property(DisplayName = "T1 Equals T1")]
+        public void TrueT1(NonNull<string> a)
+        {
+            First<string, int>(a.Get)
+                .Equals(First<string, int>(a.Get))
+                .Run(result => Assert.True(result));
+        }
+
+        [Property(DisplayName = "T1 Equals T1")]
+        public void TrueT2(int a)
+        {
+            Second<string, int>(a)
+                .Equals(Second<string, int>(a))
+                .Run(result => Assert.True(result));
+        }
     }
 }

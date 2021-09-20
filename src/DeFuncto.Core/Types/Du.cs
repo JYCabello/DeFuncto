@@ -51,9 +51,7 @@ namespace DeFuncto
         public override bool Equals(object obj)
         {
             var nval = obj as Du<T1, T2>?;
-            return nval == null
-                ? false
-                : Equals((Du<T1, T2>)nval);
+            return nval != null && Equals((Du<T1, T2>)nval);
         }
 
         public bool Equals(Du<T1, T2> other) =>
