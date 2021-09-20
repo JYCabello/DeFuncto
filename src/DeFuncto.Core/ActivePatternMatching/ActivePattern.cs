@@ -13,12 +13,12 @@ namespace DeFuncto.ActivePatternMatching
             MatcherBase(input).Match(ProjectionBase, () => throw new ArgumentException(nameof(input)));
     }
 
-    internal class ActivePattern<TIn, TIntermediate, TOut> : ActivePatternBase<TIn, TOut>
+    public class ActivePattern<TIn, TIntermediate, TOut> : ActivePatternBase<TIn, TOut>
     {
         protected override Func<TIn, Option<object>> MatcherBase { get; }
         protected override Func<object, TOut> ProjectionBase { get; }
 
-        internal ActivePattern(Func<TIn, Option<TIntermediate>> matcher, Func<TIntermediate, TOut> projection)
+        public ActivePattern(Func<TIn, Option<TIntermediate>> matcher, Func<TIntermediate, TOut> projection)
         {
             MatcherBase = tin => matcher(tin).Map<object>(it => it!);
             ProjectionBase = obj => projection((TIntermediate)obj);
