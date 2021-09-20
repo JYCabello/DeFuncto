@@ -243,17 +243,17 @@ public Option<Order> TryFind(int id) => /* ... */
 public void Process(Order order) { /* ... */ }
 
 // Acting on not found:
-TryFind(1).Match(() => logger.Log($"Could not find order number {id}"));
+TryFind(1).Iter(() => logger.Log($"Could not find order number {id}"));
 // On found:
-TryFind(2).Match(Process);
+TryFind(2).Iter(Process);
 // On either:
-TryFind(3).Match(
+TryFind(3).Iter(
     Process,
     () => logger.Log($"Could not find order number {id}")
 );
 ```
 ## Bonus track: Choose
-Choose offers us the possibility of optionally constructing collections or even doing filtering an transformations in a single step.
+Choose offers us the possibility of optionally constructing collections or even doing filtering an transformations in a single step. Internally, it just takes an inumerable of `Option<T>` and returns an `IEnumerable` of `T` for all options that were in the `Some` state.
 ### Optional construction
 ```cs
 using static DeFuncto.Prelude;
