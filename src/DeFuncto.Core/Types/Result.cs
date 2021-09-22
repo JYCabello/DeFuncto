@@ -7,7 +7,7 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
-    public readonly struct Result<TOk, TError>
+    public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     {
         private readonly Du<TOk, TError> value;
         public readonly bool IsOk;
@@ -114,6 +114,15 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Result<TOk, TError>(TError error) => Error(error);
+
+        public override bool Equals(object obj) =>
+            obj is Result<TOk, TError> other && Equals(other);
+
+        public bool Equals(Result<TOk, TError> other) =>
+            other.value.Equals(value);
+
+        public override int GetHashCode() =>
+            -1584136870 + value.GetHashCode();
     }
 
     public readonly struct ResultOk<TOk>
