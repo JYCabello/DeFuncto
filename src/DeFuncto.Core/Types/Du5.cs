@@ -140,7 +140,7 @@ namespace DeFuncto
                  v => v!.Equals(other.t5));
 
         public override int GetHashCode() =>
-            (this, -305974134)
+            (this, -815974257)
                 .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t.Item1.t1)))
                 .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T2?>.Default.GetHashCode(t.Item1.t2)))
                 .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T3?>.Default.GetHashCode(t.Item1.t3)))
