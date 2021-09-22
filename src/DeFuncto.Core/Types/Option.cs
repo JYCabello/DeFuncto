@@ -7,7 +7,7 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
-    public readonly struct Option<T>
+    public readonly struct Option<T> : IEquatable<Option<T>>
     {
         private readonly Du<Unit, T> value;
         public readonly bool IsSome;
@@ -124,7 +124,7 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> Some(T value) => value;
-
+      
         public static Option<T> None => new OptionNone();
 
         [Pure]
@@ -134,6 +134,15 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Option<T>(OptionNone _) => new(unit);
+
+        public override bool Equals(object obj) =>
+            obj is Option<T> other && Equals(other);
+
+        public bool Equals(Option<T> other) =>
+            IsSome == other.IsSome && other.value.Equals(value);
+
+        public override int GetHashCode() =>
+            -1584136870 + value.GetHashCode();
     }
 
     public readonly struct OptionNone
