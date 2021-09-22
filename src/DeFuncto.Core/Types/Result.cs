@@ -96,7 +96,7 @@ namespace DeFuncto
             Iter(iteratorOk);
             return Iter(iteratorError);
         }
-       
+
         public Option<TOk> Option => Match(Some, _ => None);
 
         [Pure]
@@ -115,11 +115,8 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Result<TOk, TError>(TError error) => Error(error);
 
-        public override bool Equals(object obj)
-        {
-            var nval = obj as Result<TOk, TError>?;
-            return nval != null && Equals((Result<TOk, TError>)nval);
-        }
+        public override bool Equals(object obj) =>
+            obj is Result<TOk, TError> other && Equals(other);
 
         public bool Equals(Result<TOk, TError> other) =>
             other.value.Equals(value);
