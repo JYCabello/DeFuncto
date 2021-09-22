@@ -1,0 +1,325 @@
+﻿using FsCheck;
+using Xunit;
+using FsCheck.Xunit;
+using static DeFuncto.Prelude;
+
+namespace DeFuncto.Tests.Core.Types.Du7
+{
+    public class GetHashCode
+    {
+        [Property(DisplayName = "First is not equal to First")]
+        public void FirstNotEqualToFirst(NonNull<string> a)
+        {
+            Assert.NotEqual(
+                First<string, string, string, string, string, string, string>($"a{a.Get}").GetHashCode(),
+                First<string, string, string, string, string, string, string>($"b{a.Get}").GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "First is not equal to Second")]
+        public void FirstNotEqualToSecond(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Second<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "First is not equal to Third")]
+        public void FirstNotEqualToThird(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Third<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "First is not equal to Fourth")]
+        public void FirstNotEqualToFourth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fourth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "First is not equal to Fifth")]
+        public void FirstNotEqualToFifth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fifth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "First is not equal to Sixth")]
+        public void FirstNotEqualToSixth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Sixth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "First is not equal to Seventh")]
+        public void FirstNotEqualToSeventh(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Second is not equal to Second")]
+        public void SecondNotEqualToSecond(NonNull<string> a)
+        {
+            Assert.NotEqual(
+                Second<string, string, string, string, string, string, string>($"a{a.Get}").GetHashCode(),
+                Second<string, string, string, string, string, string, string>($"b{a.Get}").GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Second is not equal to Third")]
+        public void SecondNotEqualToThird(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Second<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Third<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Second is not equal to Fourth")]
+        public void SecondNotEqualToFourth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Second<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fourth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Second is not equal to Fifth")]
+        public void SecondNotEqualToFifth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Second<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fifth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Second is not equal to Sixth")]
+        public void SecondNotEqualToSixth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Second<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Sixth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Second is not equal to Seventh")]
+        public void SecondNotEqualToSeventh(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Second<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Third is not equal to Third")]
+        public void ThirdNotEqualToThird(NonNull<string> a)
+        {
+            Assert.NotEqual(
+                Third<string, string, string, string, string, string, string>($"a{a.Get}").GetHashCode(),
+                Third<string, string, string, string, string, string, string>($"b{a.Get}").GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Third is not equal to Fourth")]
+        public void ThirdNotEqualToFourth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Third<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fourth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Third is not equal to Fifth")]
+        public void ThirdNotEqualToFifth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Third<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fifth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Third is not equal to Sixth")]
+        public void ThirdNotEqualToSixth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Third<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Sixth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Third is not equal to Seventh")]
+        public void ThirdNotEqualToSeventh(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Third<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fourth is not equal to Fourth")]
+        public void FourthNotEqualToFourth(NonNull<string> a)
+        {
+            Assert.NotEqual(
+                Fourth<string, string, string, string, string, string, string>($"a{a.Get}").GetHashCode(),
+                Fourth<string, string, string, string, string, string, string>($"b{a.Get}").GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fourth is not equal to Fifth")]
+        public void FourthNotEqualToFifth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Fourth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fifth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fourth is not equal to Sixth")]
+        public void FourthNotEqualToSixth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Fourth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Sixth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fourth is not equal to Seventh")]
+        public void FourthNotEqualToSeventh(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Fourth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fifth is not equal to Fifth")]
+        public void FifthNotEqualToFifth(NonNull<string> a)
+        {
+            Assert.NotEqual(
+                Fifth<string, string, string, string, string, string, string>($"a{a.Get}").GetHashCode(),
+                Fifth<string, string, string, string, string, string, string>($"b{a.Get}").GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fifth is not equal to Sixth")]
+        public void FifthNotEqualToSixth(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Fifth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Sixth<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fifth is not equal to Seventh")]
+        public void FifthNotEqualToSeventh(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Fifth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Sixth is not equal to Sixth")]
+        public void SixthNotEqualToSixth(NonNull<string> a)
+        {
+            Assert.NotEqual(
+                Sixth<string, string, string, string, string, string, string>($"a{a.Get}").GetHashCode(),
+                Sixth<string, string, string, string, string, string, string>($"b{a.Get}").GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Sixth is not equal to Seventh")]
+        public void SixthNotEqualToSeventh(NonNull<string> a, NonNull<string> b)
+        {
+            Assert.NotEqual(
+                Sixth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>(b.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Seventh is not equal to Seventh")]
+        public void SeventhNotEqualToSeventh(NonNull<string> a)
+        {
+            Assert.NotEqual(
+                Seventh<string, string, string, string, string, string, string>($"a{a.Get}").GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>($"b{a.Get}").GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "First is equal to First")]
+        public void FirstEqualToFirst(NonNull<string> a)
+        {
+            Assert.Equal(
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                First<string, string, string, string, string, string, string>(a.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Second is equal to Second")]
+        public void SecondEqualToSecond(NonNull<string> a)
+        {
+            Assert.Equal(
+                Second<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Second<string, string, string, string, string, string, string>(a.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Third is equal to Third")]
+        public void ThirdEqualToThird(NonNull<string> a)
+        {
+            Assert.Equal(
+                Third<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Third<string, string, string, string, string, string, string>(a.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fourth is equal to Fourth")]
+        public void FourthEqualToFourth(NonNull<string> a)
+        {
+            Assert.Equal(
+                Fourth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fourth<string, string, string, string, string, string, string>(a.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Fifth is equal to Fifth")]
+        public void FifthEqualToFifth(NonNull<string> a)
+        {
+            Assert.Equal(
+                Fifth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Fifth<string, string, string, string, string, string, string>(a.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Sixth is equal to Sixth")]
+        public void SixthEqualToSixth(NonNull<string> a)
+        {
+            Assert.Equal(
+                Sixth<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Sixth<string, string, string, string, string, string, string>(a.Get).GetHashCode()
+            );
+        }
+
+        [Property(DisplayName = "Seventh is equal to Seventh")]
+        public void SeventhEqualToSeventh(NonNull<string> a)
+        {
+            Assert.Equal(
+                Seventh<string, string, string, string, string, string, string>(a.Get).GetHashCode(),
+                Seventh<string, string, string, string, string, string, string>(a.Get).GetHashCode()
+            );
+        }
+    }
+}
