@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using DeFuncto.ActivePatternMatching;
 using DeFuncto.Extensions;
 
 namespace DeFuncto
@@ -163,5 +164,27 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Du7<T1, T2, T3, T4, T5, T6, T7> Seventh<T1, T2, T3, T4, T5, T6, T7>(T7 t7) => Du7<T1, T2, T3, T4, T5, T6, T7>.Seventh(t7);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TOut ActMatch<TIn, TOut>(
+            this TIn input,
+            ActivePatternBase<TIn, TOut>[] patterns,
+            Func<TIn, TOut> defaulter
+        ) =>
+            ActivePatternsExecutor.Execute(input, patterns, defaulter);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ActivePatternBase<TIn, TOut> Pattern<TIn, TIntermediate, TOut>(
+            Func<TIn, Option<TIntermediate>> matcher,
+            Func<TIntermediate, TOut> projection
+        ) =>
+            new ActivePattern<TIn, TIntermediate, TOut>(matcher, projection);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ActivePatternBase<TIn, TOut>[] With<TIn, TOut>(params ActivePatternBase<TIn, TOut>[] patterns) =>
+            patterns;
     }
 }
