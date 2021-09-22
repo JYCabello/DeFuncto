@@ -1,10 +1,12 @@
-﻿using System;
+﻿using DeFuncto.Extensions;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace DeFuncto
 {
-    public readonly struct Du3<T1, T2, T3>
+    public readonly struct Du3<T1, T2, T3> : IEquatable<Du3<T1, T2, T3>>
     {
         public enum DiscriminationValue
         {
@@ -76,5 +78,22 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Du3<T1, T2, T3>(T3 t3) => new(t3);
+
+        public override bool Equals(object obj) =>
+            obj is Du3<T1, T2, T3> other && Equals(other);
+
+        public bool Equals(Du3<T1, T2, T3> other) =>
+             Discriminator == other.Discriminator
+             && Match(
+                 v => v!.Equals(other.t1),
+                 v => v!.Equals(other.t2),
+                 v => v!.Equals(other.t3));
+
+        public override int GetHashCode() =>
+            (this, -305974134)
+                .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t.Item1.t1)))
+                .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T2?>.Default.GetHashCode(t.Item1.t2)))
+                .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T3?>.Default.GetHashCode(t.Item1.t3)))
+                .Apply(t => t.Item2 * -1521134295 + t.Item1.Discriminator.GetHashCode());
     }
 }
