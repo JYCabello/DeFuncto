@@ -1,8 +1,8 @@
 ﻿using FsCheck;
 using FsCheck.Xunit;
 using DeFuncto.Extensions;
-using static DeFuncto.Prelude;
 using Xunit;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Du7
 {
