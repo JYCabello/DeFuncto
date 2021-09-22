@@ -164,7 +164,7 @@ namespace DeFuncto
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Unit> Iter(Action<T> fSome, Action fNone) =>
-            Match(fSome.Function(), fNone.Function());
+            Iter(fSome.Function(), fNone.Function());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Unit> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
