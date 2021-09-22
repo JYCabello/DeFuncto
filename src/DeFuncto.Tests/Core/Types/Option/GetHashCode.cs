@@ -1,7 +1,7 @@
 ﻿using FsCheck;
 using Xunit;
-using static DeFuncto.Prelude;
 using FsCheck.Xunit;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Option
 {

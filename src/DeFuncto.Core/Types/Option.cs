@@ -135,11 +135,8 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Option<T>(OptionNone _) => new(unit);
 
-        public override bool Equals(object obj)
-        {
-            var nval = obj as Option<T>?;
-            return nval != null && Equals((Option<T>)nval);
-        }
+        public override bool Equals(object obj) =>
+            obj is Option<T> other && Equals(other);
 
         public bool Equals(Option<T> other) =>
             IsSome == other.IsSome && other.value.Equals(value);
