@@ -34,7 +34,7 @@ namespace DeFuncto.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Option<T> Where<T>(this T self, Func<T, bool> predicate) =>
+        public static Option<T> When<T>(this T self, Func<T, bool> predicate) =>
             predicate(self) ? Some(self) : None;
     }
 }
