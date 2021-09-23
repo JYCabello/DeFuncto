@@ -120,7 +120,7 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncOption<T> Where(Func<T, bool> filter) =>
-            Option.Map(opt => opt.Predicate(filter));
+            Option.Map(opt => opt.Where(filter));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Task<Unit> Iter(Action<T> f) =>
