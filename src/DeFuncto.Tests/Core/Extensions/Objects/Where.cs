@@ -8,13 +8,13 @@ namespace DeFuncto.Tests.Core.Extensions.Objects
 {
     public class Where
     {
-        [Property]
+        [Property(DisplayName = "Some if true")]
         public void Some(NonNull<string> a)
         {
             a.Where(x => x == a).ShouldBeSome(a);
         }
 
-        [Property]
+        [Property(DisplayName = "None if false")]
         public void None(NonNull<string> a)
         {
             a.Where(x => x != a).ShouldBeNone();
