@@ -84,7 +84,7 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Option<T> Where(Func<T, bool> filter) =>
+        public Option<T> Predicate(Func<T, bool> filter) =>
             this.Apply(self => self.Match(val => filter(val) ? self : None, () => default));
 
         [Pure]
