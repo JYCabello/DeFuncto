@@ -35,7 +35,7 @@ namespace DeFuncto.Assertions
         public static Unit AssertEquals<T>(this T self, T other)
         {
             if (!self.Equals(other))
-                throw new AssertionFailed($"Ok value should be {other} but it was {self}");
+                throw new AssertionFailed($"Expected {other} but it was {self}");
             return unit;
         }
 
