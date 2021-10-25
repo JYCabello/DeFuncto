@@ -181,7 +181,7 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncResult<TOk, TError> Async<TOk, TError>(this Task<Result<Task<TOk>, Task<TError>>> self) =>
-            self.Map(r => r.Async().Result());
+            self.Map(r => r.Async().ToTask());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
