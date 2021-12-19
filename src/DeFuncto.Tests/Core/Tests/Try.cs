@@ -1,6 +1,5 @@
 ﻿using FsCheck.Xunit;
 using DeFuncto.Assertions;
-using Xunit;
 using System;
 using FsCheck;
 using System.Threading.Tasks;
