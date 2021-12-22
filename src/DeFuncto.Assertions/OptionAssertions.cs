@@ -37,7 +37,7 @@ namespace DeFuncto.Assertions
         public static Option<T> ShouldBeSome<T>(this Option<T> option, T expected) =>
             option.ShouldBeSome(t =>
             {
-                if (!expected.Equals(t))
+                if (!expected?.Equals(t) ?? t != null)
                     throw new AssertionFailed($"Option should have value {expected} but it was {t}.");
                 return unit;
             });

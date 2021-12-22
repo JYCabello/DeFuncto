@@ -48,7 +48,7 @@ namespace DeFuncto
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Task<Result<TOk, TError>> Result() => resultTask;
+        public Task<Result<TOk, TError>> ToTask() => resultTask;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -203,11 +203,11 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncResult<TOk, TError> Flatten<TOk, TError>(this AsyncResult<TOk, AsyncResult<TOk, TError>> self) =>
-            self.Match(ok => Ok<TOk, TError>(ok).ToTask(), error => error.Result());
+            self.Match(ok => Ok<TOk, TError>(ok).ToTask(), error => error.ToTask());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncResult<TOk, TError> Flatten<TOk, TError>(this AsyncResult<AsyncResult<TOk, TError>, TError> self) =>
-            self.Match(ok => ok.Result(), error => Error<TOk, TError>(error).ToTask());
+            self.Match(ok => ok.ToTask(), error => Error<TOk, TError>(error).ToTask());
     }
 }

@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Extensions
 {
@@ -30,5 +31,10 @@ namespace DeFuncto.Extensions
             f(t);
             return Unit.Default;
         });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Option<T> When<T>(this T self, Func<T, bool> predicate) =>
+            predicate(self) ? Some(self) : None;
     }
 }
