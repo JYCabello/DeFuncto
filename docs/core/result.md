@@ -96,16 +96,16 @@ public class EntityNotFound
     public string Message { get; }
 }
 
+public class ErrorResult
+{
+    public ErrorResult(string message) =>
+        Message = message;
+
+    public string Message { get; }
+}
+
 public class BaseController : ControllerBase
 {
-    private class ErrorResult
-    {
-        public ErrorResult(string message) =>
-            Message = message;
-
-        private string Message { get; }
-    }
-
     // Single point handling all exit conditions.
     protected IActionResult Handle(MyError error) =>
         error.Value.Match<IActionResult>(
