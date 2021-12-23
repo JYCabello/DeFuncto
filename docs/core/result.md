@@ -22,6 +22,8 @@ public IActionResult GetData(int id)
     if (key == null)
         return KeyMissingResult();
     var user = GetUser(key);
+    if (user == null)
+        return InvalidKeyResult();
     if (!user.IsActive)
         return UserInactiveResult(user);
     if (!user.HasRole("data-getter"))
@@ -53,10 +55,98 @@ You can avoid these kind of checks in every endpoint by using middlewares like A
 ### The alternative
 The functonal option requires some setup.
 ```cs
-public record KeyInvalid;
-public record UserInactive(string Username);
-public record PermissionMising(string Username, string Permission);
-public record EntityNotFound(string Message);
+// Explicitly typing our errors:
+public class MyError
+{
+    public readonly Du5<KeyMissing, KeyInvalid, UserInactive, PermissionMissing, EntityNotFound> Value;
+    public MyError(Du5<KeyMissing, KeyInvalid, UserInactive, PermissionMissing, EntityNotFound> value) =>
+        Value = value;
 
-public record MyError(Du4<KeyInvalid, UserInactive, PermissionMising, EntityNotFound> Value);
+    public static MyError KeyMissing => new(new KeyMissing());
+    public static MyError KeyInvalid => new(new KeyInvalid());
+    public static MyError UserInactive(string username) => new(new UserInactive(username));
+    public static MyError PermissionMissing(string username, string role) => new(new PermissionMissing(username, role));
+    public static MyError EntityNotFound(string message) => new(new EntityNotFound(message));
+}
+
+public class KeyMissing { }
+public class KeyInvalid { }
+
+public class UserInactive
+{
+    public UserInactive(string username) =>
+        Username = username;
+    public string Username { get; }
+}
+public class PermissionMissing
+{
+    public PermissionMissing(string username, string role)
+    {
+        Username = username;
+        Role = role;
+    }
+    public string Username { get; }
+    public string Role { get; }
+}
+
+public class EntityNotFound
+{
+    public EntityNotFound(string message) =>
+        Message = message;
+    public string Message { get; }
+}
+
+// Handling the errors in the base controller
+public class BaseController : ControllerBase
+{
+    private class ErrorResult
+    {
+        public ErrorResult(string message) =>
+            Message = message;
+
+        private string Message { get; }
+    }
+
+    // Single point handling all exit conditions.
+    protected IActionResult Handle(MyError error) =>
+        error.Value.Match<IActionResult>(
+            _ => Unauthorized(new ErrorResult("Missing key in the headers")),
+            _ => Unauthorized(new ErrorResult("Key was not recognized")),
+            inactive => Unauthorized(new ErrorResult($"User {inactive.Username} is inactive")),
+            mising => Unauthorized(new ErrorResult($"User {mising.Username} is missing permission {mising.Role}")),
+            notFound => NotFound(new ErrorResult(notFound.Message))
+        );
+}
+
+// The service methods / methods in the base controller we will call
+public Result<string, MyError> GetKey(IDictionary<string, StringValues> dict) =>
+    dict.ContainsKey("api-key") ? dict["api-key"].ToString() : MyError.KeyMissing;
+
+public Result<User, MyError> GetActiveUser(string key)
+{
+    User? user = GetUser(key);
+    if (user == null)
+        return MyError.KeyInvalid;
+    return user.IsActive ? user : MyError.UserInactive(user.Username);
+}
+
+public Result<Unit, MyError> HasRole(User2 user, string role) =>
+    user.HasRole(role) ? unit : MyError.PermissionMissing(user.Username, role);
+
+public Result<MyData, MyError> GetMyData(int id)
+{
+    MyData? data = Fetch(id);
+    return data != null ? MyError.EntityNotFound($"Could not find data with id {id}") : data;
+}
+
+// The actual endpoint (in a controller inheriting from BaseController)
+[HttpGet(Name = "GetData")]
+public IActionResult GetData(int id) =>
+(
+    from key in GetKey(Request.Headers)
+    from user in GetActiveUser(key)
+    from isAuthorized in HasRole(user, "data-getter")
+    from data in GetMyData(id)
+    select data
+).Match(Ok, Handle);
 ```
