@@ -96,7 +96,6 @@ public class EntityNotFound
     public string Message { get; }
 }
 
-// Handling the errors in the base controller
 public class BaseController : ControllerBase
 {
     private class ErrorResult
@@ -117,8 +116,11 @@ public class BaseController : ControllerBase
             notFound => NotFound(new ErrorResult(notFound.Message))
         );
 }
+```
+That's a bit of setup, I know, but it's all the error halding code we'll ever need in our API, and extending it will be done exclusively here.
 
-// The service methods / methods in the base controller we will call
+Now, for the imperative examples it was not worth it to show the logic of the methods, but for the imperative version:
+```cs
 public Result<string, MyError> GetKey(IDictionary<string, StringValues> dict) =>
     dict.ContainsKey("api-key") ? dict["api-key"].ToString() : MyError.KeyMissing;
 
@@ -138,8 +140,10 @@ public Result<MyData, MyError> GetMyData(int id)
     MyData? data = Fetch(id);
     return data != null ? MyError.EntityNotFound($"Could not find data with id {id}") : data;
 }
+```
 
-// The actual endpoint (in a controller inheriting from BaseController)
+Now, the grand finale, the shape that every one of our endpoints will have with this setup.
+```cs
 [HttpGet(Name = "GetData")]
 public IActionResult GetData(int id) =>
 (
@@ -150,3 +154,7 @@ public IActionResult GetData(int id) =>
     select data
 ).Match(Ok, Handle);
 ```
+
+The type system is enforcing error handling in every step. If you were to check for `isAuthorized` after you get the data, it would still return an error. It can be made safer by having `HasRole` return a token and make it a parameter of `GetMyData`, but it's out of the scope for this example.
+
+More importantly, we have a single point where we translate all possible errors to action results. If we had operations with idempotency keys, we could validate the idempotency key and shortcircuit the whole operation with a cached result with trivial modifications.
