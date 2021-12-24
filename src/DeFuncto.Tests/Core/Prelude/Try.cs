@@ -18,8 +18,7 @@ namespace DeFuncto.Tests.Core.Tries
         [Property]
         public void TryError(NonNull<string> a)
         {
-            Exception expected = new Exception(a.Get);
-
+            var expected = new Exception(a.Get);
             Try(() => ThisWillThrow(expected))
                 .ShouldBeError(expected);
         }
@@ -35,15 +34,12 @@ namespace DeFuncto.Tests.Core.Tries
         [Fact]
         public async Task TryAsyncError()
         {
-            Exception expected = new Exception(Guid.NewGuid().ToString());
-
+            var expected = new Exception(Guid.NewGuid().ToString());
             await Try(async () => ThisWillThrow(expected))
                  .ShouldBeError(expected);
         }
 
-        private int ThisWillThrow(Exception ex)
-        {
+        private int ThisWillThrow(Exception ex) =>
             throw ex;
-        }
     }
 }
