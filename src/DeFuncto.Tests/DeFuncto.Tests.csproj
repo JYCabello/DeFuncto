@@ -26,4 +26,8 @@
       <ProjectReference Include="..\DeFuncto.Core\DeFuncto.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Core\Tests\" />
+    </ItemGroup>
+
 </Project>

@@ -4,6 +4,7 @@ using System;
 using FsCheck;
 using System.Threading.Tasks;
 using Xunit;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Tries
 {
@@ -11,7 +12,7 @@ namespace DeFuncto.Tests.Core.Tries
     {
         [Property]
         public void TryOk(int a) =>
-            DeFuncto.Extensions.Tests.Try(() => a)
+            Try(() => a)
                 .ShouldBeOk(a);
 
         [Property]
@@ -19,7 +20,7 @@ namespace DeFuncto.Tests.Core.Tries
         {
             Exception expected = new Exception(a.Get);
 
-            DeFuncto.Extensions.Tests.Try(() => ThisWillThrow(expected))
+            Try(() => ThisWillThrow(expected))
                 .ShouldBeError(expected);
         }
 
@@ -27,7 +28,7 @@ namespace DeFuncto.Tests.Core.Tries
         public async Task TryAsyncOk()
         {
             var expected = Guid.NewGuid().ToString();
-            await DeFuncto.Extensions.Tests.Try(() => Task.FromResult(expected))
+            await Try(() => Task.FromResult(expected))
                 .ShouldBeOk(expected);
         }
 
@@ -36,7 +37,7 @@ namespace DeFuncto.Tests.Core.Tries
         {
             Exception expected = new Exception(Guid.NewGuid().ToString());
 
-            await DeFuncto.Extensions.Tests.Try(async () => ThisWillThrow(expected))
+            await Try(async () => ThisWillThrow(expected))
                  .ShouldBeError(expected);
         }
 
