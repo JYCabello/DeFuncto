@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using DeFuncto.ActivePatternMatching;
 using DeFuncto.Extensions;
 
@@ -40,11 +41,11 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> Optional<T>(T? t) =>
-            t is not null ? Some(t!) : None;
+            t is not null ? Some(t) : None;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Option<T> Optional<T>(Nullable<T> t) where T : struct =>
+        public static Option<T> Optional<T>(T? t) where T : struct =>
             t.HasValue ? Some(t.Value) : None;
 
         [Pure]
@@ -186,5 +187,35 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ActivePatternBase<TIn, TOut>[] With<TIn, TOut>(params ActivePatternBase<TIn, TOut>[] patterns) =>
             patterns;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Result<T, Exception> Try<T>(Func<T> func)
+        {
+            try
+            {
+                return func().Apply(Result<T, Exception>.Ok);
+            }
+            catch (Exception ex)
+            {
+                return Result<T, Exception>.Error(ex);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncResult<T, Exception> Try<T>(Func<Task<T>> func)
+        {
+            return Go();
+            async Task<Result<T, Exception>> Go()
+            {
+                try
+                {
+                    return await func().Map(Result<T, Exception>.Ok);
+                }
+                catch (Exception ex)
+                {
+                    return Result<T, Exception>.Error(ex);
+                }
+            }
+        }
     }
 }
