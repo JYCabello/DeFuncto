@@ -41,11 +41,11 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> Optional<T>(T? t) =>
-            t is not null ? Some(t!) : None;
+            t is not null ? Some(t) : None;
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Option<T> Optional<T>(Nullable<T> t) where T : struct =>
+        public static Option<T> Optional<T>(T? t) where T : struct =>
             t.HasValue ? Some(t.Value) : None;
 
         [Pure]
@@ -188,6 +188,7 @@ namespace DeFuncto
         public static ActivePatternBase<TIn, TOut>[] With<TIn, TOut>(params ActivePatternBase<TIn, TOut>[] patterns) =>
             patterns;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Result<T, Exception> Try<T>(Func<T> func)
         {
             try
@@ -200,6 +201,7 @@ namespace DeFuncto
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncResult<T, Exception> Try<T>(Func<Task<T>> func)
         {
             return Go();
