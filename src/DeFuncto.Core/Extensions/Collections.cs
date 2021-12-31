@@ -22,11 +22,6 @@ namespace DeFuncto.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Option<T> FirstOrNone<T>(this IQueryable<T> query) =>
-            query.Select(t => new Box<T>(t)).FirstOrDefault().Apply(Optional).Map(box => box.Value);
-
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> FirstOrNone<T>(this IEnumerable<T> self) =>
             self.Select(t => new Box<T>(t)).FirstOrDefault().Apply(Optional).Map(box => box.Value);
 
@@ -44,11 +39,6 @@ namespace DeFuncto.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Option<T> FirstOrNone<T>(this List<T> self, Func<T, bool> filter) =>
             self.Where(filter).FirstOrNone();
-
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Option<T> SingleOrNone<T>(this IQueryable<T> query) =>
-            query.Select(t => new Box<T>(t)).SingleOrDefault().Apply(Optional).Map(box => box.Value);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
