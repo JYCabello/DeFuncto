@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using DeFuncto.Extensions;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
@@ -70,5 +71,11 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Du<T1, T2>(T2 t2) => new(t2);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T1> iterator)
+        {
+           throw new NotImplementedException();
+        }       
     }
 }
