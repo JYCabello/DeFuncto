@@ -82,5 +82,11 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T1, Unit> iterator) =>
             iterator(t1!);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T2> iterator)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

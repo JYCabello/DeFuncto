@@ -32,5 +32,16 @@ namespace DeFuncto.Tests.Core.Types.Du
 
             witness.ShouldHaveBeenTouched(1);
         }
+
+        [Property]
+        public void OnDu2Action(int a)
+        {
+            var witness = new Witness();
+
+            new Du<string, int>(a)
+                .Iter((string _) => { witness.Touch(); });
+
+            witness.ShouldHaveBeenTouched(1);
+        }
     }
 }
