@@ -86,5 +86,13 @@ namespace DeFuncto
                     fNone(t2);
                     return unit;
                 });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T1> fSome) =>
+            Iter(fSome, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T2> fSome) =>
+            Iter(_ => { }, fSome);
     }
 }
