@@ -72,21 +72,19 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Du<T1, T2>(T2 t2) => new(t2);
 
+        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Unit Iter(Action<T1> iterator)
-        {
-            iterator(t1!);
-            return unit;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Unit Iter(Func<T1, Unit> iterator) =>
-            iterator(t1!);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Unit Iter(Action<T2> iterator)
-        {
-            throw new NotImplementedException();
-        }
+        public Unit Iter(Action<T1> fSome, Action<T2> fNone) =>
+            Match(
+                t1 =>
+                {
+                    fSome(t1);
+                    return unit;
+                },
+                t2 =>
+                {
+                    fNone(t2);
+                    return unit;
+                });
     }
 }
