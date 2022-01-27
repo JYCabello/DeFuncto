@@ -133,5 +133,20 @@ namespace DeFuncto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2, Func<T3, Unit> ont3) =>
             Iter(t1 => { ont1(t1); }, t2 => { ont2(t2); }, t3 => { ont3(t3); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T1, Unit> ont1) =>
+            Iter(t1 => { ont1(t1); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T2, Unit> ont2) =>
+            Iter(t2 => { ont2(t2); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T3, Unit> ont3) =>
+            Iter(t3 => { ont3(t3); });
     }
 }

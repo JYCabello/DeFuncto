@@ -160,5 +160,56 @@ namespace DeFuncto.Tests.Core.Types.Du3
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
         }
+
+        [Property(DisplayName = "Runs T1 when it is T1")]
+        public void RunsT1OnFunc(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du3<int, Model1, Model2>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
+
+        [Property(DisplayName = "Runs T2 when it is T2")]
+        public void RunsT2OnFunc(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du3<Model1, int,  Model2>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
+
+        [Property(DisplayName = "Runs T3 when it is T3")]
+        public void RunsT3OnFunc(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du3<Model1, Model2, int>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
     }
 }
