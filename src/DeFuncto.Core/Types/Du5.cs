@@ -159,5 +159,30 @@ namespace DeFuncto
                t4 => { ont4(t4); return unit; },
                t5 => { ont5(t5); return unit; }
            );
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T1> fSome) =>
+            Iter(fSome, _ => { }, _ => { }, _ => { }, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T2> fSome) =>
+            Iter(_ => { }, fSome, _ => { }, _ => { }, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T3> fSome) =>
+            Iter(_ => { }, _ => { }, fSome, _ => { }, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T4> fSome) =>
+            Iter(_ => { }, _ => { }, _ => { }, fSome, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T5> fSome) =>
+            Iter(_ => { }, _ => { }, _ => { }, _ => { }, fSome);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2, Func<T3, Unit> ont3, Func<T4, Unit> ont4, Func<T5, Unit> ont5) =>
+            Iter(t1 => { ont1(t1); }, t2 => { ont2(t2); }, t3 => { ont3(t3); }, t4 => { ont4(t4); }, t5 => { ont5(t5); });
     }
 }

@@ -102,5 +102,118 @@ namespace DeFuncto.Tests.Core.Types.Du5
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
         }
+
+        [Property(DisplayName = "Runs T1 when it is T1")]
+        public void RunsT1OnAction(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du5<int, Model1, Model2, Model3, Model4>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model3 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model4 _) => { notTouchedWitness.Touch(); });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
+
+        [Property(DisplayName = "Runs T2 when it is T2")]
+        public void RunsT2OnAction(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du5<Model1, int, Model2, Model3, Model4>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model3 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model4 _) => { notTouchedWitness.Touch(); });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
+
+        [Property(DisplayName = "Runs T3 when it is T3")]
+        public void RunsT3OnAction(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du5<Model1, Model2, int, Model3, Model4>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model3 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model4 _) => { notTouchedWitness.Touch(); });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
+        [Property(DisplayName = "Runs T4 when it is T4")]
+        public void RunsT4OnAction(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du5<Model1, Model2, Model3, int, Model4>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model3 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model4 _) => { notTouchedWitness.Touch(); });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
+
+        [Property(DisplayName = "Runs T5 when it is T5")]
+        public void RunsT5OnAction(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            var du = new Du5<Model1, Model2, Model3, Model4, int>(a);
+
+            du.Iter((int _) => { touchedWitness.Touch(); });
+
+            du.Iter((Model1 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model2 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model3 _) => { notTouchedWitness.Touch(); });
+            du.Iter((Model4 _) => { notTouchedWitness.Touch(); });
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
+
+        [Property(DisplayName = "Runs T1 when it is T1")]
+        public void RunsT1IterFuncs(int a)
+        {
+            var touchedWitness = new Witness();
+            var notTouchedWitness = new Witness();
+
+            new Du5<int, Model1, Model2, Model3, Model4>(a)
+                .Iter(
+                    (int _) => { touchedWitness.Touch(); return unit; },
+                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
+                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
+                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
+                    (Model4 _) => { notTouchedWitness.Touch(); return unit; }
+                );
+
+            touchedWitness.ShouldHaveBeenTouched(1);
+            notTouchedWitness.ShouldHaveBeenTouched(0);
+        }
     }
 }
