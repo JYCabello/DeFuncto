@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
@@ -147,5 +148,16 @@ namespace DeFuncto
                 .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T4?>.Default.GetHashCode(t.Item1.t4)))
                 .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T5?>.Default.GetHashCode(t.Item1.t5)))
                 .Apply(t => t.Item2 * -1521134295 + t.Item1.Discriminator.GetHashCode());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T1> ont1, Action<T2> ont2, Action<T3> ont3, Action<T4> ont4, Action<T5> ont5) =>
+           Match(
+               t1 => { ont1(t1); return unit; },
+               t2 => { ont2(t2); return unit; },
+               t3 => { ont3(t3); return unit; },
+               t4 => { ont4(t4); return unit; },
+               t5 => { ont5(t5); return unit; }
+           );
     }
 }
