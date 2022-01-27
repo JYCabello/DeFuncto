@@ -50,7 +50,7 @@ namespace DeFuncto.Tests.Core.Types.Du
             witness.ShouldHaveBeenTouched(1);
         }
 
-        [Property(DisplayName = "Does not run for T1 when it's T2")]
+        [Property(DisplayName = "Runs T2 when it's T2")]
         public void RunsT2OnAction(int a)
         {
             var witness = new Witness();

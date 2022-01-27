@@ -116,5 +116,22 @@ namespace DeFuncto
                     ont3(t3);
                     return unit;
                 });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T1> fSome) =>
+            Iter(fSome, _ => { }, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T2> fSome) =>
+            Iter(_ => { }, fSome, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T3> fSome) =>
+            Iter(_ => { }, _ => { }, fSome);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2, Func<T3, Unit> ont3) =>
+            Iter(t1 => { ont1(t1); }, t2 => { ont2(t2); }, t3 => { ont3(t3); });
     }
 }
