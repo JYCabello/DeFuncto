@@ -128,26 +128,6 @@ namespace DeFuncto.Tests.Core.Types.Du6
             notTouchedWitness.ShouldHaveBeenTouched(0);
         }
 
-        [Property(DisplayName = "Runs T7 when it is T7")]
-        public void RunsT7(int a)
-        {
-            var touchedWitness = new Witness();
-            var notTouchedWitness = new Witness();
-
-            new Du6<Model1, Model2, Model3, Model4, Model5, int>(a)
-                .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (int _) => { touchedWitness.Touch(); }
-                );
-
-            touchedWitness.ShouldHaveBeenTouched(1);
-            notTouchedWitness.ShouldHaveBeenTouched(0);
-        }
-
         [Property(DisplayName = "Runs T1 when it is T1")]
         public void RunsT1OnAction(int a)
         {
@@ -269,26 +249,6 @@ namespace DeFuncto.Tests.Core.Types.Du6
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
         }
-        [Property(DisplayName = "Runs T7 when it is T7")]
-        public void RunsT7OnAction(int a)
-        {
-            var touchedWitness = new Witness();
-            var notTouchedWitness = new Witness();
-
-            var du = new Du6<Model1, Model2, Model3, Model4, Model5, int>(a);
-
-            du.Iter((int _) => { touchedWitness.Touch(); });
-
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); });
-
-
-            touchedWitness.ShouldHaveBeenTouched(1);
-            notTouchedWitness.ShouldHaveBeenTouched(0);
-        }
 
         [Property(DisplayName = "Runs T1 when it is T1")]
         public void RunsT1IterFuncs(int a)
@@ -388,25 +348,6 @@ namespace DeFuncto.Tests.Core.Types.Du6
         }
         [Property(DisplayName = "Runs T6 when it is T6")]
         public void RunsT6IterFuncs(int a)
-        {
-            var touchedWitness = new Witness();
-            var notTouchedWitness = new Witness();
-
-            new Du6<Model1, Model2, Model3, Model4, Model5, int>(a)
-                .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (int _) => { touchedWitness.Touch(); return unit; }
-                );
-
-            touchedWitness.ShouldHaveBeenTouched(1);
-            notTouchedWitness.ShouldHaveBeenTouched(0);
-        }
-        [Property(DisplayName = "Runs T7 when it is T7")]
-        public void RunsT7IterFuncs(int a)
         {
             var touchedWitness = new Witness();
             var notTouchedWitness = new Witness();
