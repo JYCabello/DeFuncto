@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto
 {
@@ -120,5 +121,56 @@ namespace DeFuncto
                 .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T3?>.Default.GetHashCode(t.Item1.t3)))
                 .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T4?>.Default.GetHashCode(t.Item1.t4)))
                 .Apply(t => t.Item2 * -1521134295 + t.Item1.Discriminator.GetHashCode());
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T1> ont1, Action<T2> ont2, Action<T3> ont3, Action<T4> ont4) =>
+            Match(
+                t1 => { ont1(t1); return unit; },
+                t2 => { ont2(t2); return unit; },
+                t3 => { ont3(t3); return unit; },
+                t4 => { ont4(t4); return unit; }
+            );
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T1> fSome) =>
+            Iter(fSome, _ => { }, _ => { }, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T2> fSome) =>
+            Iter(_ => { }, fSome, _ => { }, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T3> fSome) =>
+            Iter(_ => { }, _ => { }, fSome, _ => { });
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Action<T4> fSome) =>
+            Iter(_ => { }, _ => { }, _ => { }, fSome);
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2, Func<T3, Unit> ont3, Func<T4, Unit> ont4) =>
+            Iter(t1 => { ont1(t1); }, t2 => { ont2(t2); }, t3 => { ont3(t3); }, t4 => { ont4(t4); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T1, Unit> ont1) =>
+            Iter(t1 => { ont1(t1); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T2, Unit> ont2) =>
+            Iter(t2 => { ont2(t2); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T3, Unit> ont3) =>
+            Iter(t3 => { ont3(t3); });
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Unit Iter(Func<T4, Unit> ont4) =>
+            Iter(t4 => { ont4(t4); });
     }
 }
