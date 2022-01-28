@@ -87,14 +87,6 @@ namespace DeFuncto
                     return unit;
                 });
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Unit Iter(Action<T1> fSome) =>
-            Iter(fSome, _ => { });
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Unit Iter(Action<T2> fSome) =>
-            Iter(_ => { }, fSome);
-
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2) =>
@@ -103,11 +95,11 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T1, Unit> ont1) =>
-            Iter(t1 => { ont1(t1); });
+            Iter(ont1, (_) => unit);
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T2, Unit> ont1) =>
-            Iter(t2 => { ont1(t2); });
+            Iter((_) => unit, ont1);
     }
 }

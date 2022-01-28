@@ -40,50 +40,6 @@ namespace DeFuncto.Tests.Core.Types.Du
         }
 
         [Property(DisplayName = "Runs T1 when it is T1")]
-        public void RunsT1OnAction(int a)
-        {
-            var witness = new Witness();
-
-            new Du<int, string>(a)
-                .Iter((int _) => { witness.Touch(); });
-
-            witness.ShouldHaveBeenTouched(1);
-        }
-
-        [Property(DisplayName = "Runs T2 when it's T2")]
-        public void RunsT2OnAction(int a)
-        {
-            var witness = new Witness();
-
-            new Du<string, int>(a)
-                .Iter((int _) => { witness.Touch(); });
-
-            witness.ShouldHaveBeenTouched(1);
-        }
-
-        [Property(DisplayName = "Does not run for T1 when it's T2")]
-        public void Skips1When2OnAction(int a)
-        {
-            var witness = new Witness();
-
-            new Du<string, int>(a)
-                .Iter((string _) => { witness.Touch(); });
-
-            witness.ShouldHaveBeenTouched(0);
-        }
-
-        [Property(DisplayName = "Does not run for T2 when it's T1")]
-        public void Skips2When1OnAction(int a)
-        {
-            var witness = new Witness();
-
-            new Du<int, string>(a)
-                .Iter((string _) => { witness.Touch(); });
-
-            witness.ShouldHaveBeenTouched(0);
-        }
-
-        [Property(DisplayName = "Runs T1 when it is T1")]
         public void RunsT1IterFuncs(int a)
         {
             var du1Witness = new Witness();
