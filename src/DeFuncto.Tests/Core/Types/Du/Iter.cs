@@ -1,7 +1,5 @@
 ﻿using DeFuncto.Assertions;
-using FsCheck;
 using FsCheck.Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Du
 {
@@ -15,8 +13,8 @@ namespace DeFuncto.Tests.Core.Types.Du
 
             new Du<int, string>(a)
                 .Iter(
-                    (int _) => { du1Witness.Touch(); },
-                    (string _) => { du2Witness.Touch(); }
+                    _ => { du1Witness.Touch(); },
+                    _ => { du2Witness.Touch(); }
                 );
 
             du1Witness.ShouldHaveBeenTouched(1);
@@ -31,8 +29,8 @@ namespace DeFuncto.Tests.Core.Types.Du
 
             new Du<string, int>(a)
                 .Iter(
-                    (string _) => { du1Witness.Touch(); },
-                    (int _) => { du2Witness.Touch(); }
+                    _ => { du1Witness.Touch(); },
+                    _ => { du2Witness.Touch(); }
                 );
 
             du1Witness.ShouldHaveBeenTouched(0);
@@ -47,8 +45,8 @@ namespace DeFuncto.Tests.Core.Types.Du
 
             new Du<int, string>(a)
                 .Iter(
-                    (int _) => { du1Witness.Touch(); return unit; },
-                    (string _) => { du2Witness.Touch(); return unit; }
+                    _ => du1Witness.Touch(),
+                    _ => du2Witness.Touch()
                 );
 
             du1Witness.ShouldHaveBeenTouched(1);
@@ -63,8 +61,8 @@ namespace DeFuncto.Tests.Core.Types.Du
 
             new Du<string, int>(a)
                 .Iter(
-                    (string _) => { du1Witness.Touch(); return unit; },
-                    (int _) => { du2Witness.Touch(); return unit; }
+                    _ => du1Witness.Touch(),
+                    _ => du2Witness.Touch()
                 );
 
             du1Witness.ShouldHaveBeenTouched(0);
@@ -77,7 +75,7 @@ namespace DeFuncto.Tests.Core.Types.Du
             var witness = new Witness();
 
             new Du<int, string>(a)
-                .Iter((int _) => { witness.Touch(); return unit; });
+                .Iter((int _) => witness.Touch());
 
             witness.ShouldHaveBeenTouched(1);
         }
@@ -88,7 +86,7 @@ namespace DeFuncto.Tests.Core.Types.Du
             var witness = new Witness();
 
             new Du<string, int>(a)
-                .Iter((int _) => { witness.Touch(); return unit; });
+                .Iter((int _) => witness.Touch());
 
             witness.ShouldHaveBeenTouched(1);
         }
@@ -99,7 +97,7 @@ namespace DeFuncto.Tests.Core.Types.Du
             var witness = new Witness();
 
             new Du<string, int>(a)
-                .Iter((string _) => { witness.Touch(); return unit; });
+                .Iter((string _) => witness.Touch());
 
             witness.ShouldHaveBeenTouched(0);
         }
@@ -110,7 +108,7 @@ namespace DeFuncto.Tests.Core.Types.Du
             var witness = new Witness();
 
             new Du<int, string>(a)
-                .Iter((string _) => { witness.Touch(); return unit; });
+                .Iter((string _) => witness.Touch());
 
             witness.ShouldHaveBeenTouched(0);
         }

@@ -75,29 +75,17 @@ namespace DeFuncto
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Action<T1> ont1, Action<T2> ont2) =>
-            Match(
-                t1 =>
-                {
-                    ont1(t1);
-                    return unit;
-                },
-                t2 =>
-                {
-                    ont2(t2);
-                    return unit;
-                });
+            Iter(ont1.Function(), ont2.Function());
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2) =>
-            Iter(t1 => { ont1(t1); }, t2 => { ont2(t2); });
+            Match(ont1, ont2);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T1, Unit> ont1) =>
             Iter(ont1, (_) => unit);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T2, Unit> ont1) =>
             Iter((_) => unit, ont1);
