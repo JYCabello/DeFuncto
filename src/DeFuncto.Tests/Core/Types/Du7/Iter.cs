@@ -1,6 +1,5 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Tests.Models;
-using FsCheck;
 using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
@@ -16,13 +15,13 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<int, Model1, Model2, Model3, Model4, Model5, Model6>(a)
                 .Iter(
-                    (int _) => { touchedWitness.Touch(); },
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (Model6 _) => { notTouchedWitness.Touch(); }
+                    _ => { touchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -37,13 +36,13 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, int, Model2, Model3, Model4, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (int _) => { touchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (Model6 _) => { notTouchedWitness.Touch(); }
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { touchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -58,13 +57,13 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, int, Model3, Model4, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (int _) => { touchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (Model6 _) => { notTouchedWitness.Touch(); }
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { touchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -79,13 +78,13 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, int, Model4, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (int _) => { touchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (Model6 _) => { notTouchedWitness.Touch(); }
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { touchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -100,13 +99,13 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, Model4, int, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (int _) => { touchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (Model6 _) => { notTouchedWitness.Touch(); }
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { touchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -121,13 +120,13 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, Model4, Model5, int, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (int _) => { touchedWitness.Touch(); },
-                    (Model6 _) => { notTouchedWitness.Touch(); }
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { touchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -142,13 +141,13 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, Model4, Model5, Model6, int>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); },
-                    (Model2 _) => { notTouchedWitness.Touch(); },
-                    (Model3 _) => { notTouchedWitness.Touch(); },
-                    (Model4 _) => { notTouchedWitness.Touch(); },
-                    (Model5 _) => { notTouchedWitness.Touch(); },
-                    (Model6 _) => { notTouchedWitness.Touch(); },
-                    (int _) => { touchedWitness.Touch(); }
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { notTouchedWitness.Touch(); },
+                    _ => { touchedWitness.Touch(); }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -163,13 +162,19 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<int, Model1, Model2, Model3, Model4, Model5, Model6>(a)
                 .Iter(
-                    (int _) => { touchedWitness.Touch(); return unit; },
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model6 _) => { notTouchedWitness.Touch(); return unit; }
+                    _ => touchedWitness.Touch(),
+                    _ => notTouchedWitness.Touch(),
+                    _ => notTouchedWitness.Touch(),
+                    _ => notTouchedWitness.Touch(),
+                    _ => notTouchedWitness.Touch(),
+                    _ =>
+                    {
+                        return notTouchedWitness.Touch();
+                    },
+                    _ =>
+                    {
+                        return notTouchedWitness.Touch();
+                    }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -184,13 +189,41 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, int, Model2, Model3, Model4, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (int _) => { touchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model6 _) => { notTouchedWitness.Touch(); return unit; }
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        touchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -205,13 +238,41 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, int, Model3, Model4, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (int _) => { touchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model6 _) => { notTouchedWitness.Touch(); return unit; }
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        touchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -226,13 +287,41 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, int, Model4, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (int _) => { touchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model6 _) => { notTouchedWitness.Touch(); return unit; }
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        touchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -247,13 +336,41 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, Model4, int, Model5, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (int _) => { touchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model6 _) => { notTouchedWitness.Touch(); return unit; }
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        touchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -268,13 +385,41 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, Model4, Model5, int, Model6>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (int _) => { touchedWitness.Touch(); return unit; },
-                    (Model6 _) => { notTouchedWitness.Touch(); return unit; }
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        touchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -289,13 +434,41 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             new Du7<Model1, Model2, Model3, Model4, Model5, Model6, int>(a)
                 .Iter(
-                    (Model1 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model2 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model3 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model4 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model5 _) => { notTouchedWitness.Touch(); return unit; },
-                    (Model6 _) => { notTouchedWitness.Touch(); return unit; },
-                    (int _) => { touchedWitness.Touch(); return unit; }
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        notTouchedWitness.Touch();
+                        return unit;
+                    },
+                    _ =>
+                    {
+                        touchedWitness.Touch();
+                        return unit;
+                    }
                 );
 
             touchedWitness.ShouldHaveBeenTouched(1);
@@ -310,14 +483,42 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             var du = new Du7<int, Model1, Model2, Model3, Model4, Model5, Model6>(a);
 
-            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+            du.Iter((int _) =>
+            {
+                touchedWitness.Touch();
+                return unit;
+            });
 
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model6 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model1 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model2 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model3 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model4 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model5 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model6 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
 
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -331,14 +532,42 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             var du = new Du7<Model1, int, Model2, Model3, Model4, Model5, Model6>(a);
 
-            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+            du.Iter((int _) =>
+            {
+                touchedWitness.Touch();
+                return unit;
+            });
 
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model6 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model1 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model2 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model3 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model4 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model5 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model6 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
 
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -352,14 +581,42 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             var du = new Du7<Model1, Model2, int, Model3, Model4, Model5, Model6>(a);
 
-            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+            du.Iter((int _) =>
+            {
+                touchedWitness.Touch();
+                return unit;
+            });
 
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model6 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model1 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model2 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model3 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model4 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model5 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model6 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
 
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -373,14 +630,42 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             var du = new Du7<Model1, Model2, Model3, int, Model4, Model5, Model6>(a);
 
-            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+            du.Iter((int _) =>
+            {
+                touchedWitness.Touch();
+                return unit;
+            });
 
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model6 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model1 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model2 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model3 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model4 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model5 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model6 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
 
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -394,14 +679,42 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             var du = new Du7<Model1, Model2, Model3, Model4, int, Model5, Model6>(a);
 
-            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+            du.Iter((int _) =>
+            {
+                touchedWitness.Touch();
+                return unit;
+            });
 
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model6 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model1 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model2 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model3 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model4 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model5 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model6 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
 
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -415,14 +728,42 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             var du = new Du7<Model1, Model2, Model3, Model4, Model5, int, Model6>(a);
 
-            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+            du.Iter((int _) =>
+            {
+                touchedWitness.Touch();
+                return unit;
+            });
 
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model6 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model1 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model2 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model3 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model4 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model5 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model6 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
 
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -436,14 +777,42 @@ namespace DeFuncto.Tests.Core.Types.Du7
 
             var du = new Du7<Model1, Model2, Model3, Model4, Model5, Model6, int>(a);
 
-            du.Iter((int _) => { touchedWitness.Touch(); return unit; });
+            du.Iter((int _) =>
+            {
+                touchedWitness.Touch();
+                return unit;
+            });
 
-            du.Iter((Model1 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model2 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model3 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model4 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model5 _) => { notTouchedWitness.Touch(); return unit; });
-            du.Iter((Model6 _) => { notTouchedWitness.Touch(); return unit; });
+            du.Iter((Model1 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model2 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model3 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model4 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model5 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
+            du.Iter((Model6 _) =>
+            {
+                notTouchedWitness.Touch();
+                return unit;
+            });
 
             touchedWitness.ShouldHaveBeenTouched(1);
             notTouchedWitness.ShouldHaveBeenTouched(0);
