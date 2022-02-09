@@ -1,7 +1,6 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Tests.Models;
 using FsCheck.Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Du7;
 
@@ -183,41 +182,13 @@ public class Iter
 
         new Du7<Model1, int, Model2, Model3, Model4, Model5, Model6>(a)
             .Iter(
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    touchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                }
+                _ => notTouchedWitness.Touch(),
+                _ => touchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch()
             );
 
         touchedWitness.ShouldHaveBeenTouched(1);
@@ -232,41 +203,13 @@ public class Iter
 
         new Du7<Model1, Model2, int, Model3, Model4, Model5, Model6>(a)
             .Iter(
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    touchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                }
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => touchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch()
             );
 
         touchedWitness.ShouldHaveBeenTouched(1);
@@ -281,41 +224,13 @@ public class Iter
 
         new Du7<Model1, Model2, Model3, int, Model4, Model5, Model6>(a)
             .Iter(
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    touchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                }
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => touchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch()
             );
 
         touchedWitness.ShouldHaveBeenTouched(1);
@@ -330,41 +245,13 @@ public class Iter
 
         new Du7<Model1, Model2, Model3, Model4, int, Model5, Model6>(a)
             .Iter(
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    touchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                }
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => touchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch()
             );
 
         touchedWitness.ShouldHaveBeenTouched(1);
@@ -379,41 +266,13 @@ public class Iter
 
         new Du7<Model1, Model2, Model3, Model4, Model5, int, Model6>(a)
             .Iter(
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    touchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                }
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => touchedWitness.Touch(),
+                _ => notTouchedWitness.Touch()
             );
 
         touchedWitness.ShouldHaveBeenTouched(1);
@@ -428,41 +287,13 @@ public class Iter
 
         new Du7<Model1, Model2, Model3, Model4, Model5, Model6, int>(a)
             .Iter(
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    notTouchedWitness.Touch();
-                    return unit;
-                },
-                _ =>
-                {
-                    touchedWitness.Touch();
-                    return unit;
-                }
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => notTouchedWitness.Touch(),
+                _ => touchedWitness.Touch()
             );
 
         touchedWitness.ShouldHaveBeenTouched(1);
@@ -477,42 +308,14 @@ public class Iter
 
         var du = new Du7<int, Model1, Model2, Model3, Model4, Model5, Model6>(a);
 
-        du.Iter((int _) =>
-        {
-            touchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((int _) => touchedWitness.Touch());
 
-        du.Iter((Model1 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model2 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model3 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model4 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model5 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model6 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((Model1 _) => notTouchedWitness.Touch());
+        du.Iter((Model2 _) => notTouchedWitness.Touch());
+        du.Iter((Model3 _) => notTouchedWitness.Touch());
+        du.Iter((Model4 _) => notTouchedWitness.Touch());
+        du.Iter((Model5 _) => notTouchedWitness.Touch());
+        du.Iter((Model6 _) => notTouchedWitness.Touch());
 
         touchedWitness.ShouldHaveBeenTouched(1);
         notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -526,42 +329,14 @@ public class Iter
 
         var du = new Du7<Model1, int, Model2, Model3, Model4, Model5, Model6>(a);
 
-        du.Iter((int _) =>
-        {
-            touchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((int _) => touchedWitness.Touch());
 
-        du.Iter((Model1 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model2 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model3 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model4 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model5 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model6 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((Model1 _) => notTouchedWitness.Touch());
+        du.Iter((Model2 _) => notTouchedWitness.Touch());
+        du.Iter((Model3 _) => notTouchedWitness.Touch());
+        du.Iter((Model4 _) => notTouchedWitness.Touch());
+        du.Iter((Model5 _) => notTouchedWitness.Touch());
+        du.Iter((Model6 _) => notTouchedWitness.Touch());
 
         touchedWitness.ShouldHaveBeenTouched(1);
         notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -575,42 +350,14 @@ public class Iter
 
         var du = new Du7<Model1, Model2, int, Model3, Model4, Model5, Model6>(a);
 
-        du.Iter((int _) =>
-        {
-            touchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((int _) => touchedWitness.Touch());
 
-        du.Iter((Model1 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model2 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model3 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model4 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model5 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model6 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((Model1 _) => notTouchedWitness.Touch());
+        du.Iter((Model2 _) => notTouchedWitness.Touch());
+        du.Iter((Model3 _) => notTouchedWitness.Touch());
+        du.Iter((Model4 _) => notTouchedWitness.Touch());
+        du.Iter((Model5 _) => notTouchedWitness.Touch());
+        du.Iter((Model6 _) => notTouchedWitness.Touch());
 
         touchedWitness.ShouldHaveBeenTouched(1);
         notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -624,42 +371,14 @@ public class Iter
 
         var du = new Du7<Model1, Model2, Model3, int, Model4, Model5, Model6>(a);
 
-        du.Iter((int _) =>
-        {
-            touchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((int _) => touchedWitness.Touch());
 
-        du.Iter((Model1 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model2 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model3 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model4 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model5 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model6 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((Model1 _) => notTouchedWitness.Touch());
+        du.Iter((Model2 _) => notTouchedWitness.Touch());
+        du.Iter((Model3 _) => notTouchedWitness.Touch());
+        du.Iter((Model4 _) => notTouchedWitness.Touch());
+        du.Iter((Model5 _) => notTouchedWitness.Touch());
+        du.Iter((Model6 _) => notTouchedWitness.Touch());
 
         touchedWitness.ShouldHaveBeenTouched(1);
         notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -673,42 +392,14 @@ public class Iter
 
         var du = new Du7<Model1, Model2, Model3, Model4, int, Model5, Model6>(a);
 
-        du.Iter((int _) =>
-        {
-            touchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((int _) => touchedWitness.Touch());
 
-        du.Iter((Model1 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model2 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model3 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model4 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model5 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model6 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((Model1 _) => notTouchedWitness.Touch());
+        du.Iter((Model2 _) => notTouchedWitness.Touch());
+        du.Iter((Model3 _) => notTouchedWitness.Touch());
+        du.Iter((Model4 _) => notTouchedWitness.Touch());
+        du.Iter((Model5 _) => notTouchedWitness.Touch());
+        du.Iter((Model6 _) => notTouchedWitness.Touch());
 
         touchedWitness.ShouldHaveBeenTouched(1);
         notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -722,42 +413,14 @@ public class Iter
 
         var du = new Du7<Model1, Model2, Model3, Model4, Model5, int, Model6>(a);
 
-        du.Iter((int _) =>
-        {
-            touchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((int _) => touchedWitness.Touch());
 
-        du.Iter((Model1 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model2 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model3 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model4 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model5 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model6 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((Model1 _) => notTouchedWitness.Touch());
+        du.Iter((Model2 _) => notTouchedWitness.Touch());
+        du.Iter((Model3 _) => notTouchedWitness.Touch());
+        du.Iter((Model4 _) => notTouchedWitness.Touch());
+        du.Iter((Model5 _) => notTouchedWitness.Touch());
+        du.Iter((Model6 _) => notTouchedWitness.Touch());
 
         touchedWitness.ShouldHaveBeenTouched(1);
         notTouchedWitness.ShouldHaveBeenTouched(0);
@@ -771,42 +434,14 @@ public class Iter
 
         var du = new Du7<Model1, Model2, Model3, Model4, Model5, Model6, int>(a);
 
-        du.Iter((int _) =>
-        {
-            touchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((int _) => touchedWitness.Touch());
 
-        du.Iter((Model1 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model2 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model3 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model4 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model5 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
-        du.Iter((Model6 _) =>
-        {
-            notTouchedWitness.Touch();
-            return unit;
-        });
+        du.Iter((Model1 _) => notTouchedWitness.Touch());
+        du.Iter((Model2 _) => notTouchedWitness.Touch());
+        du.Iter((Model3 _) => notTouchedWitness.Touch());
+        du.Iter((Model4 _) => notTouchedWitness.Touch());
+        du.Iter((Model5 _) => notTouchedWitness.Touch());
+        du.Iter((Model6 _) => notTouchedWitness.Touch());
 
         touchedWitness.ShouldHaveBeenTouched(1);
         notTouchedWitness.ShouldHaveBeenTouched(0);

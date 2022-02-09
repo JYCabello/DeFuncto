@@ -217,37 +217,30 @@ namespace DeFuncto
         public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2, Func<T3, Unit> ont3, Func<T4, Unit> ont4, Func<T5, Unit> ont5, Func<T6, Unit> ont6, Func<T7, Unit> ont7) =>
             Match(ont1, ont2, ont3, ont4, ont5, ont6, ont7);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T1, Unit> ont1) =>
             Iter(ont1, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T2, Unit> ont2) =>
             Iter(_ => unit, ont2, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T3, Unit> ont3) =>
             Iter(_ => unit, _ => unit, ont3, _ => unit, _ => unit, _ => unit, _ => unit);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T4, Unit> ont4) =>
             Iter(_ => unit, _ => unit, _ => unit, ont4, _ => unit, _ => unit, _ => unit);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T5, Unit> ont5) =>
             Iter(_ => unit, _ => unit, _ => unit, _ => unit, ont5, _ => unit, _ => unit);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T6, Unit> ont6) =>
             Iter(_ => unit, _ => unit, _ => unit, _ => unit, _ => unit, ont6, _ => unit);
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Unit Iter(Func<T7, Unit> ont7) =>
             Iter(_ => unit, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit, ont7);
