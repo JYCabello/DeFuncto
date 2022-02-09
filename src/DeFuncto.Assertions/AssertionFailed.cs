@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DeFuncto.Assertions
+namespace DeFuncto.Assertions;
+
+[ExcludeFromCodeCoverage]
+public class AssertionFailed : Exception
 {
-    [ExcludeFromCodeCoverage]
-    public class AssertionFailed : Exception
-    {
-        public AssertionFailed(string message)
-            : base($"Assertion failed: {message}") { }
-    }
+    public AssertionFailed(string message)
+        : base($"Assertion failed: {message}") { }
 }
