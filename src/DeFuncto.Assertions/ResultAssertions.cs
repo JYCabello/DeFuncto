@@ -63,6 +63,5 @@ namespace DeFuncto.Assertions
 
         public static Task<Unit> ShouldBeError<TOk, TError>(this AsyncResult<TOk, TError> self, TError expected) =>
             self.ToTask().Map(result => result.ShouldBeError(expected));
-
     }
 }

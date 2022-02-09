@@ -30,20 +30,6 @@ namespace DeFuncto.Assertions
             semaphore.Release();
         }
 
-        private class Holder : IDisposable
-        {
-            private readonly ConcurrentWitness witness;
-
-            public Holder(ConcurrentWitness witness)
-            {
-                this.witness = witness;
-                this.witness.Hold();
-            }
-
-            public void Dispose() =>
-                witness.Release();
-        }
-
         public ConcurrentWitness ShouldBeenHeldMax(int max)
         {
             if (MaxConcurrentHolds > max)
@@ -56,6 +42,20 @@ namespace DeFuncto.Assertions
             if (total != TimesCalled)
                 throw new AssertionFailed($"It was expected to be requested {total} times but it was {TimesCalled}");
             return this;
+        }
+
+        private class Holder : IDisposable
+        {
+            private readonly ConcurrentWitness witness;
+
+            public Holder(ConcurrentWitness witness)
+            {
+                this.witness = witness;
+                this.witness.Hold();
+            }
+
+            public void Dispose() =>
+                witness.Release();
         }
     }
 }
