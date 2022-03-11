@@ -14,6 +14,12 @@ public class Match
     }
 
     [Fact]
+    public void FailingTest()
+    {
+        Assert.True(false);
+    }
+
+    [Fact]
     public void NegativeMatchFunction()
     {
         var result = false.Match(() => "A", () => "B");

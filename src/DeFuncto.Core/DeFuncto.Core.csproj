@@ -17,4 +17,11 @@
         <PackageVersion>0.3.0</PackageVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="coverlet.collector" Version="3.1.2">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
 </Project>

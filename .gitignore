@@ -5,3 +5,4 @@
 **.DotSettings.user
 .fake
 .ionide
+**/*.cobertura.xml
