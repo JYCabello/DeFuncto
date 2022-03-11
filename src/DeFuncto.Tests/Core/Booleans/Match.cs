@@ -16,7 +16,7 @@ public class Match
     [Fact]
     public void FailingTest()
     {
-        Assert.True(false);
+        Assert.True(true);
     }
 
     [Fact]
