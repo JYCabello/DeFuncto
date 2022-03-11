@@ -35,5 +35,5 @@ public class Linq
             select $"{a}{b}{c}")
         .ShouldBeNone();
 
-    private string Boom() => throw new Exception("Should not happen");
+    private static string Boom() => throw new Exception("Should not happen");
 }
