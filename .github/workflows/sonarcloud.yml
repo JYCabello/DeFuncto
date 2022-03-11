@@ -2,7 +2,7 @@ name: sonarcloud
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -42,6 +42,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"JYCabello_DeFuncto" /o:"jycabello" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet test --collect:"XPlat Code Coverage" ./src
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"JYCabello_DeFuncto" /o:"jycabello" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths=TestResults/*.trx /d:sonar.cs.opencover.reportsPaths=TestResults/*/coverage.opencover.xml
+
+          dotnet test src --collect:"XPlat Code Coverage" --results-directory TestResults/ --logger "trx;LogFileName=unittests.trx" --configuration release -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

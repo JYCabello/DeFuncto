@@ -6,3 +6,5 @@
 .fake
 .ionide
 **/*.cobertura.xml
+**/*.opencover.xml
+**/unittests.trx
