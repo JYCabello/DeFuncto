@@ -33,14 +33,14 @@ public class ConcurrentWitness
     public ConcurrentWitness ShouldBeenHeldMax(int max)
     {
         if (MaxConcurrentHolds > max)
-            throw new AssertionFailed($"It was expected to be held a maximum of {max} times at the same time but it was {MaxConcurrentHolds}");
+            throw new AssertionFailedException($"It was expected to be held a maximum of {max} times at the same time but it was {MaxConcurrentHolds}");
         return this;
     }
 
     public ConcurrentWitness ShouldBeenHeldTotal(int total)
     {
         if (total != TimesCalled)
-            throw new AssertionFailed($"It was expected to be requested {total} times but it was {TimesCalled}");
+            throw new AssertionFailedException($"It was expected to be requested {total} times but it was {TimesCalled}");
         return this;
     }
 

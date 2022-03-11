@@ -4,8 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 namespace DeFuncto.Assertions;
 
 [ExcludeFromCodeCoverage]
-public class AssertionFailed : Exception
+[Serializable]
+public class AssertionFailedException : Exception
 {
-    public AssertionFailed(string message)
+    public AssertionFailedException() { }
+
+    public AssertionFailedException(string message)
         : base($"Assertion failed: {message}") { }
 }
