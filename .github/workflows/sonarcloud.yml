@@ -43,5 +43,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"JYCabello_DeFuncto" /o:"jycabello" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet test --collect:"XPlat Code Coverage" ./src
+          dotnet test --collect:"XPlat Code Coverage" ./src --logger "trx;LogFileName=unittests.trx"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
