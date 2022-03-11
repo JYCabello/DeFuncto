@@ -20,7 +20,7 @@ public class Linq
     public void StopsNone(string x, string y) => (
             from a in Some(x).Async()
             from b in None.Option<string>().Async()
-            let error = Boom()
+            let error = ThrowHelper()
             from c in Some(y).Async()
             where c == y
             select $"{a}{b}{c}")
@@ -35,5 +35,5 @@ public class Linq
             select $"{a}{b}{c}")
         .ShouldBeNone();
 
-    private static string Boom() => throw new Exception("Should not happen");
+    private static string ThrowHelper() => throw new Exception("Should not happen");
 }

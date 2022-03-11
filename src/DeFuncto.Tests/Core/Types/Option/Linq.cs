@@ -21,7 +21,7 @@ public class Linq
     public void StopsNone(NonNull<string> x, NonNull<string> y, NonNull<string> z) => (
             from a in Some(x.Get)
             from b in None.Option<string>()
-            let error = Boom()
+            let error = ThrowHelper()
             from c in Some(y.Get)
             where c == z.Get
             select a + b + c)
@@ -36,5 +36,5 @@ public class Linq
             select a + b + c)
         .ShouldBeNone();
 
-    private static string Boom() => throw new Exception("Should not happen");
+    private static string ThrowHelper() => throw new Exception("Should not happen");
 }
