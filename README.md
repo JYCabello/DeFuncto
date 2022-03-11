@@ -64,3 +64,4 @@ It's all about having the compiler hold your hand for as long as possible. Want 
 ## Documentation
 1. [Fundamentals](docs/fundamentals/index.md)
 1. [DeFuncto.Core](docs/core/index.md)
+1. [Example of a railway oriented API ASP.NET Core 6](https://github.com/JYCabello/fp-railway-asp)

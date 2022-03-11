@@ -253,7 +253,7 @@ TryFind(3).Iter(
 );
 ```
 ## Bonus track: Choose
-Choose offers us the possibility of optionally constructing collections or even doing filtering an transformations in a single step. Internally, it just takes an inumerable of `Option<T>` and returns an inumerable of `T` for all options that were in the `Some` state.
+Choose offers us the possibility of optionally constructing collections or even doing filtering and transformations in a "single step" (not really, as the filtering happens at the type level while the transformation is explicit). Internally, it just takes an inumerable of `Option<T>` and returns an `IEnumerable` of `T` for all options that were in the `Some` state.
 ### Optional construction
 ```cs
 using static DeFuncto.Prelude;

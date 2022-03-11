@@ -1,76 +1,86 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
-namespace DeFuncto.Tests.Core.Types.AsyncResult
+namespace DeFuncto.Tests.Core.Types.AsyncResult;
+
+public class ExtensionAsync
 {
-    public class ExtensionAsync
-    {
-        [Fact(DisplayName = "Converts from task result on Ok")]
-        public Task OnOk() =>
-            Ok<string, int>("banana")
-                .ToTask()
-                .Async()
-                .ShouldBeOk("banana");
+    [Property(DisplayName = "Converts from task result on Ok")]
+    public void OnOk(NonNull<string> a) =>
+        _ = Ok<string, int>(a.Get)
+            .ToTask()
+            .Async()
+            .ShouldBeOk(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from task as Ok on Ok")]
-        public Task OnTaskOk() =>
-            Ok<Task<string>, int>("banana".ToTask())
-                .Async()
-                .ShouldBeOk("banana");
+    [Property(DisplayName = "Converts from task as Ok on Ok")]
+    public void OnTaskOk(NonNull<string> a) =>
+        _ = Ok<Task<string>, int>(a.Get.ToTask())
+            .Async()
+            .ShouldBeOk(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from task as Ok on Error")]
-        public Task OnTaskOkWithError() =>
-            Error<Task<int>, string>("banana")
-                .Async()
-                .ShouldBeError("banana");
+    [Property(DisplayName = "Converts from task as Ok on Error")]
+    public void OnTaskOkWithError(NonNull<string> a) =>
+        _ = Error<Task<int>, string>(a.Get)
+            .Async()
+            .ShouldBeError(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from task result on Error")]
-        public Task OnError() =>
-            Error<int, string>("banana")
-                .ToTask()
-                .Async()
-                .ShouldBeError("banana");
+    [Property(DisplayName = "Converts from task result on Error")]
+    public void OnError(NonNull<string> a) =>
+        _ = Error<int, string>(a.Get)
+            .ToTask()
+            .Async()
+            .ShouldBeError(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from task as Error on Error")]
-        public Task OnTaskError() =>
-            Error<int, Task<string>>("banana".ToTask())
-                .Async()
-                .ShouldBeError("banana");
+    [Property(DisplayName = "Converts from task as Error on Error")]
+    public void OnTaskError(NonNull<string> a) =>
+        _ = Error<int, Task<string>>(a.Get.ToTask())
+            .Async()
+            .ShouldBeError(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from task as Error on OK")]
-        public Task OnTaskErrorWithOk() =>
-            Ok<string, Task<int>>("banana")
-                .Async()
-                .ShouldBeOk("banana");
+    [Property(DisplayName = "Converts from task as Error on OK")]
+    public void OnTaskErrorWithOk(NonNull<string> a) =>
+        _ = Ok<string, Task<int>>(a.Get)
+            .Async()
+            .ShouldBeOk(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from both Tasks on OK")]
-        public Task OnBothTaskWithOk() =>
-            Ok<Task<string>, Task<int>>("banana".ToTask())
-                .Async()
-                .ShouldBeOk("banana");
+    [Property(DisplayName = "Converts from both Tasks on OK")]
+    public void OnBothTaskWithOk(NonNull<string> a) =>
+        _ = Ok<Task<string>, Task<int>>(a.Get.ToTask())
+            .Async()
+            .ShouldBeOk(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from both Tasks on Error")]
-        public Task OnBothTaskWithError() =>
-            Error<Task<int>, Task<string>>("banana".ToTask())
-                .Async()
-                .ShouldBeError("banana");
+    [Property(DisplayName = "Converts from both Tasks on Error")]
+    public void OnBothTaskWithError(NonNull<string> a) =>
+        _ = Error<Task<int>, Task<string>>(a.Get.ToTask())
+            .Async()
+            .ShouldBeError(a.Get)
+            .Result;
 
 
-        [Fact(DisplayName = "Converts from both Tasks and within a task on OK")]
-        public Task OnAllTaskWithOk() =>
-            Ok<Task<string>, Task<int>>("banana".ToTask())
-                .ToTask()
-                .Async()
-                .ShouldBeOk("banana");
+    [Property(DisplayName = "Converts from both Tasks and within a task on OK")]
+    public void OnAllTaskWithOk(NonNull<string> a) =>
+        _ = Ok<Task<string>, Task<int>>(a.Get.ToTask())
+            .ToTask()
+            .Async()
+            .ShouldBeOk(a.Get)
+            .Result;
 
-        [Fact(DisplayName = "Converts from both Tasks and within a task on Error")]
-        public Task OnAllTaskWithError() =>
-            Error<Task<int>, Task<string>>("banana".ToTask())
-                .ToTask()
-                .Async()
-                .ShouldBeError("banana");
-    }
+    [Property(DisplayName = "Converts from both Tasks and within a task on Error")]
+    public void OnAllTaskWithError(NonNull<string> a) =>
+        _ = Error<Task<int>, Task<string>>(a.Get.ToTask())
+            .ToTask()
+            .Async()
+            .ShouldBeError(a.Get)
+            .Result;
 }

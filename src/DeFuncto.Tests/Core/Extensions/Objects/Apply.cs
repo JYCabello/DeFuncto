@@ -1,15 +1,15 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
-namespace DeFuncto.Tests.Core.Extensions.Objects
+namespace DeFuncto.Tests.Core.Extensions.Objects;
+
+public class Apply
 {
-    public class Apply
-    {
-        [Fact(DisplayName = "Applies a function to an object")]
-        public void Applies() =>
-            "banana".Apply(Ok<string, int>)
-                .ShouldBeOk("banana");
-    }
+    [Property(DisplayName = "Applies a function to an object")]
+    public void Applies(NonNull<string> a) =>
+        _ = a.Get.Apply(Ok<string, int>)
+            .ShouldBeOk(a.Get);
 }

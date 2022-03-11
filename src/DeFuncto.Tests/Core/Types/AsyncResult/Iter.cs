@@ -1,57 +1,57 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 
-namespace DeFuncto.Tests.Core.Types.AsyncResult
+namespace DeFuncto.Tests.Core.Types.AsyncResult;
+
+public class Iter
 {
-    public class Iter
+    [Property(DisplayName = "Iterates on the OK side and skips on error")]
+    public void OnOk(NonNull<string> a)
     {
-        [Fact(DisplayName = "Iterates on the OK side and skips on error")]
-        public async Task OnOk()
+        AsyncResult<string, int> ok = a.Get;
+        var witness = new Witness();
+
+        _ = ok.Iter((string _) => witness.Touch()).Result;
+        _ = ok.Iter((int _) => witness.Touch()).Result;
+        _ = ok.Iter((string _) => { witness.Touch(); }).Result;
+        _ = ok.Iter((string _) =>
         {
-            AsyncResult<string, int> ok = "banana";
-            var witness = new Witness();
-
-            await ok.Iter((string _) => witness.Touch());
-            await ok.Iter((int _) => witness.Touch());
-            await ok.Iter((string _) => { witness.Touch(); });
-            await ok.Iter((string _) =>
-            {
-                witness.Touch();
-                return Task.CompletedTask;
-            });
-            await ok.Iter((int _) =>
-            {
-                witness.Touch();
-                return Task.CompletedTask;
-            });
-
-            witness.ShouldHaveBeenTouched(3);
-            await ok.ShouldBeOk("banana");
-        }
-
-        [Fact(DisplayName = "Iterates on the Error side and skips on OK")]
-        public async Task OnError()
+            witness.Touch();
+            return Task.CompletedTask;
+        }).Result;
+        _ = ok.Iter((int _) =>
         {
-            AsyncResult<int, string> ok = "banana";
-            var witness = new Witness();
+            witness.Touch();
+            return Task.CompletedTask;
+        }).Result;
 
-            await ok.Iter((string _) => witness.Touch());
-            await ok.Iter((int _) => witness.Touch());
-            await ok.Iter((string _) => { witness.Touch(); });
-            await ok.Iter((string _) =>
-            {
-                witness.Touch();
-                return Task.CompletedTask;
-            });
-            await ok.Iter((int _) =>
-            {
-                witness.Touch();
-                return Task.CompletedTask;
-            });
+        witness.ShouldHaveBeenTouched(3);
+        _ = ok.ShouldBeOk(a.Get).Result;
+    }
 
-            witness.ShouldHaveBeenTouched(3);
-            await ok.ShouldBeError("banana");
-        }
+    [Property(DisplayName = "Iterates on the Error side and skips on OK")]
+    public void OnError(NonNull<string> a)
+    {
+        AsyncResult<int, string> ok = a.Get;
+        var witness = new Witness();
+
+        _ = ok.Iter((string _) => witness.Touch()).Result;
+        _ = ok.Iter((int _) => witness.Touch()).Result;
+        _ = ok.Iter((string _) => { witness.Touch(); }).Result;
+        _ = ok.Iter((string _) =>
+        {
+            witness.Touch();
+            return Task.CompletedTask;
+        }).Result;
+        _ = ok.Iter((int _) =>
+        {
+            witness.Touch();
+            return Task.CompletedTask;
+        }).Result;
+
+        witness.ShouldHaveBeenTouched(3);
+        _ = ok.ShouldBeError(a.Get).Result;
     }
 }

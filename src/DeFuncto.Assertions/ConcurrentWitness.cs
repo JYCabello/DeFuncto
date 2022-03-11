@@ -1,61 +1,60 @@
 ﻿using System;
 using System.Threading;
 
-namespace DeFuncto.Assertions
+namespace DeFuncto.Assertions;
+
+public class ConcurrentWitness
 {
-    public class ConcurrentWitness
+    private readonly SemaphoreSlim semaphore = new(1);
+    private int currentHoldCount;
+    public int MaxConcurrentHolds { get; private set; }
+
+    public int TimesCalled { get; private set; }
+
+    public IDisposable Grab() =>
+        new Holder(this);
+
+    private void Hold()
     {
-        private readonly SemaphoreSlim semaphore = new(1);
-        private int currentHoldCount;
-        public int MaxConcurrentHolds { get; private set; }
+        semaphore.Wait();
+        currentHoldCount++;
+        MaxConcurrentHolds = Math.Max(MaxConcurrentHolds, currentHoldCount);
+        semaphore.Release();
+    }
 
-        public int TimesCalled { get; private set; }
+    private void Release()
+    {
+        semaphore.Wait();
+        TimesCalled++;
+        currentHoldCount--;
+        semaphore.Release();
+    }
 
-        public IDisposable Grab() =>
-            new Holder(this);
+    public ConcurrentWitness ShouldBeenHeldMax(int max)
+    {
+        if (MaxConcurrentHolds > max)
+            throw new AssertionFailed($"It was expected to be held a maximum of {max} times at the same time but it was {MaxConcurrentHolds}");
+        return this;
+    }
 
-        private void Hold()
+    public ConcurrentWitness ShouldBeenHeldTotal(int total)
+    {
+        if (total != TimesCalled)
+            throw new AssertionFailed($"It was expected to be requested {total} times but it was {TimesCalled}");
+        return this;
+    }
+
+    private class Holder : IDisposable
+    {
+        private readonly ConcurrentWitness witness;
+
+        public Holder(ConcurrentWitness witness)
         {
-            semaphore.Wait();
-            currentHoldCount++;
-            MaxConcurrentHolds = Math.Max(MaxConcurrentHolds, currentHoldCount);
-            semaphore.Release();
+            this.witness = witness;
+            this.witness.Hold();
         }
 
-        private void Release()
-        {
-            semaphore.Wait();
-            TimesCalled++;
-            currentHoldCount--;
-            semaphore.Release();
-        }
-
-        private class Holder : IDisposable
-        {
-            private readonly ConcurrentWitness witness;
-
-            public Holder(ConcurrentWitness witness)
-            {
-                this.witness = witness;
-                this.witness.Hold();
-            }
-
-            public void Dispose() =>
-                witness.Release();
-        }
-
-        public ConcurrentWitness ShouldBeenHeldMax(int max)
-        {
-            if (MaxConcurrentHolds > max)
-                throw new AssertionFailed($"It was expected to be held a maximum of {max} times at the same time but it was {MaxConcurrentHolds}");
-            return this;
-        }
-
-        public ConcurrentWitness ShouldBeenHeldTotal(int total)
-        {
-            if (total != TimesCalled)
-                throw new AssertionFailed($"It was expected to be requested {total} times but it was {TimesCalled}");
-            return this;
-        }
+        public void Dispose() =>
+            witness.Release();
     }
 }

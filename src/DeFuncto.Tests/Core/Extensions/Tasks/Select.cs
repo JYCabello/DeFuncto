@@ -1,58 +1,56 @@
-﻿using DeFuncto.Extensions;
-using FsCheck.Xunit;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DeFuncto.Extensions;
+using FsCheck.Xunit;
 using Xunit;
 
-namespace DeFuncto.Tests.Core.Extensions.Tasks
+namespace DeFuncto.Tests.Core.Extensions.Tasks;
+
+public class Select
 {
-    public class Select
+    [Property(DisplayName = "Selects from array")]
+    public void FromArray(Person a, Person b, Person c)
     {
-        [Property(DisplayName = "Selects from array")]
-        public void FromArray(Person a, Person b, Person c)
+        var multipleLists = new[]
         {
-            var multipleLists = new[]
-            {
-                a.ToTask(),
-                b.ToTask(),
-                c.ToTask(),
-            }.Apply(Task.WhenAll);
+            a.ToTask(),
+            b.ToTask(),
+            c.ToTask()
+        }.Apply(Task.WhenAll);
 
-            var result = multipleLists.Select(p => p.Name).Result;
+        var result = multipleLists.Select(p => p.Name).Result;
 
-            Assert.Equal(3, result.Count());
-            Assert.Contains(a.Name, result);
-        }
+        Assert.Equal(3, result.Count());
+        Assert.Contains(a.Name, result);
+    }
 
-        [Property(DisplayName = "Selects from IEnumerable")]
-        public void FromIEnumerable(Person a, Person b, Person c)
-        {
-            var result = GetPeople().ToTask().Select(p => p.Age).Result;
+    [Property(DisplayName = "Selects from IEnumerable")]
+    public void FromIEnumerable(Person a, Person b, Person c)
+    {
+        var result = GetPeople().ToTask().Select(p => p.Age).Result;
 
-            Assert.Equal(3, result.Count());
-            Assert.Contains(a.Age, result);
+        Assert.Equal(3, result.Count());
+        Assert.Contains(a.Age, result);
 
-            IEnumerable<Person> GetPeople() =>
-                new List<Person> { a, b, c };
-        }
+        IEnumerable<Person> GetPeople() =>
+            new List<Person> { a, b, c };
+    }
 
-        [Property(DisplayName = "Selects from IEnumerable")]
-        public void FromList(Person a, Person b, Person c)
-        {
-            var result = GetPeople().ToTask().Select(p => p.Age).Result;
+    [Property(DisplayName = "Selects from IEnumerable")]
+    public void FromList(Person a, Person b, Person c)
+    {
+        var result = GetPeople().ToTask().Select(p => p.Age).Result;
 
-            Assert.Equal(3, result.Count());
-            Assert.Contains(a.Age, result);
+        Assert.Equal(3, result.Count());
+        Assert.Contains(a.Age, result);
 
-            List<Person> GetPeople() =>
-                new List<Person> { a, b, c };
-        }
+        List<Person> GetPeople() => new() { a, b, c };
+    }
 
-        public class Person
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
-        }
+    public class Person
+    {
+        public int Age { get; set; }
+        public string Name { get; set; }
     }
 }

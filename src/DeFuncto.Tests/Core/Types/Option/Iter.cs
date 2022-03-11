@@ -1,39 +1,53 @@
 ﻿using DeFuncto.Assertions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
-namespace DeFuncto.Tests.Core.Types.Option
+namespace DeFuncto.Tests.Core.Types.Option;
+
+public class Iter
 {
-    public class Iter
+    [Property(DisplayName = "Iterates on some with unit")]
+    public void OnSome(NonNull<string> a)
     {
-        [Fact(DisplayName = "Iterates on some")]
-        public void OnSome()
-        {
-            var witness = new Witness();
+        var witness = new Witness();
 
-            Some("banana")
-                .Iter(_ => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
-            None.Option<string>()
-                .Iter(_ => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
+        Some(a.Get)
+            .Iter(_ => witness.Touch());
+        witness.ShouldHaveBeenTouched(1);
 
-            witness.ShouldHaveBeenTouched(3);
-        }
+        None.Option<string>()
+            .Iter(_ => witness.Touch());
+        witness.ShouldHaveBeenTouched(1);
+    }
 
-        [Fact(DisplayName = "Iterates on none")]
-        public void OnNone()
-        {
-            var witness = new Witness();
+    [Property(DisplayName = "Iterates on none with unit")]
+    public void OnNone(NonNull<string> a)
+    {
+        var witness = new Witness();
 
-            Some("banana")
-                .Iter(() => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
-            None.Option<string>()
-                .Iter(() => witness.Touch())
-                .Iter(_ => witness.Touch(), () => witness.Touch());
+        Some(a.Get)
+            .Iter(() => witness.Touch());
+        witness.ShouldHaveBeenTouched(0);
 
-            witness.ShouldHaveBeenTouched(3);
-        }
+        None.Option<string>()
+            .Iter(() => witness.Touch());
+        witness.ShouldHaveBeenTouched(1);
+    }
+
+    [Property(DisplayName = "Iterates on some with both functions")]
+    public void OnSomeBothFunctions(NonNull<string> a)
+    {
+        var witness = new Witness();
+        Some(a.Get).Iter(_ => witness.Touch(), () => witness.Touch());
+        witness.ShouldHaveBeenTouched(1);
+    }
+
+    [Property(DisplayName = "Iterates on none with both functions")]
+    public void OnNoneBothFunctions(NonNull<string> a)
+    {
+        var witness = new Witness();
+        None.Option<string>().Iter(_ => witness.Touch(), () => witness.Touch());
+        witness.ShouldHaveBeenTouched(1);
     }
 }

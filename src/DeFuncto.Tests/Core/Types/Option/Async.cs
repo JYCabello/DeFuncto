@@ -1,17 +1,17 @@
-﻿using System.Threading.Tasks;
-using DeFuncto.Assertions;
+﻿using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static DeFuncto.Prelude;
 
-namespace DeFuncto.Tests.Core.Types.Option
+namespace DeFuncto.Tests.Core.Types.Option;
+
+public class Async
 {
-    public class Async
-    {
-        [Fact(DisplayName = "From option of a task")]
-        public Task OptionOfTask() =>
-            Some("banana".ToTask())
-                .Async()
-                .ShouldBeSome("banana");
-    }
+    [Property(DisplayName = "From option of a task")]
+    public void OptionOfTask(NonNull<string> a) =>
+        _ = Some(a.Get.ToTask())
+            .Async()
+            .ShouldBeSome(a.Get)
+            .Result;
 }
