@@ -44,7 +44,7 @@ public class ConcurrentWitness
         return this;
     }
 
-    private class Holder : IDisposable
+    private sealed class Holder : IDisposable
     {
         private readonly ConcurrentWitness witness;
 
@@ -54,7 +54,13 @@ public class ConcurrentWitness
             this.witness.Hold();
         }
 
-        public void Dispose() =>
+        public void Dispose()
+        {
             witness.Release();
+            Dispose(true);
+        }
+
+        // ReSharper disable once UnusedParameter.Local
+        private void Dispose(bool _) { }
     }
 }
