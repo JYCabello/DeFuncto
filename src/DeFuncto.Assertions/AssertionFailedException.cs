@@ -8,7 +8,7 @@ namespace DeFuncto.Assertions;
 [Serializable]
 public sealed class AssertionFailedException : Exception
 {
-    public AssertionFailedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    private AssertionFailedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     public AssertionFailedException(string message)
         : base($"Assertion failed: {message}") { }
