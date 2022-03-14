@@ -10,6 +10,7 @@ public class ShouldBeenHeldTotal
     {
         var witness = new DeFuncto.Assertions.ConcurrentWitness();
         using (var _ = witness.Grab()) { }
+
         witness.ShouldBeenHeldTotal(1);
         Assert.Throws<AssertionFailedException>(() => witness.ShouldBeenHeldTotal(2));
         Assert.Throws<AssertionFailedException>(() => witness.ShouldBeenHeldTotal(0));
