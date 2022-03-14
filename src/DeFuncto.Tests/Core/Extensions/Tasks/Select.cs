@@ -20,18 +20,20 @@ public class Select
         }.Apply(Task.WhenAll);
 
         var result = multipleLists.Select(p => p.Name).Result;
+        var asArray = result.ToArray();
 
-        Assert.Equal(3, result.Count());
-        Assert.Contains(a.Name, result);
+        Assert.Equal(3, asArray.Length);
+        Assert.Contains(a.Name, asArray);
     }
 
     [Property(DisplayName = "Selects from IEnumerable")]
     public void FromIEnumerable(Person a, Person b, Person c)
     {
         var result = GetPeople().ToTask().Select(p => p.Age).Result;
+        var asArray = result.ToArray();
 
-        Assert.Equal(3, result.Count());
-        Assert.Contains(a.Age, result);
+        Assert.Equal(3, asArray.Length);
+        Assert.Contains(a.Age, asArray);
 
         IEnumerable<Person> GetPeople() =>
             new List<Person> { a, b, c };
@@ -41,9 +43,10 @@ public class Select
     public void FromList(Person a, Person b, Person c)
     {
         var result = GetPeople().ToTask().Select(p => p.Age).Result;
+        var asArray = result.ToArray();
 
-        Assert.Equal(3, result.Count());
-        Assert.Contains(a.Age, result);
+        Assert.Equal(3, asArray.Length);
+        Assert.Contains(a.Age, asArray);
 
         List<Person> GetPeople() => new() { a, b, c };
     }
