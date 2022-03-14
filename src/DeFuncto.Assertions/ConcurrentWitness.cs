@@ -55,19 +55,6 @@ public class ConcurrentWitness
         }
 
         public void Dispose() =>
-            Dispose(true);
-
-        // ReSharper disable once UnusedParameter.Local
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                witness.Release();
-                GC.SuppressFinalize(this);
-            }
-        }
-
-        ~Holder() =>
             witness.Release();
     }
 }
