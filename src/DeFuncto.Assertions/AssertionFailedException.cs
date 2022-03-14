@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace DeFuncto.Assertions;
 
@@ -7,7 +8,7 @@ namespace DeFuncto.Assertions;
 [Serializable]
 public sealed class AssertionFailedException : Exception
 {
-    public AssertionFailedException() { }
+    public AssertionFailedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     public AssertionFailedException(string message)
         : base($"Assertion failed: {message}") { }
