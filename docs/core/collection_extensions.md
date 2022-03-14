@@ -23,7 +23,7 @@ Choose offers us the possibility of constructing inline collections with optiona
 using static DeFuncto.Prelude;
 //...
 
-// This will return a list with:
+// This will return an enumerable with:
 // a, if it was a multiple of three
 // b, if it was greater than 200
 // c, if it was smaller than 75
@@ -47,3 +47,12 @@ public IEnumerable<int> FilterAndTransform(IEnumerable<string> input) =>
 
 ```
 
+## Task collection elevation
+These extensions "elevate" the collection inside a task so we can `Select`, `ToList` and `ToArray` them to get another collection in a task.
+
+```cs
+var myAsyncArray =
+    Task.FromResult(new[] { 1, 2, 3 }) // Task<int[]> { 1, 2, 3 }
+        .Select(n => n * 2) // Task<IEnumerable<int>> { 2, 4, 6 }
+        .ToArray(); //                    Task<int[]> { 2, 4, 6 }
+```
