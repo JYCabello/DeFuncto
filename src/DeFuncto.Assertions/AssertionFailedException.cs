@@ -5,7 +5,7 @@ namespace DeFuncto.Assertions;
 
 [ExcludeFromCodeCoverage]
 [Serializable]
-public class AssertionFailedException : Exception
+public sealed class AssertionFailedException : Exception
 {
     public AssertionFailedException() { }
 
