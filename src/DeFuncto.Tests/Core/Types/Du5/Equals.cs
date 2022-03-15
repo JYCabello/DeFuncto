@@ -21,27 +21,27 @@ public class Equals
             .Run(Assert.False);
 
     [Property(DisplayName = "First is not equal to Second")]
-    public void FirstNotEqualToSecond(NonNull<string> a, NonNull<string> b) =>
+    public void FirstNotEqualToSecond(NonNull<string> a) =>
         First<string, string, string, string, string>(a.Get)
-            .Equals(Second<string, string, string, string, string>(b.Get))
+            .Equals(Second<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "First is not equal to Third")]
-    public void FirstNotEqualToThird(NonNull<string> a, NonNull<string> b) =>
+    public void FirstNotEqualToThird(NonNull<string> a) =>
         First<string, string, string, string, string>(a.Get)
-            .Equals(Third<string, string, string, string, string>(b.Get))
+            .Equals(Third<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "First is not equal to Fourth")]
-    public void FirstNotEqualToFourth(NonNull<string> a, NonNull<string> b) =>
+    public void FirstNotEqualToFourth(NonNull<string> a) =>
         First<string, string, string, string, string>(a.Get)
-            .Equals(Fourth<string, string, string, string, string>(b.Get))
+            .Equals(Fourth<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "First is not equal to Fifth")]
-    public void FirstNotEqualToFifth(NonNull<string> a, NonNull<string> b) =>
+    public void FirstNotEqualToFifth(NonNull<string> a) =>
         First<string, string, string, string, string>(a.Get)
-            .Equals(Fifth<string, string, string, string, string>(b.Get))
+            .Equals(Fifth<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Second is not equal to Second")]
@@ -51,21 +51,21 @@ public class Equals
             .Run(Assert.False);
 
     [Property(DisplayName = "Second is not equal to Third")]
-    public void SecondNotEqualToThird(NonNull<string> a, NonNull<string> b) =>
+    public void SecondNotEqualToThird(NonNull<string> a) =>
         Second<string, string, string, string, string>(a.Get)
-            .Equals(Third<string, string, string, string, string>(b.Get))
+            .Equals(Third<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Second is not equal to Fourth")]
-    public void SecondNotEqualToFourth(NonNull<string> a, NonNull<string> b) =>
+    public void SecondNotEqualToFourth(NonNull<string> a) =>
         Second<string, string, string, string, string>(a.Get)
-            .Equals(Fourth<string, string, string, string, string>(b.Get))
+            .Equals(Fourth<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Second is not equal to Fifth")]
-    public void SecondNotEqualToFifth(NonNull<string> a, NonNull<string> b) =>
+    public void SecondNotEqualToFifth(NonNull<string> a) =>
         Second<string, string, string, string, string>(a.Get)
-            .Equals(Fifth<string, string, string, string, string>(b.Get))
+            .Equals(Fifth<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Third is not equal to Third")]
@@ -75,15 +75,15 @@ public class Equals
             .Run(Assert.False);
 
     [Property(DisplayName = "Third is not equal to Fourth")]
-    public void ThirdNotEqualToFourth(NonNull<string> a, NonNull<string> b) =>
+    public void ThirdNotEqualToFourth(NonNull<string> a) =>
         Third<string, string, string, string, string>(a.Get)
-            .Equals(Fourth<string, string, string, string, string>(b.Get))
+            .Equals(Fourth<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Third is not equal to Fifth")]
-    public void ThirdNotEqualToFifth(NonNull<string> a, NonNull<string> b) =>
+    public void ThirdNotEqualToFifth(NonNull<string> a) =>
         Third<string, string, string, string, string>(a.Get)
-            .Equals(Fifth<string, string, string, string, string>(b.Get))
+            .Equals(Fifth<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Fourth is not equal to Fourth")]
@@ -93,9 +93,9 @@ public class Equals
             .Run(Assert.False);
 
     [Property(DisplayName = "Fourth is not equal to Fifth")]
-    public void FourthNotEqualToFifth(NonNull<string> a, NonNull<string> b) =>
+    public void FourthNotEqualToFifth(NonNull<string> a) =>
         Fourth<string, string, string, string, string>(a.Get)
-            .Equals(Fifth<string, string, string, string, string>(b.Get))
+            .Equals(Fifth<string, string, string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Fifth is not equal to Fifth")]
