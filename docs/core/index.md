@@ -4,3 +4,6 @@
 1. [Option](option.md)
 1. [Result](result.md)
 1. [Collection extensions](collection_extensions.md)
+
+# Asynchrony
+ 1. [Parallel](parallel.md)
