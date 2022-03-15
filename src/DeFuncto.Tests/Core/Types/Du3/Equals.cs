@@ -27,9 +27,9 @@ public class Equals
             .Run(Assert.False);
 
     [Property(DisplayName = "First is not equal to Third")]
-    public void FirstNotEqualToThird(NonNull<string> a, NonNull<string> b) =>
+    public void FirstNotEqualToThird(NonNull<string> a) =>
         First<string, string, string>(a.Get)
-            .Equals(Third<string, string, string>(b.Get))
+            .Equals(Third<string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Second is not equal to Second")]
@@ -39,9 +39,9 @@ public class Equals
             .Run(Assert.False);
 
     [Property(DisplayName = "Second is not equal to Third")]
-    public void SecondNotEqualToThird(NonNull<string> a, NonNull<string> b) =>
+    public void SecondNotEqualToThird(NonNull<string> a) =>
         Second<string, string, string>(a.Get)
-            .Equals(Third<string, string, string>(b.Get))
+            .Equals(Third<string, string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Third is not equal to Third")]
