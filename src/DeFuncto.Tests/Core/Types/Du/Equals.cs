@@ -21,9 +21,9 @@ public class Equals
             .Run(Assert.False);
 
     [Property(DisplayName = "First is not equal to Second")]
-    public void FirstNotEqualToSecond(NonNull<string> a, NonNull<string> b) =>
+    public void FirstNotEqualToSecond(NonNull<string> a) =>
         First<string, string>(a.Get)
-            .Equals(Second<string, string>(b.Get))
+            .Equals(Second<string, string>(a.Get))
             .Run(Assert.False);
 
     [Property(DisplayName = "Second is not equal to Second")]
