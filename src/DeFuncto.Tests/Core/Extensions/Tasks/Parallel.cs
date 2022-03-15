@@ -23,17 +23,22 @@ public class Parallel
     {
         var witness = new ConcurrentWitness();
 
-        var results = await Enumerable.Range(0, total)
-            // ReSharper disable once RedundantTypeArgumentsOfMethod
-            .Select<int, Func<Task<int>>>(_ => async () =>
+        Func<Task<int>> DelayWitness(int index) =>
+            async () =>
             {
                 using (witness.Grab())
                 {
                     var timesCalled = witness.TimesCalled;
-                    await Task.Delay(TimeSpan.FromMilliseconds(1 + timesCalled % 25));
+                    await Task.Delay(TimeSpan.FromMilliseconds(1 + index % 10 + timesCalled % 25));
                     return timesCalled;
                 }
-            }).Parallel(parallelism);
+            };
+
+        var results =
+            await Enumerable
+                .Range(0, total)
+                .Select(DelayWitness)
+                .Parallel(parallelism);
 
         var sum = results.Sum();
         Assert.True(total <= parallelism ? sum == 0 : total < sum);

@@ -12,7 +12,7 @@ public class Map
         int? nullableValue = value;
         var result = nullableValue.Map(v => v + 1);
         Assert.NotNull(result);
-        Assert.Equal(value + 1, result.Value);
+        Assert.Equal(value + 1, result!.Value);
     }
 
     [Fact(DisplayName = "Skips null")]
