@@ -14,7 +14,7 @@ public class Bind
         if (value is not null && anotherValue is not null)
         {
             Assert.NotNull(result);
-            Assert.Equal(value.Value + anotherValue.Value, result.Value);
+            Assert.Equal(value.Value + anotherValue.Value, result!.Value);
         }
 
         if (value is null || anotherValue is null)

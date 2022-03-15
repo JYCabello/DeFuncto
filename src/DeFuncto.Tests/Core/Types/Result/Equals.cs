@@ -11,7 +11,7 @@ public class Equals
     [Property(DisplayName = "Is not equal to null")]
     public void FalseByNull(NonNull<string> a) =>
         Ok<string, int>(a.Get)
-            .Equals((object)null)
+            .Equals((object)null!)
             .Run(result => Assert.False(result));
 
     [Property(DisplayName = "Ok is not equal to Error")]
