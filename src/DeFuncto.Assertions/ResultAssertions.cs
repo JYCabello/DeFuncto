@@ -10,7 +10,7 @@ public static class ResultAssertions
     public static Unit ShouldBeOk<TOk, TError>(this Result<TOk, TError> self)
     {
         if (self.IsError)
-            throw new AssertionFailed("Result should be Ok, but it was Error");
+            throw new AssertionFailedException("Result should be Ok, but it was Error");
         return unit;
     }
 
@@ -32,20 +32,20 @@ public static class ResultAssertions
     public static Unit ShouldBeOk<TOk, TError>(this Result<TOk, TError> self, TOk expected) =>
         self.ShouldBeOk(val => val.AssertEquals(expected));
 
+    public static Task<Unit> ShouldBeOk<TOk, TError>(this AsyncResult<TOk, TError> self, TOk expected) =>
+        self.ToTask().Map(result => result.ShouldBeOk(ok => ok.AssertEquals(expected)));
+
     public static Unit AssertEquals<T>(this T self, T other)
     {
         if (!self.Equals(other))
-            throw new AssertionFailed($"Expected {other} but it was {self}");
+            throw new AssertionFailedException($"Expected {other} but it was {self}");
         return unit;
     }
-
-    public static Task<Unit> ShouldBeOk<TOk, TError>(this AsyncResult<TOk, TError> self, TOk expected) =>
-        self.ToTask().Map(result => result.ShouldBeOk(ok => ok.AssertEquals(expected)));
 
     public static Result<TOk, TError> ShouldBeError<TOk, TError>(this Result<TOk, TError> self)
     {
         if (self.IsOk)
-            throw new AssertionFailed("Result should be Error, but it was Ok");
+            throw new AssertionFailedException("Result should be Error, but it was Ok");
         return self;
     }
 

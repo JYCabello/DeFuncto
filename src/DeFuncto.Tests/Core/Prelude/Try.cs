@@ -39,9 +39,9 @@ public class Try
             .ShouldBeError(expected);
     }
 
-    private int ThrowHelper(Exception ex) =>
+    private static int ThrowHelper(Exception ex) =>
         throw ex;
 
-    private Task<int> ThrowHelperAsync(Exception ex) =>
+    private static Task<int> ThrowHelperAsync(Exception ex) =>
         throw ex;
 }

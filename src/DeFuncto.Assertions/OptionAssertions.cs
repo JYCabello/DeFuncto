@@ -9,14 +9,14 @@ public static class OptionAssertions
     public static Option<T> ShouldBeSome<T>(this Option<T> option)
     {
         if (option.IsNone && !option.IsSome)
-            throw new AssertionFailed("Option should have been in the 'Some' state.");
+            throw new AssertionFailedException("Option should have been in the 'Some' state.");
         return option;
     }
 
     public static async Task<Option<T>> ShouldBeSome<T>(this AsyncOption<T> option)
     {
         if (await option.IsNone && !await option.IsSome)
-            throw new AssertionFailed("Option should have been in the 'Some' state.");
+            throw new AssertionFailedException("Option should have been in the 'Some' state.");
         return await option.Option;
     }
 
@@ -38,7 +38,7 @@ public static class OptionAssertions
         option.ShouldBeSome(t =>
         {
             if (!expected?.Equals(t) ?? t != null)
-                throw new AssertionFailed($"Option should have value {expected} but it was {t}.");
+                throw new AssertionFailedException($"Option should have value {expected} but it was {t}.");
             return unit;
         });
 
@@ -46,21 +46,21 @@ public static class OptionAssertions
         option.ShouldBeSome(t =>
         {
             if (!expected.Equals(t))
-                throw new AssertionFailed($"Option should have value {expected} but it was {t}.");
+                throw new AssertionFailedException($"Option should have value {expected} but it was {t}.");
             return unit;
         });
 
     public static Option<T> ShouldBeNone<T>(this Option<T> option)
     {
         if (option.IsSome)
-            throw new AssertionFailed("Option should have been in the 'None' state.");
+            throw new AssertionFailedException("Option should have been in the 'None' state.");
         return option;
     }
 
     public static async Task<Option<T>> ShouldBeNone<T>(this AsyncOption<T> option)
     {
         if (await option.IsSome)
-            throw new AssertionFailed("Option should have been in the 'None' state.");
+            throw new AssertionFailedException("Option should have been in the 'None' state.");
         return await option.Option;
     }
 }

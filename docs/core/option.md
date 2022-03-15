@@ -253,32 +253,4 @@ TryFind(3).Iter(
 );
 ```
 ## Bonus track: Choose
-Choose offers us the possibility of optionally constructing collections or even doing filtering and transformations in a "single step" (not really, as the filtering happens at the type level while the transformation is explicit). Internally, it just takes an inumerable of `Option<T>` and returns an `IEnumerable` of `T` for all options that were in the `Some` state.
-### Optional construction
-```cs
-using static DeFuncto.Prelude;
-//...
-
-// This will return a list with:
-// a, if it was a multiple of three
-// b, if it was greater than 200
-// c, if it was smaller than 75
-public IEnumerable<int> OptionalConstruction(int a, int b, int c) =>
-    new List<Option<int>>
-    {
-        a % 3 == 0 : Some(a) : None,
-        b > 200 : Some(b) : None,
-        c < 75 : Some(c) : None
-    }.Choose();
-```
-### Filter and transform in one go
-
-```cs
-using static DeFuncto.Prelude;
-//...
-
-// This will give a collection of all integers that could be parsed out of the input strings.
-public IEnumerable<int> FilterAndTransform(IEnumerable<string> input) =>
-    inputs.Choose(s => int.TryParse(s, out var result) : Some(result) : None);
-
-```
+Part or the [collection extenstions](./collection_extensions.md).
