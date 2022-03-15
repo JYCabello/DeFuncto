@@ -111,6 +111,11 @@ public readonly struct AsyncResult<TOk, TError>
     public Task<TOut> Match<TOut>(Func<TOk, TOut> fOk, Func<TError, TOut> fError) =>
         resultTask.Map(r => r.Match(fOk, fError));
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Task<TOut> Match<TOut>(Func<TOk, Task<TOut>> fOk, Func<TError, Task<TOut>> fError) =>
+        resultTask.Map(r => r.Match(fOk, fError));
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<TOk, Task<Unit>> fOk, Func<TError, Task<Unit>> fError) =>
         Iter(async ok => { await fOk(ok); }, async error => { await fError(error); });
@@ -169,11 +174,6 @@ public readonly struct AsyncResult<TOk, TError>
             fError(ok);
             return unit;
         });
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public async Task<TOut> Match<TOut>(Func<TOk, Task<TOut>> fOk, Func<TError, Task<TOut>> fError) =>
-        await resultTask.Map(r => r.Match(fOk, fError));
 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
