@@ -7,3 +7,4 @@
 
 # Asynchrony
  1. [Parallel](parallel.md)
+ 1. [AsyncOption and AsyncResult](async_wrappers.md)
