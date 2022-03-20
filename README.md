@@ -15,14 +15,14 @@ Indeed, you can write software in a way where invalid states are impossible to r
 
 No. The data types defined here are structs, which by default have an empty constructor (C# does not allow to remove it) that will, with the notable exception of `Option` and `AsyncOption` (where it's done in a bit of a hacky way) screw any hope of correctness.
 
-There IS a way around it, and [language-ext](https://github.com/louthy/language-ext) does it by implementing the concept of `Bottom`, commonly represented as `_|_`. Again, this library is not aiming to get you to swim in the deep end, but to have a smooth transition into safer practices. By keeping the implementation to the minimum, we can maximize the time invested in documentation, sharing the motivations and value of the practices promoted here as well as common pitfalls and tricks to maximize the gains.
+There IS a way around it, and [language-ext](https://github.com/louthy/language-ext) does it by implementing the concept of `Bottom`, commonly represented as `_|_`, and a term I'll avoid using at all costs in this documentation. Again, this library is not aiming to get you to swim in the deep end, but to have a smooth transition into safer practices. By keeping the implementation to the minimum, we can maximize the time invested in documentation, sharing the motivations and value of the practices promoted here as well as common pitfalls and tricks to maximize the gains.
 
 > Does this mean that I should just skip this and go straight away to use F#?
 
 If you want and can, yeah, do. This is for those of us that want to make our C# journey a little bit easier.
 
 ## Functional Programming as a tool: Making your little dev world safer
-The goal is not to make a full introduction to functional programming. When you arrived here I assumed that you already have heard of the word [Monad](https://mikhail.io/2018/07/monads-explained-in-csharp-again/) and/or you might be interested in [railway oriented programming](https://fsharpforfunandprofit.com/rop/). This library aims EXACTLY to give you the tools to do railway oriented programming and nothing else. The idea is that you will end up writing the majority of your programs in a DSL fashion. Defining your work as events that should happen instead of how they happen.
+The goal is not to make a full introduction to functional programming. When you arrived here I assumed that you already have heard of the word [Monad](https://mikhail.io/2018/07/monads-explained-in-csharp-again/) (another word that you can forget right away, I'm not using it again) and/or you might be interested in [railway oriented programming](https://fsharpforfunandprofit.com/rop/). This library aims EXACTLY to give you the tools to do railway oriented programming and nothing else. The idea is that you will end up writing the majority of your programs in a DSL fashion. Defining your work as events that should happen instead of how they happen.
 
 Let's say that your services all return `AsyncResult<Something, Error>`, this is what a login program would look like (for the hardcore FPers: I am aware that this is using old fashioned dependency-injected services) in your session handler:
 ```cs
