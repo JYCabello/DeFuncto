@@ -43,3 +43,18 @@ That concept of nothing has a [mathematical name](https://en.wikipedia.org/wiki/
 If you have accepted this as true, or at least you have agreed to entertain the idea, the outcomes of `WhatIsTruth` would be `True`, `False`, `FileNotFound` and `nothing`. No surprises here.
 
 What about `DoSomething`? Obviously `nothing` and... well, `something`.
+
+How do we represent this `something`? To explain it, we have to talk about math, just a little bit, just one tiny little thing.
+
+> In math, all functions take one parameter and return one value. Functional programming is the illegitimate child of math and computers, so it follows this principle.
+
+You might be rightfully thinking that you kind of remember having functions taking multiple parameters, even in F# or Haskell, you have seen functions take more than one parameter.
+```cs
+public int Add(int a, int b) => a + b;
+```
+```fs
+let add a b = a + b
+```
+```haskell
+add a b = a + b
+```
