@@ -8,8 +8,19 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto.Extensions;
 
+/// <summary>
+/// Functional extensions to interact with collections using LINQ using DeFuncto
+/// data structures.
+/// </summary>
 public static class Collections
 {
+    /// <summary>
+    /// Out of an Enumerable of Options, filter and map it to an Enumerable
+    /// with the values of the Options in the Some state.
+    /// </summary>
+    /// <param name="self">An enumerable of Options.</param>
+    /// <typeparam name="T">Type of the value of the Options.</typeparam>
+    /// <returns>An Enumerable with the values of the Options in the Some state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<T> Choose<T>(this IEnumerable<Option<T>> self) =>
