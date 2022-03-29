@@ -63,6 +63,13 @@ public static class Collections
     public static Option<T> FirstOrNone<T>(this IEnumerable<T> self, Func<T, bool> filter) =>
         self.Where(filter).FirstOrNone();
 
+    /// <summary>
+    /// Gets the only element in an Enumerable in an Option or None if it's empty or it has
+    /// more than one element.
+    /// </summary>
+    /// <param name="self">The Enumerable to get a single element from.</param>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <returns>Some if there was a single element, None in any other case.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> SingleOrNone<T>(this IEnumerable<T> self) =>
@@ -70,16 +77,6 @@ public static class Collections
 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Option<T> SingleOrNone<T>(this List<T> self) =>
-        self.Select(t => new Box<T>(t)).SingleOrDefault().Apply(Optional).Map(box => box.Value);
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> SingleOrNone<T>(this IEnumerable<T> self, Func<T, bool> filter) =>
-        self.Where(filter).SingleOrNone();
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Option<T> SingleOrNone<T>(this List<T> self, Func<T, bool> filter) =>
         self.Where(filter).SingleOrNone();
 }
