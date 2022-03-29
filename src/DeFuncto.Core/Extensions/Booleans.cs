@@ -36,7 +36,7 @@ public static class Booleans
         boolean.Map(b => b.Match(onTrue, onFalse));
 
     /// <summary>
-    /// Matches on a task returning booelan with two asynchronous functions as if the boolean was a discriminated union.
+    /// Matches on a task returning boolean with two asynchronous functions as if the boolean was a discriminated union.
     /// </summary>
     /// <param name="boolean">The asynchronous boolean to match on.</param>
     /// <param name="onTrue">Asynchronous function to run on true.</param>
