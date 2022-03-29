@@ -69,12 +69,20 @@ public static class Collections
     /// </summary>
     /// <param name="self">The Enumerable to get a single element from.</param>
     /// <typeparam name="T">Value type.</typeparam>
-    /// <returns>Some if there was a single element, None in any other case.</returns>
+    /// <returns>Some if there was a single element, None otherwise.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> SingleOrNone<T>(this IEnumerable<T> self) =>
         self.Select(t => new Box<T>(t)).SingleOrDefault().Apply(Optional).Map(box => box.Value);
 
+    /// <summary>
+    /// If there's a single element in an Enumerable matching the filter predicate, return it
+    /// in an Option, None otherwise.
+    /// </summary>
+    /// <param name="self">The Enumerable to filter a single element from.</param>
+    /// <param name="filter">The predicate to filter.</param>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <returns>Some if there was a single element matching the predicate, None otherwise.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> SingleOrNone<T>(this IEnumerable<T> self, Func<T, bool> filter) =>
