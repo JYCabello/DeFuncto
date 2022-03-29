@@ -50,6 +50,14 @@ public static class Collections
     public static Option<T> FirstOrNone<T>(this IEnumerable<T> self) =>
         self.Select(t => new Box<T>(t)).FirstOrDefault().Apply(Optional).Map(box => box.Value);
 
+    /// <summary>
+    /// Gets the first element of an Enumerable that matches the filter predicate or None if
+    /// no element matching is found.
+    /// </summary>
+    /// <param name="self">The Enumerable to get the first matching element from.</param>
+    /// <param name="filter">The filter predicate.</param>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <returns>An Option with the first matching element or None.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> FirstOrNone<T>(this IEnumerable<T> self, Func<T, bool> filter) =>
