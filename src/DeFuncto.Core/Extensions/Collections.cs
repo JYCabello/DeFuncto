@@ -44,7 +44,7 @@ public static class Collections
     /// </summary>
     /// <param name="self">The Enumerable to get the first element from.</param>
     /// <typeparam name="T">Value type.</typeparam>
-    /// <returns></returns>
+    /// <returns>An Option with the first item or None.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> FirstOrNone<T>(this IEnumerable<T> self) =>
@@ -52,17 +52,7 @@ public static class Collections
 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Option<T> FirstOrNone<T>(this List<T> self) =>
-        self.Select(t => new Box<T>(t)).FirstOrDefault().Apply(Optional).Map(box => box.Value);
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> FirstOrNone<T>(this IEnumerable<T> self, Func<T, bool> filter) =>
-        self.Where(filter).FirstOrNone();
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Option<T> FirstOrNone<T>(this List<T> self, Func<T, bool> filter) =>
         self.Where(filter).FirstOrNone();
 
     [Pure]
