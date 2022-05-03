@@ -11,7 +11,6 @@ namespace DeFuncto.Extensions;
 /// </summary>
 public static class Functions
 {
-    banana sort these functions
     /// <summary>
     /// Converts a Parameterless function that returns a value into an Action.
     /// </summary>
