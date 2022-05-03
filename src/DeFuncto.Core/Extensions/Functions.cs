@@ -93,6 +93,11 @@ public static class Functions
             return unit;
         };
 
+    /// <summary>
+    /// Turns an async unit returning function into an asynchronous action.
+    /// </summary>
+    /// <param name="f">The async unit returning function.</param>
+    /// <returns>The asynchronous action.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Func<Task> AsyncAction(this Func<Task<Unit>> f) =>
