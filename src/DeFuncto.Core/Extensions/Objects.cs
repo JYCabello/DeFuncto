@@ -68,9 +68,9 @@ public static class Objects
     /// Turns an object into an option based on a predicate.
     /// </summary>
     /// <param name="self">The object.</param>
-    /// <param name="predicate"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="predicate">The predicate.</param>
+    /// <typeparam name="T">The object type.</typeparam>
+    /// <returns>Some if it was true, None if not.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> When<T>(this T self, Func<T, bool> predicate) =>
