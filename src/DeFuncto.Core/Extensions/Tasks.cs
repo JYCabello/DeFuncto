@@ -171,13 +171,33 @@ public static class Tasks
     public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<IEnumerable<TIn>> self, Func<TIn, TOut> func) =>
         self.Map(ienumerable => ienumerable.Select(func));
 
+    /// <summary>
+    /// Performs a select in an List returned by a task.
+    /// Might seem redundant since there's already an IEnumerable version, but the type inference in C#
+    /// is not really friendly in this case.
+    /// </summary>
+    /// <param name="self">The task returning the List.</param>
+    /// <param name="func">The projection.</param>
+    /// <typeparam name="TIn">Type of the elements of the input.</typeparam>
+    /// <typeparam name="TOut">Type of the elements of the output.</typeparam>
+    /// <returns>The new enumerable, in a task.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<List<TIn>> self, Func<TIn, TOut> func) =>
         self.Map(ienumerable => ienumerable.Select(func));
 
+    /// <summary>
+    /// Performs a select in an Array returned by a task.
+    /// Might seem redundant since there's already an IEnumerable version, but the type inference in C#
+    /// is not really friendly in this case.
+    /// </summary>
+    /// <param name="self">The task returning the Array.</param>
+    /// <param name="func">The projection.</param>
+    /// <typeparam name="TIn">Type of the elements of the input.</typeparam>
+    /// <typeparam name="TOut">Type of the elements of the output.</typeparam>
+    /// <returns>The new enumerable, in a task.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Task<IEnumerable<TResult>> Select<TIn, TResult>(this Task<TIn[]> self, Func<TIn, TResult> mapper) =>
-        self.Map(x => x.Select(mapper));
+    public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<TIn[]> self, Func<TIn, TOut> func) =>
+        self.Map(x => x.Select(func));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<List<T>> ToList<T>(this Task<IEnumerable<T>> self) =>
