@@ -107,6 +107,11 @@ public static class Tasks
         }
     }
 
+    /// <summary>
+    /// Synchronously resolves a task, ignoring its result.
+    /// </summary>
+    /// <param name="self">The task to resolve.</param>
+    /// <typeparam name="T">The type of the result that will be discarded.</typeparam>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void SyncVoid<T>(this Task<T> self)
     {
@@ -114,18 +119,20 @@ public static class Tasks
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Task<Unit> RunAsync<T>(this T self, Func<T, Task> f) => self.Apply(async t =>
-    {
-        await f(t);
-        return Unit.Default;
-    });
+    public static Task<Unit> RunAsync<T>(this T self, Func<T, Task> f) =>
+        self.Apply(async t =>
+        {
+            await f(t);
+            return Unit.Default;
+        });
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Task<Unit> RunAsync<T>(this Task<T> self, Func<T, Task> f) => self.Map(async t =>
-    {
-        await f(t);
-        return Unit.Default;
-    });
+    public static Task<Unit> RunAsync<T>(this Task<T> self, Func<T, Task> f) =>
+        self.Map(async t =>
+        {
+            await f(t);
+            return Unit.Default;
+        });
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<Unit> RunAsync<T>(this T self, Func<T, Task<Unit>> f) =>
