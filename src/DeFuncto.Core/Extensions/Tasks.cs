@@ -148,10 +148,25 @@ public static class Tasks
             return Unit.Default;
         });
 
+    /// <summary>
+    /// Asynchronously applies an asynchronous effectful function to the result of a task.
+    /// </summary>
+    /// <param name="self">The task to apply the asynchronous action to.</param>
+    /// <param name="f">The asynchronous effectful function to apply.</param>
+    /// <typeparam name="T">The type of the task's result.</typeparam>
+    /// <returns>Unit, asynchronously.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<Unit> RunAsync<T>(this T self, Func<T, Task<Unit>> f) =>
         self.RunAsync(async t => { await f(t); });
 
+    /// <summary>
+    /// Performs a select in an IEnumerable returned by a task.
+    /// </summary>
+    /// <param name="self">The task returning the IEnumerable.</param>
+    /// <param name="func">The projection.</param>
+    /// <typeparam name="TIn">Type of the elements of the input.</typeparam>
+    /// <typeparam name="TOut">Type of the elements of the output.</typeparam>
+    /// <returns>The new enumerable, in a task.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<IEnumerable<TIn>> self, Func<TIn, TOut> func) =>
         self.Map(ienumerable => ienumerable.Select(func));
