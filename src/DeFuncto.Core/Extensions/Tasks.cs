@@ -5,11 +5,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using static DeFuncto.Prelude;
 
 namespace DeFuncto.Extensions;
 
 /// <summary>
 /// Functions to work with "what's inside a task".
+/// Some of them work with collections and IEnumerables inside a task.
 /// </summary>
 public static class Tasks
 {
@@ -40,21 +42,49 @@ public static class Tasks
     /// projection function and flattening with the wrapping task.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static async Task<TOut> Map<TIn, TOut>(this Task<TIn> self, Func<TIn, Task<TOut>> f) =>
-        await f(await self);
+    public static Task<TOut> Map<TIn, TOut>(this Task<TIn> self, Func<TIn, Task<TOut>> f) =>
+        self.Map<TIn, Task<TOut>>(f).Flatten();
 
+    /// <summary>
+    /// Flattens a stacked task.
+    /// </summary>
+    /// <param name="self">The stacked task.</param>
+    /// <typeparam name="T">The type of the value in the innermost.</typeparam>
+    /// <returns> The flattened task. </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static async Task<T> Flatten<T>(this Task<Task<T>> self) =>
         await await self;
 
+    /// <summary>
+    /// Flattens an array of lists inside a task.
+    /// </summary>
+    /// <param name="self">The task returning an array of lists.</param>
+    /// <typeparam name="T">The type of the list items.</typeparam>
+    /// <returns>A task with a list with the contents of the flattened arrays.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<List<T>> Flatten<T>(this Task<List<T>[]> self) =>
-        self.Map(t => t.SelectMany(a => a)).ToList();
+        self.Map(t => t.SelectMany(Id)).ToList();
 
+    /// <summary>
+    /// Wraps an object in a resolved task.
+    /// </summary>
+    /// <param name="self">The object to wrap.</param>
+    /// <typeparam name="T">The type of the object to wrap.</typeparam>
+    /// <returns>The resolved task with the object.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<T> ToTask<T>(this T self) => self.Apply(Task.FromResult);
 
+    /// <summary>
+    /// Parallelizes a collection of asynchronous functions, with a latch mechanism that
+    /// limits how many can be running at the same time.
+    /// </summary>
+    /// <param name="self">The collection of functions.</param>
+    /// <param name="maxDegreeOfParalellism">
+    /// Maximum amount of functions running at the same time, defaults to 5.
+    /// </param>
+    /// <typeparam name="T">Type returned by the functions.</typeparam>
+    /// <returns>A single task with a collection of the results.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static async Task<T[]> Parallel<T>(this IEnumerable<Func<Task<T>>> self, int maxDegreeOfParalellism = 5)
     {
