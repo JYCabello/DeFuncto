@@ -118,6 +118,13 @@ public static class Tasks
         var _ = self.Result;
     }
 
+    /// <summary>
+    /// Asynchronously applies an asynchronous action to an object.
+    /// </summary>
+    /// <param name="self">The object to apply the asynchronous action to.</param>
+    /// <param name="f">The asynchronous action to apply.</param>
+    /// <typeparam name="T">The type of the object.</typeparam>
+    /// <returns>Unit, asynchronously.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<Unit> RunAsync<T>(this T self, Func<T, Task> f) =>
         self.Apply(async t =>
