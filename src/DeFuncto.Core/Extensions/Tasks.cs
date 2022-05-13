@@ -133,6 +133,13 @@ public static class Tasks
             return Unit.Default;
         });
 
+    /// <summary>
+    /// Asynchronously applies an asynchronous action to the result of a task.
+    /// </summary>
+    /// <param name="self">The task to apply the asynchronous action to.</param>
+    /// <param name="f">The asynchronous action to apply.</param>
+    /// <typeparam name="T">The type of the task's result.</typeparam>
+    /// <returns>Unit, asynchronously.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<Unit> RunAsync<T>(this Task<T> self, Func<T, Task> f) =>
         self.Map(async t =>
