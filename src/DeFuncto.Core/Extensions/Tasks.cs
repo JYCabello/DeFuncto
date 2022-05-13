@@ -199,18 +199,42 @@ public static class Tasks
     public static Task<IEnumerable<TOut>> Select<TIn, TOut>(this Task<TIn[]> self, Func<TIn, TOut> func) =>
         self.Map(x => x.Select(func));
 
+    /// <summary>
+    /// Enumerates an IEnumerable returned by a Task to a List.
+    /// </summary>
+    /// <param name="self">The Task returning the IEnumerable.</param>
+    /// <typeparam name="T">Type of the items.</typeparam>
+    /// <returns>A task returning a List.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<List<T>> ToList<T>(this Task<IEnumerable<T>> self) =>
         self.Map(t => t.ToList());
 
+    /// <summary>
+    /// Converts an Array returned by a Task to a List.
+    /// </summary>
+    /// <param name="self">The Task returning the Array.</param>
+    /// <typeparam name="T">Type of the items.</typeparam>
+    /// <returns>A task returning a List.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<List<T>> ToList<T>(this Task<T[]> self) =>
         self.Map(t => t.ToList());
 
+    /// <summary>
+    /// Enumerates an IEnumerable returned by a Task to an Array.
+    /// </summary>
+    /// <param name="self">The Task returning the IEnumerable.</param>
+    /// <typeparam name="T">Type of the items.</typeparam>
+    /// <returns>A task returning an Array.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<T[]> ToArray<T>(this Task<IEnumerable<T>> self) =>
         self.Map(t => t.ToArray());
 
+    /// <summary>
+    /// Converts a List returned by a Task to an Array.
+    /// </summary>
+    /// <param name="self">The Task returning the List.</param>
+    /// <typeparam name="T">Type of the items.</typeparam>
+    /// <returns>A task returning an Array.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Task<T[]> ToArray<T>(this Task<List<T>> self) =>
         self.Map(t => t.ToArray());
