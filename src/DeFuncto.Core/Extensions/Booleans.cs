@@ -25,7 +25,8 @@ public static class Booleans
         boolean ? onTrue() : onFalse();
 
     /// <summary>
-    /// Matches on a task returning a boolean as if the boolean was a discriminated union.
+    /// Performs a ternary operation on the value of a boolean
+   ///  and returns the result of the appropiate function.
     /// </summary>
     /// <param name="boolean">The asynchronous boolean to match on.</param>
     /// <param name="onTrue">Function to run on true.</param>
