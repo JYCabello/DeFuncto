@@ -16,7 +16,7 @@ namespace DeFuncto.Extensions;
 public static class Tasks
 {
     /// <summary>
-    /// Maps the return value of a task with a synchronous function.
+    /// Synchronously applies the projection function to the result of a task
     /// </summary>
     /// <param name="self">Task to map.</param>
     /// <param name="f">Projection function.</param>
