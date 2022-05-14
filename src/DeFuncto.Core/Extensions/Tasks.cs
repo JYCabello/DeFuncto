@@ -76,7 +76,7 @@ public static class Tasks
     public static Task<T> ToTask<T>(this T self) => self.Apply(Task.FromResult);
 
     /// <summary>
-    /// Parallelizes a collection of asynchronous functions, with a latch mechanism that
+    /// Runs a collection of asynchronous functions in parallel, with a latch mechanism that
     /// limits how many can be running at the same time.
     /// </summary>
     /// <param name="self">The collection of functions.</param>
