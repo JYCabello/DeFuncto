@@ -94,7 +94,7 @@ public static class Functions
         };
 
     /// <summary>
-    /// Turns an async unit returning function into an asynchronous action.
+    /// Turns an async function returning unit into an asynchronous action.
     /// </summary>
     /// <param name="f">The async unit returning function.</param>
     /// <returns>The asynchronous action.</returns>
