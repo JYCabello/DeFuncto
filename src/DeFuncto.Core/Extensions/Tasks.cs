@@ -56,7 +56,7 @@ public static class Tasks
         await await self;
 
     /// <summary>
-    /// Flattens an array of lists inside a task.
+    /// Asynchronously reduces an array of lists into a one dimension list.
     /// </summary>
     /// <param name="self">The task returning an array of lists.</param>
     /// <typeparam name="T">The type of the list items.</typeparam>
