@@ -20,12 +20,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./src/DeFuncto.sln
     - name: Build
-      run: dotnet build --no-restore ./src/DeFuncto.Assertions/DeFuncto.Assertions.csproj
+      run: dotnet build -c Release --no-restore ./src/DeFuncto.Assertions/DeFuncto.Assertions.csproj
     - name: Test
       working-directory: ./src
       run: dotnet test
     - name: Package
-      if: github.ref == 'refs/heads/master'
       run: dotnet pack -c Release -o . ./src/DeFuncto.Assertions/DeFuncto.Assertions.csproj
     - name: Publish
       if: github.ref == 'refs/heads/master'
