@@ -15,8 +15,13 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageVersion>1.0.1</PackageVersion>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="../../readme.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+    
     <ItemGroup>
       <PackageReference Include="coverlet.collector" Version="3.1.2">
         <PrivateAssets>all</PrivateAssets>
