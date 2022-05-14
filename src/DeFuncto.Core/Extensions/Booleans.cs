@@ -11,7 +11,8 @@ namespace DeFuncto.Extensions;
 public static class Booleans
 {
     /// <summary>
-    /// Matches on a boolean as a discriminated unions.
+    /// Performs a ternary operation on the value of a boolean
+   ///  and returns the result of the appropiate function.
     /// </summary>
     /// <param name="boolean">The boolean to match on.</param>
     /// <param name="onTrue">Function to run on true.</param>
