@@ -5,11 +5,13 @@ namespace DeFuncto.ActivePatternMatching;
 
 /// <summary>
 /// Base class for the active pattern matching.
+/// </summary>
+/// <remarks>
 /// This bit is not, and never will, be documented on the official documentation.
 /// If you reach this point, this makes sense to you and you want to use it, it's time
 /// to make a move to F# or to step back in your usage of functional programming.
-/// You are on the edge of what C# can do for you when it comes to FP.
-/// </summary>
+/// You are on the edge of what I believe C# *should* do for you when it comes to FP.
+/// </remarks>
 /// <typeparam name="TIn">Input type to match on.</typeparam>
 /// <typeparam name="TOut">Output type of the matching.</typeparam>
 public abstract class ActivePatternBase<TIn, TOut>
