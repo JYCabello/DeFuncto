@@ -31,7 +31,7 @@ public static class Tasks
         f(await self);
 
     /// <summary>
-    /// Binds the output of a task to the result of an asynchronous function.
+    /// Synchronously applies the projection function to the result of a task
     /// </summary>
     /// <param name="self">Task to bind.</param>
     /// <param name="f">Projection function returning a Task.</param>
