@@ -187,7 +187,6 @@ public static class Tasks
 
     /// <summary>
     /// Performs a select in an Array returned by a task.
-    /// Might seem redundant since there's already an IEnumerable version, but the type inference in C#
     /// </summary>
     /// <param name="self">The task returning the Array.</param>
     /// <param name="func">The projection.</param>
