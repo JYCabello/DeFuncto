@@ -8,7 +8,7 @@ namespace DeFuncto.Extensions;
 public static class Nullables
 {
     /// <summary>
-    /// Maps a nullable value.
+    /// Applies the projection function to a nullable value object.
     /// </summary>
     /// <param name="self">The nullable to map.</param>
     /// <param name="f">The projection.</param>
