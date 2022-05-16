@@ -41,14 +41,19 @@ public readonly struct AsyncResult<TOk, TError>
     /// <summary>
     /// Projects the Ok value.
     /// </summary>
-    /// <param name="f">Projection function.</param>
+    /// <param name="f">Projection.</param>
     /// <typeparam name="TOk2">New value type.</typeparam>
     /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk2, TError> Map<TOk2>(Func<TOk, TOk2> f) =>
         resultTask.Map(r => r.Map(f));
 
-    [Pure]
+    /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk2, TError> Map<TOk2>(Func<TOk, Task<TOk2>> f) =>
         Match(
@@ -56,12 +61,22 @@ public readonly struct AsyncResult<TOk, TError>
             error => error.Apply(Error<TOk2, TError>).ToTask()
         );
 
-    [Pure]
+    /// <summary>
+    /// Projects the error value. 
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TError2">New error type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk, TError2> MapError<TError2>(Func<TError, TError2> f) =>
         Match(Ok<TOk, TError2>, e => f(e));
 
-    [Pure]
+    /// <summary>
+    /// Projects the error value. 
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TError2">New error type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk, TError2> MapError<TError2>(Func<TError, Task<TError2>> f) =>
         Match(
@@ -69,32 +84,68 @@ public readonly struct AsyncResult<TOk, TError>
             error => f(error).Map(Error<TOk, TError2>)
         );
 
-    [Pure]
+    /// <summary>
+    /// Projects the Ok value to another async result with the same Error type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TOk2">Projected type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> f) =>
         Bind(ok => f(ok).Async());
 
-    [Pure]
+    /// <summary>
+    /// Projects the Ok value to another async result with the same Error type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TOk2">Projected type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, Task<Result<TOk2, TError>>> f) =>
         Bind(ok => f(ok).Async());
 
-    [Pure]
+    /// <summary>
+    /// Projects the Ok value to another async result with the same Error type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TOk2">Projected type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk2, TError> Bind<TOk2>(Func<TOk, AsyncResult<TOk2, TError>> f) =>
         Map(f).Flatten();
-
-    [Pure]
+    
+    /// <summary>
+    /// Projects the Error value to another async result with the same Ok type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TError2">Projected Error type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk, TError2> BindError<TError2>(Func<TError, Result<TOk, TError2>> f) =>
         BindError(error => f(error).Async());
-
-    [Pure]
+    
+    /// <summary>
+    /// Projects the Error value to another async result with the same Ok type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TError2">Projected Error type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk, TError2> BindError<TError2>(Func<TError, Task<Result<TOk, TError2>>> f) =>
         BindError(error => f(error).Async());
-
-    [Pure]
+    
+    /// <summary>
+    /// Projects the Error value to another async result with the same Ok type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TError2">Projected Error type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk, TError2> BindError<TError2>(Func<TError, AsyncResult<TOk, TError2>> f) =>
         MapError(f).Flatten();
