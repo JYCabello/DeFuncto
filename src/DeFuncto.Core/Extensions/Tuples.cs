@@ -4,8 +4,21 @@ using System.Runtime.CompilerServices;
 
 namespace DeFuncto.Extensions;
 
+/// <summary>
+/// Extensions to treat tuples as functors.
+/// </summary>
 public static class Tuples
 {
+    /// <summary>
+    /// Applies a function to the tuple, facilitating the deconstruction by
+    /// passing the elements of the tuple to the function.
+    /// </summary>
+    /// <param name="self">The tuple.</param>
+    /// <param name="f">Projection function.</param>
+    /// <typeparam name="T1">Type of the first element of the tuple.</typeparam>
+    /// <typeparam name="T2">Type of the second element of the tuple.</typeparam>
+    /// <typeparam name="TOut">Output type of the projection.</typeparam>
+    /// <returns>The output of the projection.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TOut Apply<T1, T2, TOut>(
