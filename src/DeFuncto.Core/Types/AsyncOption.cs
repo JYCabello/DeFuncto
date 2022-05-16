@@ -7,32 +7,63 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto;
 
+/// <summary>
+/// Discriminated union representing an asynchronous value that might be absent.
+/// </summary>
+/// <typeparam name="T">The type of the value.</typeparam>
 public readonly struct AsyncOption<T>
 {
+    /// <summary>
+    /// True if the value is present.
+    /// </summary>
     public Task<bool> IsSome => Option.Map(opt => opt.IsSome);
+
+    /// <summary>
+    /// True if the value is absent.
+    /// </summary>
     public Task<bool> IsNone => Option.Map(opt => opt.IsNone);
 
+    /// <summary>
+    /// Constructs an async option from a synchronous one.
+    /// </summary>
+    /// <param name="option">The synchronous option.</param>
     public AsyncOption(Option<T> option) : this(option.ToTask()) { }
 
+    /// <summary>
+    /// Constructs an async option from a task with an option result.
+    /// </summary>
+    /// <param name="optionTask">The task with an option result.</param>
     public AsyncOption(Task<Option<T>> optionTask) =>
         option = optionTask;
 
-    [Pure]
+    /// <summary>
+    /// Takes one synchronous function for the absent case and one for the present
+    /// and executes only the according one.
+    /// </summary>
+    /// <param name="fSome">Projection for the present case.</param>
+    /// <param name="fNone">Projection for the absent case.</param>
+    /// <typeparam name="TOut">Output type of the projections.</typeparam>
+    /// <returns>A task returning the output of  the corresponding projection.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<TOut> Match<TOut>(Func<T, TOut> fSome, Func<TOut> fNone) =>
         Match(fSome.Compose(Task.FromResult), fNone.Compose(Task.FromResult));
 
-    [Pure]
+    /// <summary>
+    /// Takes one asynchronous function for the absent case and one for the present
+    /// and executes only the according one.
+    /// </summary>
+    /// <param name="fSome">Projection for the present case.</param>
+    /// <param name="fNone">Projection for the absent case.</param>
+    /// <typeparam name="TOut">Output type of the projections.</typeparam>
+    /// <returns>A task returning the output of  the corresponding projection.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<TOut> Match<TOut>(Func<T, Task<TOut>> fSome, Func<Task<TOut>> fNone) =>
         Option.Map(opt => opt.Match(fSome, fNone));
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Map<TOut>(Func<T, TOut> f) =>
         Option.Map(opt => opt.Map(f));
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Map<TOut>(Func<T, Task<TOut>> f) =>
         Match(
@@ -40,76 +71,61 @@ public readonly struct AsyncOption<T>
             () => Option<TOut>.None.ToTask()
         );
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Bind<TOut>(Func<T, AsyncOption<TOut>> f) =>
         Map(f).Flatten();
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Bind<TOut>(Func<T, Option<TOut>> f) =>
         Bind(f.Compose(OptionExtensions.Async));
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Bind<TOut>(Func<T, Task<Option<TOut>>> f) =>
         Bind(f.Compose(OptionExtensions.Async));
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Option<T> opt) =>
         BindNone(() => opt);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Func<Option<T>> fOption) =>
         Match(Some, fOption);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Task<Option<T>> taskOption) =>
         BindNone(() => taskOption);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Func<Task<Option<T>>> fTaskOption) =>
         Match(val => Some(val).ToTask(), fTaskOption);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(AsyncOption<T> asyncOption) =>
         BindNone(() => asyncOption);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Func<AsyncOption<T>> fAsyncOption) =>
         Match(val => Some(val).ToTask(), () => fAsyncOption().Option);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(T t) =>
         DefaultValue(() => t);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(Func<T> f) =>
         DefaultValue(f.Compose(Task.FromResult));
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(Task<T> task) =>
         DefaultValue(() => task);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(Func<Task<T>> f) =>
         Match(Prelude.Compose<T, T, Task<T>>(Id, Task.FromResult), f);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TFinal> SelectMany<TBind, TFinal>(
         Func<T, AsyncOption<TBind>> binder,
@@ -117,7 +133,6 @@ public readonly struct AsyncOption<T>
     ) =>
         Bind(t => binder(t).Map(tBind => projection(t, tBind)));
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> Where(Func<T, bool> predicate) =>
         Option.Map(opt => opt.Where(predicate));
@@ -181,17 +196,14 @@ public readonly struct AsyncOption<T>
     private readonly Task<Option<T>>? option;
     public Task<Option<T>> Option => option ?? Task.FromResult(None.Option<T>());
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<T, TError> Result<TError>(Func<Task<TError>> fError) =>
         Match(t => Ok<T, TError>(t).ToTask(), () => fError().Map(Error<T, TError>));
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<T, TError> Result<TError>(Func<TError> fError) =>
         fError.Compose(Task.FromResult).Apply(Result);
 
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<T, TError> Result<TError>(TError error) =>
         Result(() => error);
@@ -203,7 +215,6 @@ public readonly struct AsyncOption<T>
 
 public static class AsyncOptionExtensions
 {
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncOption<T> Flatten<T>(this AsyncOption<AsyncOption<T>> self) =>
         self.Match(t => t.Option, () => None.Option<T>().ToTask());
