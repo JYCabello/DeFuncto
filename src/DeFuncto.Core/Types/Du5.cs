@@ -7,6 +7,14 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto;
 
+/// <summary>
+/// Unbiased discriminated union of six possible values.
+/// </summary>
+/// <typeparam name="T1">First case type.</typeparam>
+/// <typeparam name="T2">Second case type.</typeparam>
+/// <typeparam name="T3">Third case type.</typeparam>
+/// <typeparam name="T4">Fourth case type.</typeparam>
+/// <typeparam name="T5">Fifth case type.</typeparam>
 public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, T5>>
 {
     public enum DiscriminationValue
@@ -25,6 +33,10 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
     private readonly T5? t5;
     public readonly DiscriminationValue Discriminator;
 
+    /// <summary>
+    /// Constructor for the first case.
+    /// </summary>
+    /// <param name="t1">First case type.</param>
     public Du5(T1 t1)
     {
         this.t1 = t1;
@@ -35,6 +47,10 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
         Discriminator = DiscriminationValue.T1;
     }
 
+    /// <summary>
+    /// Constructor for the second case.
+    /// </summary>
+    /// <param name="t2">Second case type.</param>
     public Du5(T2 t2)
     {
         this.t2 = t2;
@@ -45,6 +61,9 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
         Discriminator = DiscriminationValue.T2;
     }
 
+    /// <summary>
+    /// Constructor for the third case.
+    /// </summary>
     public Du5(T3 t3)
     {
         this.t3 = t3;
@@ -55,6 +74,10 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
         Discriminator = DiscriminationValue.T3;
     }
 
+    /// <summary>
+    /// Constructor for the fourth case.
+    /// </summary>
+    /// <param name="t4">Fourth case type.</param>
     public Du5(T4 t4)
     {
         this.t4 = t4;
@@ -65,6 +88,10 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
         Discriminator = DiscriminationValue.T4;
     }
 
+    /// <summary>
+    /// Constructor for the fifth case.
+    /// </summary>
+    /// <param name="t5">Fifth case type.</param>
     public Du5(T5 t5)
     {
         this.t5 = t5;
@@ -88,22 +115,47 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
             _ => throw new ArgumentException(nameof(Discriminator))
         };
 
+    /// <summary>
+    /// Produces an instance of the first case.
+    /// </summary>
+    /// <param name="t1">First case type.</param>
+    /// <r
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> First(T1 t1) => t1;
 
+    /// <summary>
+    /// Produces an instance of the second case.
+    /// </summary>
+    /// <param name="t2">Second case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Second(T2 t2) => t2;
 
+    /// <summary>
+    /// Produces an instance of the third case.
+    /// </summary>
+    /// <param name="t3">Third case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Third(T3 t3) => t3;
 
+    /// <summary>
+    /// Produces an instance of the fourth case.
+    /// </summary>
+    /// <param name="t4">Fourth case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Fourth(T4 t4) => t4;
 
+    /// <summary>
+    /// Produces an instance of the fifth case.
+    /// </summary>
+    /// <param name="t5">Fifth case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Fifth(T5 t5) => t5;
