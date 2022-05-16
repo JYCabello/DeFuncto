@@ -7,44 +7,30 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto;
 
+/// <summary>
+/// Discriminated union representing the result of an asynchronous operation,
+/// with an Ok state for the success and an Error state for the failure.
+/// Biased towards the Ok case.
+/// </summary>
+/// <typeparam name="TOk">Error type.</typeparam>
+/// <typeparam name="TError">Value type.</typeparam>
 public readonly struct AsyncResult<TOk, TError>
 {
     private readonly Task<Result<TOk, TError>> resultTask;
 
+    /// <summary>
+    /// Constructor from a synchronous result.
+    /// </summary>
+    /// <param name="result">The synchronous result.</param>
     public AsyncResult(Result<TOk, TError> result) : this(Task.FromResult(result)) { }
 
+    /// <summary>
+    /// Constructor from a task.
+    /// </summary>
+    /// <param name="resultTask">A task that has a synchronous result as a result.</param>
     public AsyncResult(Task<Result<TOk, TError>> resultTask) =>
         this.resultTask = resultTask;
 
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator AsyncResult<TOk, TError>(Result<TOk, TError> result) =>
-        new(result);
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator AsyncResult<TOk, TError>(TOk ok) =>
-        Ok<TOk, TError>(ok);
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator AsyncResult<TOk, TError>(TError error) =>
-        Error<TOk, TError>(error);
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator AsyncResult<TOk, TError>(Task<Result<TOk, TError>> result) =>
-        new(result);
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator AsyncResult<TOk, TError>(Task<TOk> ok) =>
-        ok.Map(Ok<TOk, TError>);
-
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator AsyncResult<TOk, TError>(Task<TError> error) =>
-        error.Map(Error<TOk, TError>);
 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -191,6 +177,33 @@ public readonly struct AsyncResult<TOk, TError>
     public Task<bool> IsOk => resultTask.Map(r => r.IsOk);
     public Task<bool> IsError => resultTask.Map(r => r.IsError);
     public AsyncOption<TOk> Option => Match(Some, _ => None);
+
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator AsyncResult<TOk, TError>(Result<TOk, TError> result) =>
+        new(result);
+
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator AsyncResult<TOk, TError>(TOk ok) =>
+        Ok<TOk, TError>(ok);
+
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator AsyncResult<TOk, TError>(TError error) =>
+        Error<TOk, TError>(error);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator AsyncResult<TOk, TError>(Task<Result<TOk, TError>> result) =>
+        new(result);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator AsyncResult<TOk, TError>(Task<TOk> ok) =>
+        ok.Map(Ok<TOk, TError>);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator AsyncResult<TOk, TError>(Task<TError> error) =>
+        error.Map(Error<TOk, TError>);
 }
 
 public static class AsyncResultExtensions

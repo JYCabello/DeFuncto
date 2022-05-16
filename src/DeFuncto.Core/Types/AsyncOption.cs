@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DeFuncto.Extensions;
@@ -282,6 +283,7 @@ public readonly struct AsyncOption<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Unit> f) =>
         Iter(f.Action());
+
     /// <summary>
     /// Runs an effectful function on the value for the corresponding state.
     /// </summary>
@@ -376,7 +378,7 @@ public readonly struct AsyncOption<T>
         Iter(fSome.AsyncAction(), fNone.AsyncAction());
 
     private readonly Task<Option<T>>? option;
-    
+
     /// <summary>
     /// Removes the wrapper for the asynchrony, giving a task with an option
     /// as a result.
@@ -387,7 +389,7 @@ public readonly struct AsyncOption<T>
     /// Converts to an AsyncResult, mapping the present state to Ok and the absent
     /// to a provided Error.
     /// </summary>
-    /// <see cref="AsyncResult{TOk,TError}"/>
+    /// <see cref="AsyncResult{TOk,TError}" />
     /// <param name="fError">The asynchronous function providing the error.</param>
     /// <typeparam name="TError">Error type for the Result.</typeparam>
     /// <returns>An async result.</returns>
@@ -417,8 +419,15 @@ public readonly struct AsyncOption<T>
     public AsyncResult<T, TError> Result<TError>(TError error) =>
         Result(() => error);
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(T val) => new(val);
+
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(Option<T> option) => new(option);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(Task<Option<T>> option) => new(option);
 }
 
