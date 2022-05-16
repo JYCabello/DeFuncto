@@ -37,7 +37,7 @@ public readonly struct AsyncOption<T>
         option = optionTask;
 
     /// <summary>
-    /// Takes one synchronous function for the absent case and one for the present
+    /// Takes one function for the absent case and one for the present
     /// and executes only the according one.
     /// </summary>
     /// <param name="fSome">Projection for the present case.</param>
@@ -49,7 +49,7 @@ public readonly struct AsyncOption<T>
         Match(fSome.Compose(Task.FromResult), fNone.Compose(Task.FromResult));
 
     /// <summary>
-    /// Takes one asynchronous function for the absent case and one for the present
+    /// Takes one function for the absent case and one for the present
     /// and executes only the according one.
     /// </summary>
     /// <param name="fSome">Projection for the present case.</param>
@@ -60,10 +60,22 @@ public readonly struct AsyncOption<T>
     public Task<TOut> Match<TOut>(Func<T, Task<TOut>> fSome, Func<Task<TOut>> fNone) =>
         Option.Map(opt => opt.Match(fSome, fNone));
 
+    /// <summary>
+    /// Projects the value if it's present, using the provided projection.
+    /// </summary>
+    /// <param name="f">The projection.</param>
+    /// <typeparam name="TOut">Output type of the projection.</typeparam>
+    /// <returns>A new async option of the output type.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Map<TOut>(Func<T, TOut> f) =>
         Option.Map(opt => opt.Map(f));
 
+    /// <summary>
+    /// Projects the value if it's present, using the provided projection.
+    /// </summary>
+    /// <param name="f">The projection.</param>
+    /// <typeparam name="TOut">Output type of the projection.</typeparam>
+    /// <returns>A new async option of the output type.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Map<TOut>(Func<T, Task<TOut>> f) =>
         Match(
@@ -71,14 +83,31 @@ public readonly struct AsyncOption<T>
             () => Option<TOut>.None.ToTask()
         );
 
+    /// <summary>
+    /// Projects the value to an option and flattens it.
+    /// </summary>
+    /// <param name="f">The projection.</param>
+    /// <typeparam name="TOut">
+    /// The output type of the projected asynchronous option.
+    /// </typeparam>
+    /// <returns>A new async option of the output type.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Bind<TOut>(Func<T, AsyncOption<TOut>> f) =>
         Map(f).Flatten();
 
+    /// <summary>
+    /// Projects the value to an option and flattens it.
+    /// </summary>
+    /// <param name="f">The projection.</param>
+    /// <typeparam name="TOut">
+    /// The output type of the projected option.
+    /// </typeparam>
+    /// <returns>A new async option of the output type.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Bind<TOut>(Func<T, Option<TOut>> f) =>
         Bind(f.Compose(OptionExtensions.Async));
 
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Bind<TOut>(Func<T, Task<Option<TOut>>> f) =>
         Bind(f.Compose(OptionExtensions.Async));
