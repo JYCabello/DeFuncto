@@ -222,8 +222,10 @@ public readonly struct AsyncOption<T>
 
     /// <summary>
     /// Projects the value if it's present, using the provided projection.
-    /// Used to enable LINQ embedded syntax, not meant for direct use.
     /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
     /// <param name="f">The projection.</param>
     /// <typeparam name="TOut">Output type of the projection.</typeparam>
     /// <returns>A new async option of the output type.</returns>
@@ -233,8 +235,10 @@ public readonly struct AsyncOption<T>
     /// <summary>
     /// Binds and projects the present state using a binder and a projection
     /// function.
-    /// Used to enable LINQ embedded syntax, not meant for direct use.
     /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
     /// <param name="binder">Binding function.</param>
     /// <param name="projection">Projection.</param>
     /// <typeparam name="TBind">Intermediate type of the binding.</typeparam>
