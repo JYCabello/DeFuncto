@@ -219,9 +219,26 @@ public readonly struct AsyncOption<T>
     public Task<T> DefaultValue(Func<Task<T>> f) =>
         Match(Prelude.Compose<T, T, Task<T>>(Id, Task.FromResult), f);
 
+    /// <summary>
+    /// Projects the value if it's present, using the provided projection.
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </summary>
+    /// <param name="f">The projection.</param>
+    /// <typeparam name="TOut">Output type of the projection.</typeparam>
+    /// <returns>A new async option of the output type.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
 
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </summary>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TFinal">Final type of the projection.</typeparam>
+    /// <returns>A new async option of the output type.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TFinal> SelectMany<TBind, TFinal>(
         Func<T, AsyncOption<TBind>> binder,
@@ -229,22 +246,47 @@ public readonly struct AsyncOption<T>
     ) =>
         Bind(t => binder(t).Map(tBind => projection(t, tBind)));
 
+    /// <summary>
+    /// Filters the present state, discarding it if the predicate
+    /// is false.
+    /// </summary>
+    /// <param name="predicate">The predicate to evaluate the value.</param>
+    /// <returns>A new async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> Where(Func<T, bool> predicate) =>
         Option.Map(opt => opt.Where(predicate));
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Action<T> f) =>
         Option.Map(opt => opt.Iter(f));
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<Unit> f) =>
         Iter(f.Action());
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Unit> f) =>
         Iter(f.Action());
-
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Task> f) =>
         Option.Map(async opt =>
@@ -253,14 +295,29 @@ public readonly struct AsyncOption<T>
             return unit;
         });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Task<Unit>> f) =>
         Iter(f.AsyncAction());
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Action f) =>
         Option.Map(opt => opt.Iter(f));
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<Task> f) =>
         Option.Map(async opt =>
@@ -269,37 +326,93 @@ public readonly struct AsyncOption<T>
             return unit;
         });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="f">The action.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<Task<Unit>> f) =>
         Iter(f.AsyncAction());
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action for the present state.</param>
+    /// <param name="fNone">The action for the present state.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Action<T> fSome, Action fNone) =>
         Iter(fSome.Function(), fNone.Function());
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action for the present state.</param>
+    /// <param name="fNone">The action for the present state.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
         Match(fSome, fNone);
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action for the present state.</param>
+    /// <param name="fNone">The action for the present state.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Task> fSome, Func<Task> fNone) =>
         Match(fSome.AsyncFunction(), fNone.AsyncFunction());
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action for the present state.</param>
+    /// <param name="fNone">The action for the present state.</param>
+    /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>
         Iter(fSome.AsyncAction(), fNone.AsyncAction());
 
     private readonly Task<Option<T>>? option;
+    
+    /// <summary>
+    /// Removes the wrapper for the asynchrony, giving a task with an option
+    /// as a result.
+    /// </summary>
     public Task<Option<T>> Option => option ?? Task.FromResult(None.Option<T>());
 
+    /// <summary>
+    /// Converts to an AsyncResult, mapping the present state to Ok and the absent
+    /// to a provided Error.
+    /// </summary>
+    /// <see cref="AsyncResult{TOk,TError}"/>
+    /// <param name="fError">The asynchronous function providing the error.</param>
+    /// <typeparam name="TError">Error type for the Result.</typeparam>
+    /// <returns>An async result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<T, TError> Result<TError>(Func<Task<TError>> fError) =>
         Match(t => Ok<T, TError>(t).ToTask(), () => fError().Map(Error<T, TError>));
 
+    /// <summary>
+    /// Converts to an AsyncResult, mapping the present state to Ok and the absent
+    /// to a provided Error.
+    /// </summary>
+    /// <param name="fError">The synchronous function providing the error.</param>
+    /// <typeparam name="TError">Error type for the Result.</typeparam>
+    /// <returns>An async result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<T, TError> Result<TError>(Func<TError> fError) =>
         fError.Compose(Task.FromResult).Apply(Result);
 
+    /// <summary>
+    /// Converts to an AsyncResult, mapping the present state to Ok and the absent
+    /// to a provided Error.
+    /// </summary>
+    /// <param name="error">Provided error.</param>
+    /// <typeparam name="TError">Error type for the Result.</typeparam>
+    /// <returns>An async result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<T, TError> Result<TError>(TError error) =>
         Result(() => error);
@@ -311,6 +424,12 @@ public readonly struct AsyncOption<T>
 
 public static class AsyncOptionExtensions
 {
+    /// <summary>
+    /// Flattens two nested AsyncOptions.
+    /// </summary>
+    /// <param name="self">Nested AsyncOptions to flatten.</param>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <returns>A flattened AsyncOption.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncOption<T> Flatten<T>(this AsyncOption<AsyncOption<T>> self) =>
         self.Match(t => t.Option, () => None.Option<T>().ToTask());
