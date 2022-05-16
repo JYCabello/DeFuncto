@@ -7,6 +7,12 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto;
 
+/// <summary>
+/// Discriminated union of a value that might be absent.
+/// Being Some the present and None the absent case respectively.
+/// Biased towards the Some case.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public readonly struct Option<T> : IEquatable<Option<T>>
 {
     private readonly Du<Unit, T> value;

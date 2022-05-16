@@ -9,18 +9,19 @@ namespace DeFuncto;
 
 /// <summary>
 /// Discriminated union representing an asynchronous value that might be absent.
-/// Biased towards the present case, most operations act on it.
+/// Being Some the present and None the absent case respectively.
+/// Biased towards the Some case, most operations act on it.
 /// </summary>
 /// <typeparam name="T">The type of the value.</typeparam>
 public readonly struct AsyncOption<T>
 {
     /// <summary>
-    /// True if the value is present.
+    /// True if the value is Some.
     /// </summary>
     public Task<bool> IsSome => Option.Map(opt => opt.IsSome);
 
     /// <summary>
-    /// True if the value is absent.
+    /// True if the value is None.
     /// </summary>
     public Task<bool> IsNone => Option.Map(opt => opt.IsNone);
 
@@ -38,11 +39,11 @@ public readonly struct AsyncOption<T>
         option = optionTask;
 
     /// <summary>
-    /// Takes one function for the absent case and one for the present
+    /// Takes one function for the None case and one for the Some
     /// and executes only the according one.
     /// </summary>
-    /// <param name="fSome">Projection for the present case.</param>
-    /// <param name="fNone">Projection for the absent case.</param>
+    /// <param name="fSome">Projection for the Some case.</param>
+    /// <param name="fNone">Projection for the None case.</param>
     /// <typeparam name="TOut">Output type of the projections.</typeparam>
     /// <returns>A task returning the output of  the corresponding projection.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,11 +51,11 @@ public readonly struct AsyncOption<T>
         Match(fSome.Compose(Task.FromResult), fNone.Compose(Task.FromResult));
 
     /// <summary>
-    /// Takes one function for the absent case and one for the present
+    /// Takes one function for the None case and one for the Some
     /// and executes only the according one.
     /// </summary>
-    /// <param name="fSome">Projection for the present case.</param>
-    /// <param name="fNone">Projection for the absent case.</param>
+    /// <param name="fSome">Projection for the Some case.</param>
+    /// <param name="fNone">Projection for the None case.</param>
     /// <typeparam name="TOut">Output type of the projections.</typeparam>
     /// <returns>A task returning the output of  the corresponding projection.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -62,7 +63,7 @@ public readonly struct AsyncOption<T>
         Option.Map(opt => opt.Match(fSome, fNone));
 
     /// <summary>
-    /// Projects the value if it's present, using the provided projection.
+    /// Projects the value if it's Some, using the provided projection.
     /// </summary>
     /// <param name="f">The projection.</param>
     /// <typeparam name="TOut">Output type of the projection.</typeparam>
@@ -72,7 +73,7 @@ public readonly struct AsyncOption<T>
         Option.Map(opt => opt.Map(f));
 
     /// <summary>
-    /// Projects the value if it's present, using the provided projection.
+    /// Projects the value if it's Some, using the provided projection.
     /// </summary>
     /// <param name="f">The projection.</param>
     /// <typeparam name="TOut">Output type of the projection.</typeparam>
@@ -121,7 +122,7 @@ public readonly struct AsyncOption<T>
         Bind(f.Compose(OptionExtensions.Async));
 
     /// <summary>
-    /// Binds the absent state to an option.
+    /// Binds the None state to an option.
     /// </summary>
     /// <param name="opt">The option to bind.</param>
     /// <returns>A new async option.</returns>
@@ -130,7 +131,7 @@ public readonly struct AsyncOption<T>
         BindNone(() => opt);
 
     /// <summary>
-    /// Binds the absent state to an option.
+    /// Binds the None state to an option.
     /// </summary>
     /// <param name="fOption">A function producing the option to bind.</param>
     /// <returns>A new async option.</returns>
@@ -139,7 +140,7 @@ public readonly struct AsyncOption<T>
         Match(Some, fOption);
 
     /// <summary>
-    /// Binds the absent state to an option.
+    /// Binds the None state to an option.
     /// </summary>
     /// <param name="taskOption">A task resulting in an option to bind.</param>
     /// <returns>A new async option.</returns>
@@ -148,7 +149,7 @@ public readonly struct AsyncOption<T>
         BindNone(() => taskOption);
 
     /// <summary>
-    /// Binds the absent state to an option.
+    /// Binds the None state to an option.
     /// </summary>
     /// <param name="fTaskOption">
     /// An asynchronous function producing the option to bind.
@@ -159,7 +160,7 @@ public readonly struct AsyncOption<T>
         Match(val => Some(val).ToTask(), fTaskOption);
 
     /// <summary>
-    /// Binds the absent state to an option.
+    /// Binds the None state to an option.
     /// </summary>
     /// <param name="asyncOption">An asynchronous option to bind.</param>
     /// <returns>A new async option.</returns>
@@ -168,7 +169,7 @@ public readonly struct AsyncOption<T>
         BindNone(() => asyncOption);
 
     /// <summary>
-    /// Binds the absent state to an option.
+    /// Binds the None state to an option.
     /// </summary>
     /// <param name="fAsyncOption">
     /// A function producing an asynchronous option to bind
@@ -180,7 +181,7 @@ public readonly struct AsyncOption<T>
 
     /// <summary>
     /// Collapses the option into an output via defaulting
-    /// the absent case.
+    /// the None case.
     /// </summary>
     /// <param name="t">The default value.</param>
     /// <returns>A task returning the collapsed value.</returns>
@@ -190,7 +191,7 @@ public readonly struct AsyncOption<T>
 
     /// <summary>
     /// Collapses the option into an output via defaulting
-    /// the absent case.
+    /// the None case.
     /// </summary>
     /// <param name="f">A function producing the default value.</param>
     /// <returns>A task returning the collapsed value.</returns>
@@ -200,7 +201,7 @@ public readonly struct AsyncOption<T>
 
     /// <summary>
     /// Collapses the option into an output via defaulting
-    /// the absent case.
+    /// the None case.
     /// </summary>
     /// <param name="task">A function returning the default value.</param>
     /// <returns>A task returning the collapsed value.</returns>
@@ -210,7 +211,7 @@ public readonly struct AsyncOption<T>
 
     /// <summary>
     /// Collapses the option into an output via defaulting
-    /// the absent case.
+    /// the None case.
     /// </summary>
     /// <param name="f">
     /// An asynchronous function returning the default value.
@@ -221,7 +222,7 @@ public readonly struct AsyncOption<T>
         Match(Prelude.Compose<T, T, Task<T>>(Id, Task.FromResult), f);
 
     /// <summary>
-    /// Projects the value if it's present, using the provided projection.
+    /// Projects the value if it's Some, using the provided projection.
     /// </summary>
     /// <remarks>
     /// Used to enable LINQ embedded syntax, not meant for direct use.
@@ -233,7 +234,7 @@ public readonly struct AsyncOption<T>
     public AsyncOption<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
 
     /// <summary>
-    /// Binds and projects the present state using a binder and a projection
+    /// Binds and projects the Some state using a binder and a projection
     /// function.
     /// </summary>
     /// <remarks>
@@ -252,7 +253,7 @@ public readonly struct AsyncOption<T>
         Bind(t => binder(t).Map(tBind => projection(t, tBind)));
 
     /// <summary>
-    /// Filters the present state, discarding it if the predicate
+    /// Filters the Some state, discarding it if the predicate
     /// is false.
     /// </summary>
     /// <param name="predicate">The predicate to evaluate the value.</param>
@@ -344,8 +345,8 @@ public readonly struct AsyncOption<T>
     /// <summary>
     /// Runs an effectful function on the value for the corresponding state.
     /// </summary>
-    /// <param name="fSome">The action for the present state.</param>
-    /// <param name="fNone">The action for the present state.</param>
+    /// <param name="fSome">The action for the Some state.</param>
+    /// <param name="fNone">The action for the None state.</param>
     /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Action<T> fSome, Action fNone) =>
@@ -354,8 +355,8 @@ public readonly struct AsyncOption<T>
     /// <summary>
     /// Runs an effectful function on the value for the corresponding state.
     /// </summary>
-    /// <param name="fSome">The action for the present state.</param>
-    /// <param name="fNone">The action for the present state.</param>
+    /// <param name="fSome">The action for the Some state.</param>
+    /// <param name="fNone">The action for the None state.</param>
     /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
@@ -364,8 +365,8 @@ public readonly struct AsyncOption<T>
     /// <summary>
     /// Runs an effectful function on the value for the corresponding state.
     /// </summary>
-    /// <param name="fSome">The action for the present state.</param>
-    /// <param name="fNone">The action for the present state.</param>
+    /// <param name="fSome">The action for the Some state.</param>
+    /// <param name="fNone">The action for the None state.</param>
     /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Task> fSome, Func<Task> fNone) =>
@@ -374,8 +375,8 @@ public readonly struct AsyncOption<T>
     /// <summary>
     /// Runs an effectful function on the value for the corresponding state.
     /// </summary>
-    /// <param name="fSome">The action for the present state.</param>
-    /// <param name="fNone">The action for the present state.</param>
+    /// <param name="fSome">The action for the Some state.</param>
+    /// <param name="fNone">The action for the None state.</param>
     /// <returns>A task with a Unit result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Unit> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>
@@ -390,7 +391,7 @@ public readonly struct AsyncOption<T>
     public Task<Option<T>> Option => option ?? Task.FromResult(None.Option<T>());
 
     /// <summary>
-    /// Converts to an AsyncResult, mapping the present state to Ok and the absent
+    /// Converts to an AsyncResult, mapping the Some state to Ok and the None
     /// to a provided Error.
     /// </summary>
     /// <see cref="AsyncResult{TOk,TError}" />
@@ -402,7 +403,7 @@ public readonly struct AsyncOption<T>
         Match(t => Ok<T, TError>(t).ToTask(), () => fError().Map(Error<T, TError>));
 
     /// <summary>
-    /// Converts to an AsyncResult, mapping the present state to Ok and the absent
+    /// Converts to an AsyncResult, mapping the Some state to Ok and the None
     /// to a provided Error.
     /// </summary>
     /// <param name="fError">The synchronous function providing the error.</param>
@@ -413,7 +414,7 @@ public readonly struct AsyncOption<T>
         fError.Compose(Task.FromResult).Apply(Result);
 
     /// <summary>
-    /// Converts to an AsyncResult, mapping the present state to Ok and the absent
+    /// Converts to an AsyncResult, mapping the Some state to Ok and the None
     /// to a provided Error.
     /// </summary>
     /// <param name="error">Provided error.</param>
