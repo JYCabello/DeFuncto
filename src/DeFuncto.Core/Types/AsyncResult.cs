@@ -367,7 +367,7 @@ public readonly struct AsyncResult<TOk, TError>
 public static class AsyncResultExtensions
 {
     /// <summary>
-    /// For Ok and Error being the same type, return the corresponding value. 
+    /// For Ok and Error being the same type, return the corresponding value.
     /// </summary>
     /// <param name="self">The AsyncResult.</param>
     /// <typeparam name="T">Type of both Ok and Error.</typeparam>

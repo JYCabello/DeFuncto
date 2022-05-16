@@ -8,7 +8,7 @@ using static DeFuncto.Prelude;
 namespace DeFuncto;
 
 /// <summary>
-/// Unbiased discriminated union of six possible values.
+/// Unbiased discriminated union of four possible values.
 /// </summary>
 /// <typeparam name="T1">First case type.</typeparam>
 /// <typeparam name="T2">Second case type.</typeparam>
