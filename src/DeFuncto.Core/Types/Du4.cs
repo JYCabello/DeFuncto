@@ -59,6 +59,7 @@ public readonly struct Du4<T1, T2, T3, T4> : IEquatable<Du4<T1, T2, T3, T4>>
     /// <summary>
     /// Constructor for the third case.
     /// </summary>
+    /// <param name="t3">Third case type.</param>
     public Du4(T3 t3)
     {
         this.t3 = t3;
