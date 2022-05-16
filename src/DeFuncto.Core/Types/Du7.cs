@@ -236,7 +236,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
     /// <summary>
     /// Produces an instance of the seventh case.
     /// </summary>
-    /// <param name="t6">Seventh case type.</param>
+    /// <param name="t7">Seventh case type.</param>
     /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -295,38 +295,95 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T7?>.Default.GetHashCode(t.Item1.t7)))
         .Apply(t => t.Item2 * -1521134295 + t.Item1.discriminator.GetHashCode());
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont1">First effectful function.</param>
+    /// <param name="ont2">Second effectful function.</param>
+    /// <param name="ont3">Third effectful function.</param>
+    /// <param name="ont4">Fourth effectful function.</param>
+    /// <param name="ont5">Fifth effectful function.</param>
+    /// <param name="ont6">Sixth effectful function.</param>
+    /// <param name="ont7">Seventh effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Action<T1> ont1, Action<T2> ont2, Action<T3> ont3, Action<T4> ont4, Action<T5> ont5, Action<T6> ont6, Action<T7> ont7) =>
         Iter(ont1.Function(), ont2.Function(), ont3.Function(), ont4.Function(), ont5.Function(), ont6.Function(), ont7.Function());
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont1">First effectful function.</param>
+    /// <param name="ont2">Second effectful function.</param>
+    /// <param name="ont3">Third effectful function.</param>
+    /// <param name="ont4">Fourth effectful function.</param>
+    /// <param name="ont5">Fifth effectful function.</param>
+    /// <param name="ont6">Sixth effectful function.</param>
+    /// <param name="ont7">Seventh effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2, Func<T3, Unit> ont3, Func<T4, Unit> ont4, Func<T5, Unit> ont5, Func<T6, Unit> ont6, Func<T7, Unit> ont7) =>
         Match(ont1, ont2, ont3, ont4, ont5, ont6, ont7);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont1">First effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T1, Unit> ont1) =>
         Iter(ont1, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont2">Second effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T2, Unit> ont2) =>
         Iter(_ => unit, ont2, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont3">Third effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T3, Unit> ont3) =>
         Iter(_ => unit, _ => unit, ont3, _ => unit, _ => unit, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont4">Fourth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T4, Unit> ont4) =>
         Iter(_ => unit, _ => unit, _ => unit, ont4, _ => unit, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont5">Fifth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T5, Unit> ont5) =>
         Iter(_ => unit, _ => unit, _ => unit, _ => unit, ont5, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont6">Sixth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T6, Unit> ont6) =>
         Iter(_ => unit, _ => unit, _ => unit, _ => unit, _ => unit, ont6, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont7">Seventh effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T7, Unit> ont7) =>
         Iter(_ => unit, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit, ont7);
