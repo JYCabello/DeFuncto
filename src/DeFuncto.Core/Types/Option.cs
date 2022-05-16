@@ -16,9 +16,20 @@ namespace DeFuncto;
 public readonly struct Option<T> : IEquatable<Option<T>>
 {
     private readonly Du<Unit, T> value;
+
+    /// <summary>
+    /// True if it's Some.
+    /// </summary>
     public readonly bool IsSome;
+    /// <summary>
+    /// True if it's None.
+    /// </summary>
     public bool IsNone => !IsSome;
 
+    /// <summary>
+    /// Constructor for the some case.
+    /// </summary>
+    /// <param name="value">Value.</param>
     public Option(T value)
     {
         this.value = value;
@@ -31,11 +42,24 @@ public readonly struct Option<T> : IEquatable<Option<T>>
         IsSome = false;
     }
 
+    /// <summary>
+    /// Collapses the Option into a single value, coming for the adequate projection.
+    /// </summary>
+    /// <param name="fSome">Projection for Some.</param>
+    /// <param name="fNone">Projection for None.</param>
+    /// <typeparam name="TOut">Output type of the projections.</typeparam>
+    /// <returns>Projected value.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TOut Match<TOut>(Func<T, TOut> fSome, Func<TOut> fNone) =>
         value.Match(_ => fNone(), fSome);
 
+    /// <summary>
+    /// Projects the value with a given function.
+    /// </summary>
+    /// <param name="f">Projection for Some.</param>
+    /// <typeparam name="TOut">Output type of the projection.</typeparam>
+    /// <returns>A new Option of type TOut.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<TOut> Map<TOut>(Func<T, TOut> f) =>
