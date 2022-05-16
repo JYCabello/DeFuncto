@@ -102,6 +102,17 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
         Discriminator = DiscriminationValue.T5;
     }
 
+    /// <summary>
+    /// Collapses into a single value using the adequate projection.
+    /// </summary>
+    /// <param name="f1">First projection.</param>
+    /// <param name="f2">Second projection.</param>
+    /// <param name="f3">Third projection.</param>
+    /// <param name="f4">Fourth projection.</param>
+    /// <param name="f5">Fifth projection.</param>
+    /// <typeparam name="T">Output type.</typeparam>
+    /// <returns>Output of the projection.</returns>
+    /// <exception cref="ArgumentException">Only possible if the default constructor is used.</exception>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T Match<T>(Func<T1, T> f1, Func<T2, T> f2, Func<T3, T> f3, Func<T4, T> f4, Func<T5, T> f5) =>
@@ -119,7 +130,7 @@ public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, 
     /// Produces an instance of the first case.
     /// </summary>
     /// <param name="t1">First case type.</param>
-    /// <r
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> First(T1 t1) => t1;
