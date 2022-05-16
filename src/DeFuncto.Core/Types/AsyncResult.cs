@@ -31,12 +31,19 @@ public readonly struct AsyncResult<TOk, TError>
     public AsyncResult(Task<Result<TOk, TError>> resultTask) =>
         this.resultTask = resultTask;
 
-
-    [Pure]
+    /// <summary>
+    /// Unwraps the asynchronous abstraction, returning a task.
+    /// </summary>
+    /// <returns>A task with the result as a result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<Result<TOk, TError>> ToTask() => resultTask;
 
-    [Pure]
+    /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <param name="f">Projection function.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk2, TError> Map<TOk2>(Func<TOk, TOk2> f) =>
         resultTask.Map(r => r.Map(f));
