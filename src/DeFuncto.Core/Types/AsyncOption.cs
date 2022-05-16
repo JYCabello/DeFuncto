@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DeFuncto.Extensions;
@@ -9,6 +8,7 @@ namespace DeFuncto;
 
 /// <summary>
 /// Discriminated union representing an asynchronous value that might be absent.
+/// Biased towards the present case, most operations act on it.
 /// </summary>
 /// <typeparam name="T">The type of the value.</typeparam>
 public readonly struct AsyncOption<T>
@@ -107,47 +107,114 @@ public readonly struct AsyncOption<T>
     public AsyncOption<TOut> Bind<TOut>(Func<T, Option<TOut>> f) =>
         Bind(f.Compose(OptionExtensions.Async));
 
-    
+    /// <summary>
+    /// Projects the value to an option and flattens it.
+    /// </summary>
+    /// <param name="f">The projection.</param>
+    /// <typeparam name="TOut">
+    /// The output type of the projected option.
+    /// </typeparam>
+    /// <returns>A new async option of the output type.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<TOut> Bind<TOut>(Func<T, Task<Option<TOut>>> f) =>
         Bind(f.Compose(OptionExtensions.Async));
 
+    /// <summary>
+    /// Binds the absent state to an option.
+    /// </summary>
+    /// <param name="opt">The option to bind.</param>
+    /// <returns>A new async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Option<T> opt) =>
         BindNone(() => opt);
 
+    /// <summary>
+    /// Binds the absent state to an option.
+    /// </summary>
+    /// <param name="fOption">A function producing the option to bind.</param>
+    /// <returns>A new async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Func<Option<T>> fOption) =>
         Match(Some, fOption);
 
+    /// <summary>
+    /// Binds the absent state to an option.
+    /// </summary>
+    /// <param name="taskOption">A task resulting in an option to bind.</param>
+    /// <returns>A new async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Task<Option<T>> taskOption) =>
         BindNone(() => taskOption);
 
+    /// <summary>
+    /// Binds the absent state to an option.
+    /// </summary>
+    /// <param name="fTaskOption">
+    /// An asynchronous function producing the option to bind.
+    /// </param>
+    /// <returns>A new async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Func<Task<Option<T>>> fTaskOption) =>
         Match(val => Some(val).ToTask(), fTaskOption);
 
+    /// <summary>
+    /// Binds the absent state to an option.
+    /// </summary>
+    /// <param name="asyncOption">An asynchronous option to bind.</param>
+    /// <returns>A new async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(AsyncOption<T> asyncOption) =>
         BindNone(() => asyncOption);
 
+    /// <summary>
+    /// Binds the absent state to an option.
+    /// </summary>
+    /// <param name="fAsyncOption">
+    /// A function producing an asynchronous option to bind
+    /// </param>
+    /// <returns>A new async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncOption<T> BindNone(Func<AsyncOption<T>> fAsyncOption) =>
         Match(val => Some(val).ToTask(), () => fAsyncOption().Option);
 
+    /// <summary>
+    /// Collapses the option into an output via defaulting
+    /// the absent case.
+    /// </summary>
+    /// <param name="t">The default value.</param>
+    /// <returns>A task returning the collapsed value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(T t) =>
         DefaultValue(() => t);
 
+    /// <summary>
+    /// Collapses the option into an output via defaulting
+    /// the absent case.
+    /// </summary>
+    /// <param name="f">A function producing the default value.</param>
+    /// <returns>A task returning the collapsed value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(Func<T> f) =>
         DefaultValue(f.Compose(Task.FromResult));
 
+    /// <summary>
+    /// Collapses the option into an output via defaulting
+    /// the absent case.
+    /// </summary>
+    /// <param name="task">A function returning the default value.</param>
+    /// <returns>A task returning the collapsed value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(Task<T> task) =>
         DefaultValue(() => task);
 
+    /// <summary>
+    /// Collapses the option into an output via defaulting
+    /// the absent case.
+    /// </summary>
+    /// <param name="f">
+    /// An asynchronous function returning the default value.
+    /// </param>
+    /// <returns>A task returning the collapsed value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Task<T> DefaultValue(Func<Task<T>> f) =>
         Match(Prelude.Compose<T, T, Task<T>>(Id, Task.FromResult), f);
