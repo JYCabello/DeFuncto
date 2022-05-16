@@ -7,6 +7,15 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto;
 
+/// <summary>
+/// Unbiased discriminated union of six possible values.
+/// </summary>
+/// <typeparam name="T1">First case type.</typeparam>
+/// <typeparam name="T2">Second case type.</typeparam>
+/// <typeparam name="T3">Third case type.</typeparam>
+/// <typeparam name="T4">Fourth case type.</typeparam>
+/// <typeparam name="T5">Fifth case type.</typeparam>
+/// <typeparam name="T6">Sixth case type.</typeparam>
 public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, T4, T5, T6>>
 {
     public enum DiscriminationValue
@@ -27,6 +36,10 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
     private readonly T6? t6;
     public readonly DiscriminationValue Discriminator;
 
+    /// <summary>
+    /// Constructor for the first case.
+    /// </summary>
+    /// <param name="t1">First case type.</param>
     public Du6(T1 t1)
     {
         this.t1 = t1;
@@ -38,6 +51,10 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
         Discriminator = DiscriminationValue.T1;
     }
 
+    /// <summary>
+    /// Constructor for the second case.
+    /// </summary>
+    /// <param name="t2">Second case type.</param>
     public Du6(T2 t2)
     {
         this.t2 = t2;
@@ -49,6 +66,10 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
         Discriminator = DiscriminationValue.T2;
     }
 
+    /// <summary>
+    /// Constructor for the third case.
+    /// </summary>
+    /// <param name="t3">Third case type.</param>
     public Du6(T3 t3)
     {
         this.t3 = t3;
@@ -60,6 +81,10 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
         Discriminator = DiscriminationValue.T3;
     }
 
+    /// <summary>
+    /// Constructor for the fourth case.
+    /// </summary>
+    /// <param name="t4">Fourth case type.</param>
     public Du6(T4 t4)
     {
         this.t4 = t4;
@@ -71,6 +96,10 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
         Discriminator = DiscriminationValue.T4;
     }
 
+    /// <summary>
+    /// Constructor for the fifth case.
+    /// </summary>
+    /// <param name="t5">Fifth case type.</param>
     public Du6(T5 t5)
     {
         this.t5 = t5;
@@ -82,6 +111,10 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
         Discriminator = DiscriminationValue.T5;
     }
 
+    /// <summary>
+    /// Constructor for the sixth case.
+    /// </summary>
+    /// <param name="t6">Sixth case type.</param>
     public Du6(T6 t6)
     {
         this.t6 = t6;
@@ -93,6 +126,18 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
         Discriminator = DiscriminationValue.T6;
     }
 
+    /// <summary>
+    /// Collapses into a single value using the adequate projection.
+    /// </summary>
+    /// <param name="f1">First projection.</param>
+    /// <param name="f2">Second projection.</param>
+    /// <param name="f3">Third projection.</param>
+    /// <param name="f4">Fourth projection.</param>
+    /// <param name="f5">Fifth projection.</param>
+    /// <param name="f6">Sixth projection.</param>
+    /// <typeparam name="T">Output type.</typeparam>
+    /// <returns>Output of the projection.</returns>
+    /// <exception cref="ArgumentException">Only possible if the default constructor is used.</exception>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T Match<T>(Func<T1, T> f1, Func<T2, T> f2, Func<T3, T> f3, Func<T4, T> f4, Func<T5, T> f5, Func<T6, T> f6) =>
@@ -107,26 +152,56 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
             _ => throw new ArgumentException(nameof(Discriminator))
         };
 
+    /// <summary>
+    /// Produces an instance of the first case.
+    /// </summary>
+    /// <param name="t1">First case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> First(T1 t1) => t1;
 
+    /// <summary>
+    /// Produces an instance of the second case.
+    /// </summary>
+    /// <param name="t2">Second case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Second(T2 t2) => t2;
 
+    /// <summary>
+    /// Produces an instance of the third case.
+    /// </summary>
+    /// <param name="t3">Third case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Third(T3 t3) => t3;
 
+    /// <summary>
+    /// Produces an instance of the fourth case.
+    /// </summary>
+    /// <param name="t4">Fourth case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Fourth(T4 t4) => t4;
 
+    /// <summary>
+    /// Produces an instance of the fifth case.
+    /// </summary>
+    /// <param name="t5">Fifth case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Fifth(T5 t5) => t5;
 
+    /// <summary>
+    /// Produces an instance of the sixth case.
+    /// </summary>
+    /// <param name="t6">Sixth case type.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Sixth(T6 t6) => t6;
@@ -178,35 +253,84 @@ public readonly struct Du6<T1, T2, T3, T4, T5, T6> : IEquatable<Du6<T1, T2, T3, 
         .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T6?>.Default.GetHashCode(t.Item1.t6)))
         .Apply(t => t.Item2 * -1521134295 + t.Item1.Discriminator.GetHashCode());
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont1">First effectful function.</param>
+    /// <param name="ont2">Second effectful function.</param>
+    /// <param name="ont3">Third effectful function.</param>
+    /// <param name="ont4">Fourth effectful function.</param>
+    /// <param name="ont5">Fifth effectful function.</param>
+    /// <param name="ont6">Sixth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Action<T1> ont1, Action<T2> ont2, Action<T3> ont3, Action<T4> ont4, Action<T5> ont5, Action<T6> ont6) =>
         Iter(ont1.Function(), ont2.Function(), ont3.Function(), ont4.Function(), ont5.Function(), ont6.Function());
 
-
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont1">First effectful function.</param>
+    /// <param name="ont2">Second effectful function.</param>
+    /// <param name="ont3">Third effectful function.</param>
+    /// <param name="ont4">Fourth effectful function.</param>
+    /// <param name="ont5">Fifth effectful function.</param>
+    /// <param name="ont6">Sixth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T1, Unit> ont1, Func<T2, Unit> ont2, Func<T3, Unit> ont3, Func<T4, Unit> ont4, Func<T5, Unit> ont5, Func<T6, Unit> ont6) =>
         Match(ont1, ont2, ont3, ont4, ont5, ont6);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont1">First effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T1, Unit> ont1) =>
         Iter(ont1, _ => unit, _ => unit, _ => unit, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont2">Second effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T2, Unit> ont2) =>
         Iter(_ => unit, ont2, _ => unit, _ => unit, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont3">Third effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T3, Unit> ont3) =>
         Iter(_ => unit, _ => unit, ont3, _ => unit, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont4">Fourth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T4, Unit> ont4) =>
         Iter(_ => unit, _ => unit, _ => unit, ont4, _ => unit, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont5">Fifth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T5, Unit> ont5) =>
         Iter(_ => unit, _ => unit, _ => unit, _ => unit, ont5, _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function for the adequate case.
+    /// </summary>
+    /// <param name="ont6">Sixth effectful function.</param>
+    /// <returns>Unit</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T6, Unit> ont6) =>
         Iter(_ => unit, _ => unit, _ => unit, _ => unit, _ => unit, ont6);
