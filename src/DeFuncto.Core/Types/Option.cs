@@ -21,6 +21,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     /// True if it's Some.
     /// </summary>
     public readonly bool IsSome;
+
     /// <summary>
     /// True if it's None.
     /// </summary>
@@ -43,7 +44,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     }
 
     /// <summary>
-    /// Collapses the Option into a single value, coming for the adequate projection.
+    /// Collapses the Option into a single value, coming from the adequate projection.
     /// </summary>
     /// <param name="fSome">Projection for Some.</param>
     /// <param name="fNone">Projection for None.</param>
@@ -57,7 +58,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     /// <summary>
     /// Projects the value with a given function.
     /// </summary>
-    /// <param name="f">Projection for Some.</param>
+    /// <param name="f">Projection.</param>
     /// <typeparam name="TOut">Output type of the projection.</typeparam>
     /// <returns>A new Option of type TOut.</returns>
     [Pure]
@@ -65,45 +66,106 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     public Option<TOut> Map<TOut>(Func<T, TOut> f) =>
         Match(f.Compose(Option<TOut>.Some), () => Option<TOut>.None);
 
+    /// <summary>
+    /// Projects the value to an Option with a given function and flattens it.
+    /// </summary>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TOut">Value type of the projected function's output.</typeparam>
+    /// <returns></returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<TOut> Bind<TOut>(Func<T, Option<TOut>> f) =>
         Map(f).Flatten();
 
+    /// <summary>
+    /// Collapses the Option via defaulting.
+    /// </summary>
+    /// <param name="f">Function generating the default value.</param>
+    /// <returns>The collapsed value.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T DefaultValue(Func<T> f) =>
         Match(Id, f);
 
+    /// <summary>
+    /// Collapses the Option via defaulting.
+    /// </summary>
+    /// <param name="t">The default value.</param>
+    /// <returns>The collapsed value.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T DefaultValue(T t) =>
         DefaultValue(() => t);
 
+    /// <summary>
+    /// Binds the None state with a provided Option.
+    /// </summary>
+    /// <param name="opt">The provided option.</param>
+    /// <returns>A new Option.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<T> BindNone(Option<T> opt) =>
         BindNone(() => opt);
 
+    /// <summary>
+    /// Binds the None state with a provided Option.
+    /// </summary>
+    /// <param name="opt">The option provider.</param>
+    /// <returns>A new Option.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<T> BindNone(Func<Option<T>> opt) =>
         Match(Some, opt);
 
+    /// <summary>
+    /// Converts the Option into a Result, projecting None into
+    /// a provided Error.
+    /// </summary>
+    /// <param name="f">The error provider.</param>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>A Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<T, TError> Result<TError>(Func<TError> f) =>
         Map(Ok<T, TError>).DefaultValue(f.Compose(Error<T, TError>));
 
+    /// <summary>
+    /// Converts the Option into a Result, projecting None into
+    /// a provided Error.
+    /// </summary>
+    /// <param name="terror">The error.</param>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>A Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<T, TError> Result<TError>(TError terror) =>
         Result(() => terror);
 
+    /// <summary>
+    /// Projects the value with a given function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="f">Projection.</param>
+    /// <typeparam name="TOut">Output type of the projection.</typeparam>
+    /// <returns>A new Option of type TOut.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<TOut> Select<TOut>(Func<T, TOut> f) => Map(f);
 
+    /// <summary>
+    /// Binds and projects the Some state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TFinal">Final type of the projection.</typeparam>
+    /// <returns>A new option of the output type.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<TFinal> SelectMany<TBind, TFinal>(
@@ -112,6 +174,12 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     ) =>
         Bind(t => binder(t).Map(tBind => projection(t, tBind)));
 
+    /// <summary>
+    /// Filters the Some state, discarding it if the predicate
+    /// is false.
+    /// </summary>
+    /// <param name="predicate">The predicate to evaluate the value.</param>
+    /// <returns>A new Option.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<T> Where(Func<T, bool> predicate) =>
