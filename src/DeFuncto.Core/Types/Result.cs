@@ -17,10 +17,12 @@ namespace DeFuncto;
 public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
 {
     private readonly Du<TOk, TError> value;
+
     /// <summary>
     /// True for the Ok state.
     /// </summary>
     public readonly bool IsOk;
+
     /// <summary>
     /// True for the Error state.
     /// </summary>
@@ -136,6 +138,14 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     ) =>
         Bind(ok => binder(ok).Map(okbind => projection(ok, okbind)));
 
+    /// <summary>
+    /// Collapses the structure in an output value, choosing the adequate projection
+    /// for each of the states.
+    /// </summary>
+    /// <param name="okProjection">Value projection.</param>
+    /// <param name="errorProjection">Error projection.</param>
+    /// <typeparam name="TOut">Projected type.</typeparam>
+    /// <returns>The correct projection output.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
