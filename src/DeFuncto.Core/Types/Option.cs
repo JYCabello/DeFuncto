@@ -185,6 +185,12 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     public Option<T> Where(Func<T, bool> predicate) =>
         this.Apply(self => self.Match(val => predicate(val) ? self : None, () => default));
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action to run on some.</param>
+    /// <param name="fNone">The action to run on none.</param>
+    /// <returns>Unit.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Action<T> fSome, Action fNone) =>
@@ -199,36 +205,80 @@ public readonly struct Option<T> : IEquatable<Option<T>>
                 return unit;
             });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action to run on some.</param>
+    /// <param name="fNone">The action to run on none.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T, Unit> fSome, Func<Unit> fNone) =>
         Iter(t => { fSome(t); }, () => { fNone(); });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fNone">The action to run on none.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<Unit> fNone) =>
         Iter(() => { fNone(); });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fNone">The action to run on none.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Action fNone) =>
         Iter(_ => { }, fNone);
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action to run on some.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Func<T, Unit> fSome) =>
         Iter(t => { fSome(t); });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fSome">The action to run on some.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Unit Iter(Action<T> fSome) =>
         Iter(fSome, () => { });
 
+    /// <summary>
+    /// Factory for the Some state.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>An option in the Some state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> Some(T value) => value;
 
+    /// <summary>
+    /// Factory for the None state.
+    /// </summary>
     public static Option<T> None => new OptionNone();
 
+    /// <summary>
+    /// Implicit conversion to Some.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>An option in the Some state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Option<T>(T value) => new(value);
 
+    /// <summary>
+    /// Implicit conversion to None.
+    /// </summary>
+    /// <param name="_">OptionNone to be implicitly converted.</param>
+    /// <returns>An option in the None state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Option<T>(OptionNone _) => new(unit);
@@ -243,8 +293,16 @@ public readonly struct Option<T> : IEquatable<Option<T>>
         -1584136870 + value.GetHashCode();
 }
 
+/// <summary>
+/// Option in the None state, helpful for implicit conversions.
+/// </summary>
 public readonly struct OptionNone
 {
+    /// <summary>
+    /// Convert to an Option, giving it a type parameter.
+    /// </summary>
+    /// <typeparam name="T">The value type of the option.</typeparam>
+    /// <returns>An option in the None state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Option<T> Option<T>() => DeFuncto.Option<T>.None;
