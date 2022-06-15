@@ -7,19 +7,32 @@ using static DeFuncto.Prelude;
 
 namespace DeFuncto;
 
+/// <summary>
+/// Discriminated union representing the result of a calculation,
+/// with an Ok state for the success and an Error state for the failure.
+/// Biased towards the Ok case.
+/// </summary>
+/// <typeparam name="TOk">Error type.</typeparam>
+/// <typeparam name="TError">Value type.</typeparam>
 public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
 {
     private readonly Du<TOk, TError> value;
+    /// <summary>
+    /// True for the Ok state.
+    /// </summary>
     public readonly bool IsOk;
+    /// <summary>
+    /// True for the Error state.
+    /// </summary>
     public bool IsError => !IsOk;
 
-    public Result(TError error)
+    private Result(TError error)
     {
         value = Second<TOk, TError>(error);
         IsOk = false;
     }
 
-    public Result(TOk ok)
+    private Result(TOk ok)
     {
         value = First<TOk, TError>(ok);
         IsOk = true;

@@ -18,17 +18,9 @@ public readonly struct AsyncResult<TOk, TError>
 {
     private readonly Task<Result<TOk, TError>> resultTask;
 
-    /// <summary>
-    /// Constructor from a synchronous result.
-    /// </summary>
-    /// <param name="result">The synchronous result.</param>
-    public AsyncResult(Result<TOk, TError> result) : this(Task.FromResult(result)) { }
+    private AsyncResult(Result<TOk, TError> result) : this(Task.FromResult(result)) { }
 
-    /// <summary>
-    /// Constructor from a task.
-    /// </summary>
-    /// <param name="resultTask">A task that has a synchronous result as a result.</param>
-    public AsyncResult(Task<Result<TOk, TError>> resultTask) =>
+    private AsyncResult(Task<Result<TOk, TError>> resultTask) =>
         this.resultTask = resultTask;
 
     /// <summary>

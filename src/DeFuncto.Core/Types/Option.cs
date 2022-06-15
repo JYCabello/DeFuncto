@@ -31,7 +31,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     /// Constructor for the some case.
     /// </summary>
     /// <param name="value">Value.</param>
-    public Option(T value)
+    private Option(T value)
     {
         this.value = value;
         IsSome = true;

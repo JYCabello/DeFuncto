@@ -25,17 +25,9 @@ public readonly struct AsyncOption<T>
     /// </summary>
     public Task<bool> IsNone => Option.Map(opt => opt.IsNone);
 
-    /// <summary>
-    /// Constructs an async option from a synchronous one.
-    /// </summary>
-    /// <param name="option">The synchronous option.</param>
-    public AsyncOption(Option<T> option) : this(option.ToTask()) { }
+    private AsyncOption(Option<T> option) : this(option.ToTask()) { }
 
-    /// <summary>
-    /// Constructs an async option from a task with an option result.
-    /// </summary>
-    /// <param name="optionTask">The task with an option result.</param>
-    public AsyncOption(Task<Option<T>> optionTask) =>
+    private AsyncOption(Task<Option<T>> optionTask) =>
         option = optionTask;
 
     /// <summary>
