@@ -310,21 +310,45 @@ public readonly struct OptionNone
 
 public static class OptionExtensions
 {
+    /// <summary>
+    /// Processes a nested Option into an single option.
+    /// </summary>
+    /// <param name="opt">The nested Option to process.</param>
+    /// <typeparam name="T">The value type.</typeparam>
+    /// <returns>The processed option.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> Flatten<T>(this Option<Option<T>> opt) =>
         opt.Match(Id, () => Option<T>.None);
 
+    /// <summary>
+    /// Wraps an option into its asynchronous version.
+    /// </summary>
+    /// <param name="opt">The Option.</param>
+    /// <typeparam name="T">The value type.</typeparam>
+    /// <returns>The AsyncOption.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncOption<T> Async<T>(this Option<T> opt) => opt;
 
-    [Pure]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static AsyncOption<T> Async<T>(this Task<Option<T>> opt) => opt;
-
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="opt"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncOption<T> Async<T>(this Option<Task<T>> opt) =>
         opt.Match(t => t.Map(Some), () => None.Option<T>().ToTask());
+
+    /// <summary>
+    /// Turns an Option containing a Task in an AsyncOption.
+    /// </summary>
+    /// <param name="opt">The Option containing a Task.</param>
+    /// <typeparam name="T">The value type.</typeparam>
+    /// <returns>The AsyncOption.</returns>
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static AsyncOption<T> Async<T>(this Task<Option<T>> opt) => opt;
 }
