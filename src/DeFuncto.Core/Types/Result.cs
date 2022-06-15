@@ -56,15 +56,34 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Result<TOk, TError> Error(TError error) => new(error);
 
+    /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOk2, TError> Map<TOk2>(Func<TOk, TOk2> projection) =>
         Match(ok => projection(ok).Apply(Ok<TOk2, TError>), Error<TOk2, TError>);
 
+    /// <summary>
+    /// Projects the Ok value.
+    /// Exists to enable LINQ embedded syntax.
+    /// </summary>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
+    /// <summary>
+    /// Projects the error value.
+    /// </summary>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TError2">New error type.</typeparam>
+    /// <returns>A new Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOk, TError2> MapError<TError2>(Func<TError, TError2> projection) =>
