@@ -38,13 +38,23 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
         IsOk = true;
     }
 
+    /// <summary>
+    /// Static constructor for the Ok state.
+    /// </summary>
+    /// <param name="ok">Ok value.</param>
+    /// <returns>A Result in the Ok state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Result<TOk, TError> Ok(TOk right) => new(right);
+    public static Result<TOk, TError> Ok(TOk ok) => new(ok);
 
+    /// <summary>
+    /// Static constructor for the Error state.
+    /// </summary>
+    /// <param name="error">Error value.</param>
+    /// <returns>A Result in the Error state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Result<TOk, TError> Error(TError left) => new(left);
+    public static Result<TOk, TError> Error(TError error) => new(error);
 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
