@@ -289,7 +289,6 @@ public readonly struct AsyncResult<TOk, TError>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
-
     /// <summary>
     /// Binds and projects the present state using a binder and a projection
     /// function.

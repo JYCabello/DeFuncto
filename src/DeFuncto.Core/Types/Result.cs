@@ -69,7 +69,9 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
 
     /// <summary>
     /// Projects the Ok value.
-    /// Exists to enable LINQ embedded syntax.
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
     /// </summary>
     /// <param name="projection">Projection.</param>
     /// <typeparam name="TOk2">New value type.</typeparam>
@@ -89,16 +91,43 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     public Result<TOk, TError2> MapError<TError2>(Func<TError, TError2> projection) =>
         Match(Ok<TOk, TError2>, error => projection(error).Apply(Error<TOk, TError2>));
 
+    /// <summary>
+    /// Projects the Ok value to another async result with the same Error type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="binder">Projection.</param>
+    /// <typeparam name="TOk2">Projected type.</typeparam>
+    /// <returns>A new Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOk2, TError> Bind<TOk2>(Func<TOk, Result<TOk2, TError>> binder) =>
         Map(binder).Flatten();
 
+
+    /// <summary>
+    /// Projects the Error value to another Result with the same Ok type and
+    /// flattens the result.
+    /// </summary>
+    /// <param name="binder">Projection.</param>
+    /// <typeparam name="TError2">Projected Error type.</typeparam>
+    /// <returns>A new Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOk, TError2> BindError<TError2>(Func<TError, Result<TOk, TError2>> binder) =>
         MapError(binder).Flatten();
 
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
