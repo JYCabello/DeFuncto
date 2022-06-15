@@ -151,41 +151,72 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     public TOut Match<TOut>(Func<TOk, TOut> okProjection, Func<TError, TOut> errorProjection) =>
         value.Match(okProjection, errorProjection);
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fOk">Value effectful function.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Unit Iter(Action<TOk> iterator) =>
+    public Unit Iter(Action<TOk> fOk) =>
         value.Match(ok =>
             {
-                iterator(ok);
+                fOk(ok);
                 return unit;
             },
             _ => unit);
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fOk">Value effectful function.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Unit Iter(Func<TOk, Unit> iterator) =>
-        Iter(ok => { iterator(ok); });
+    public Unit Iter(Func<TOk, Unit> fOk) =>
+        Iter(ok => { fOk(ok); });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fError">Error effectful function.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Unit Iter(Action<TError> iterator) =>
+    public Unit Iter(Action<TError> fError) =>
         value.Match(_ => unit,
             error =>
             {
-                iterator(error);
+                fError(error);
                 return unit;
             });
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Unit Iter(Func<TError, Unit> iterator) =>
-        Iter(error => { iterator(error); });
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fError">Error effectful function.</param>
+    /// <returns>Unit.</returns>    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Unit Iter(Func<TError, Unit> fError) =>
+        Iter(error => { fError(error); });
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fOk">Value effectful function.</param>
+    /// <param name="fError">Error effectful function.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Unit Iter(Func<TOk, Unit> iteratorOk, Func<TError, Unit> iteratorError) =>
-        this.Apply(self => self.Match(iteratorOk, iteratorError).Apply(_ => unit));
+    public Unit Iter(Func<TOk, Unit> fOk, Func<TError, Unit> fError) =>
+        this.Apply(self => self.Match(fOk, fError).Apply(_ => unit));
 
+    /// <summary>
+    /// Runs an effectful function on the value for the corresponding state.
+    /// </summary>
+    /// <param name="fOk">Value effectful function.</param>
+    /// <param name="fError">Error effectful function.</param>
+    /// <returns>Unit.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Unit Iter(Action<TOk> iteratorOk, Action<TError> iteratorError)
+    public Unit Iter(Action<TOk> fOk, Action<TError> fError)
     {
-        Iter(iteratorOk);
-        return Iter(iteratorError);
+        Iter(fOk);
+        return Iter(fError);
     }
 
     public Option<TOk> Option => Match(Some, _ => None);
