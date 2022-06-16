@@ -126,118 +126,392 @@ public static class Prelude
     /// </summary>
     /// <param name="f1">First function to compose.</param>
     /// <param name="f2">Second function to compose.</param>
-    /// <typeparam name="T1">Input type of the first function.</typeparam>
-    /// <typeparam name="T2">Output type of the first function and input of the second.</typeparam>
-    /// <typeparam name="T3">Output type of the second function.</typeparam>
+    /// <typeparam name="T1">Output type of the first function and input of the second.</typeparam>
+    /// <typeparam name="T2">Output type of the second function.</typeparam>
     /// <returns>A function than takes the input, </returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Func<T2> Compose<T1, T2>(this Func<T1> f1, Func<T1, T2> f2) =>
         () => f1().Apply(f2);
 
+    /// <summary>
+    /// Creates a Discriminated Union (2) in the First state.
+    /// </summary>
+    /// <param name="t1">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <returns>A Discriminated Union (2) in the First state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du<T1, T2> First<T1, T2>(T1 t1) => Du<T1, T2>.First(t1);
 
+    /// <summary>
+    /// Creates a Discriminated Union (3) in the First state.
+    /// </summary>
+    /// <param name="t1">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <returns>A Discriminated Union (3) in the First state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du3<T1, T2, T3> First<T1, T2, T3>(T1 t1) => Du3<T1, T2, T3>.First(t1);
 
+    /// <summary>
+    /// Creates a Discriminated Union (4) in the First state.
+    /// </summary>
+    /// <param name="t1">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <returns>A Discriminated Union (4) in the First state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du4<T1, T2, T3, T4> First<T1, T2, T3, T4>(T1 t1) => Du4<T1, T2, T3, T4>.First(t1);
 
+    /// <summary>
+    /// Creates a Discriminated Union (5) in the First state.
+    /// </summary>
+    /// <param name="t1">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <returns>A Discriminated Union (5) in the First state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> First<T1, T2, T3, T4, T5>(T1 t1) => Du5<T1, T2, T3, T4, T5>.First(t1);
 
+    /// <summary>
+    /// Creates a Discriminated Union (6) in the First state.
+    /// </summary>
+    /// <param name="t1">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <returns>A Discriminated Union (6) in the First state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> First<T1, T2, T3, T4, T5, T6>(T1 t1) => Du6<T1, T2, T3, T4, T5, T6>.First(t1);
 
+    /// <summary>
+    /// Creates a Discriminated Union (7) in the First state.
+    /// </summary>
+    /// <param name="t1">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <typeparam name="T7">Seventh value type.</typeparam>
+    /// <returns>A Discriminated Union (7) in the First state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du7<T1, T2, T3, T4, T5, T6, T7> First<T1, T2, T3, T4, T5, T6, T7>(T1 t1) => Du7<T1, T2, T3, T4, T5, T6, T7>.First(t1);
 
+    /// <summary>
+    /// Creates a Discriminated Union (2) in the Second state.
+    /// </summary>
+    /// <param name="t2">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <returns>A Discriminated Union (2) in the Second state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du<T1, T2> Second<T1, T2>(T2 t2) => Du<T1, T2>.Second(t2);
 
+    /// <summary>
+    /// Creates a Discriminated Union (3) in the Second state.
+    /// </summary>
+    /// <param name="t2">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <returns>A Discriminated Union (3) in the Second state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du3<T1, T2, T3> Second<T1, T2, T3>(T2 t2) => Du3<T1, T2, T3>.Second(t2);
 
+    /// <summary>
+    /// Creates a Discriminated Union (4) in the Second state.
+    /// </summary>
+    /// <param name="t2">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <returns>A Discriminated Union (4) in the Second state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du4<T1, T2, T3, T4> Second<T1, T2, T3, T4>(T2 t2) => Du4<T1, T2, T3, T4>.Second(t2);
 
+    /// <summary>
+    /// Creates a Discriminated Union (5) in the Second state.
+    /// </summary>
+    /// <param name="t2">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <returns>A Discriminated Union (5) in the Second state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Second<T1, T2, T3, T4, T5>(T2 t2) => Du5<T1, T2, T3, T4, T5>.Second(t2);
 
+    /// <summary>
+    /// Creates a Discriminated Union (6) in the Second state.
+    /// </summary>
+    /// <param name="t2">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <returns>A Discriminated Union (6) in the Second state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Second<T1, T2, T3, T4, T5, T6>(T2 t2) => Du6<T1, T2, T3, T4, T5, T6>.Second(t2);
 
+    /// <summary>
+    /// Creates a Discriminated Union (7) in the Second state.
+    /// </summary>
+    /// <param name="t2">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <typeparam name="T7">Seventh value type.</typeparam>
+    /// <returns>A Discriminated Union (7) in the Second state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du7<T1, T2, T3, T4, T5, T6, T7> Second<T1, T2, T3, T4, T5, T6, T7>(T2 t2) => Du7<T1, T2, T3, T4, T5, T6, T7>.Second(t2);
 
+    /// <summary>
+    /// Creates a Discriminated Union (3) in the Third state.
+    /// </summary>
+    /// <param name="t3">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <returns>A Discriminated Union (3) in the Third state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du3<T1, T2, T3> Third<T1, T2, T3>(T3 t3) => Du3<T1, T2, T3>.Third(t3);
 
+    /// <summary>
+    /// Creates a Discriminated Union (4) in the Third state.
+    /// </summary>
+    /// <param name="t3">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <returns>A Discriminated Union (4) in the Third state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du4<T1, T2, T3, T4> Third<T1, T2, T3, T4>(T3 t3) => Du4<T1, T2, T3, T4>.Third(t3);
 
+    /// <summary>
+    /// Creates a Discriminated Union (5) in the Third state.
+    /// </summary>
+    /// <param name="t3">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <returns>A Discriminated Union (5) in the Third state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Third<T1, T2, T3, T4, T5>(T3 t3) => Du5<T1, T2, T3, T4, T5>.Third(t3);
 
+    /// <summary>
+    /// Creates a Discriminated Union (6) in the Third state.
+    /// </summary>
+    /// <param name="t3">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <returns>A Discriminated Union (6) in the Third state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Third<T1, T2, T3, T4, T5, T6>(T3 t3) => Du6<T1, T2, T3, T4, T5, T6>.Third(t3);
 
+    /// <summary>
+    /// Creates a Discriminated Union (7) in the Third state.
+    /// </summary>
+    /// <param name="t3">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <typeparam name="T7">Seventh value type.</typeparam>
+    /// <returns>A Discriminated Union (7) in the Third state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du7<T1, T2, T3, T4, T5, T6, T7> Third<T1, T2, T3, T4, T5, T6, T7>(T3 t3) => Du7<T1, T2, T3, T4, T5, T6, T7>.Third(t3);
 
+    /// <summary>
+    /// Creates a Discriminated Union (4) in the Fourth state.
+    /// </summary>
+    /// <param name="t4">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <returns>A Discriminated Union (4) in the Fourth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du4<T1, T2, T3, T4> Fourth<T1, T2, T3, T4>(T4 t4) => Du4<T1, T2, T3, T4>.Fourth(t4);
 
+    /// <summary>
+    /// Creates a Discriminated Union (5) in the Fourth state.
+    /// </summary>
+    /// <param name="t4">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <returns>A Discriminated Union (5) in the Fourth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Fourth<T1, T2, T3, T4, T5>(T4 t4) => Du5<T1, T2, T3, T4, T5>.Fourth(t4);
 
+    /// <summary>
+    /// Creates a Discriminated Union (6) in the Fourth state.
+    /// </summary>
+    /// <param name="t4">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <returns>A Discriminated Union (6) in the Fourth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Fourth<T1, T2, T3, T4, T5, T6>(T4 t4) => Du6<T1, T2, T3, T4, T5, T6>.Fourth(t4);
 
+    /// <summary>
+    /// Creates a Discriminated Union (7) in the Fourth state.
+    /// </summary>
+    /// <param name="t4">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <typeparam name="T7">Seventh value type.</typeparam>
+    /// <returns>A Discriminated Union (7) in the Fourth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du7<T1, T2, T3, T4, T5, T6, T7> Fourth<T1, T2, T3, T4, T5, T6, T7>(T4 t4) => Du7<T1, T2, T3, T4, T5, T6, T7>.Fourth(t4);
 
+    /// <summary>
+    /// Creates a Discriminated Union (5) in the Fifth state.
+    /// </summary>
+    /// <param name="t5">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <returns>A Discriminated Union (5) in the Fifth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du5<T1, T2, T3, T4, T5> Fifth<T1, T2, T3, T4, T5>(T5 t5) => Du5<T1, T2, T3, T4, T5>.Fifth(t5);
 
+    /// <summary>
+    /// Creates a Discriminated Union (6) in the Fifth state.
+    /// </summary>
+    /// <param name="t5">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <returns>A Discriminated Union (6) in the Fifth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Fifth<T1, T2, T3, T4, T5, T6>(T5 t5) => Du6<T1, T2, T3, T4, T5, T6>.Fifth(t5);
 
+    /// <summary>
+    /// Creates a Discriminated Union (7) in the Fifth state.
+    /// </summary>
+    /// <param name="t5">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <typeparam name="T7">Seventh value type.</typeparam>
+    /// <returns>A Discriminated Union (7) in the Fifth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du7<T1, T2, T3, T4, T5, T6, T7> Fifth<T1, T2, T3, T4, T5, T6, T7>(T5 t5) => Du7<T1, T2, T3, T4, T5, T6, T7>.Fifth(t5);
 
+    /// <summary>
+    /// Creates a Discriminated Union (6) in the Sixth state.
+    /// </summary>
+    /// <param name="t6">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <returns>A Discriminated Union (6) in the Sixth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du6<T1, T2, T3, T4, T5, T6> Sixth<T1, T2, T3, T4, T5, T6>(T6 t6) => Du6<T1, T2, T3, T4, T5, T6>.Sixth(t6);
 
+    /// <summary>
+    /// Creates a Discriminated Union (7) in the Sixth state.
+    /// </summary>
+    /// <param name="t6">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <typeparam name="T7">Seventh value type.</typeparam>
+    /// <returns>A Discriminated Union (7) in the Sixth state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du7<T1, T2, T3, T4, T5, T6, T7> Sixth<T1, T2, T3, T4, T5, T6, T7>(T6 t6) => Du7<T1, T2, T3, T4, T5, T6, T7>.Sixth(t6);
+
+    /// <summary>
+    /// Creates a Discriminated Union (7) in the Seventh state.
+    /// </summary>
+    /// <param name="t7">Value.</param>
+    /// <typeparam name="T1">First value type.</typeparam>
+    /// <typeparam name="T2">Second value type.</typeparam>
+    /// <typeparam name="T3">Third value type.</typeparam>
+    /// <typeparam name="T4">Fourth value type.</typeparam>
+    /// <typeparam name="T5">Fifth value type.</typeparam>
+    /// <typeparam name="T6">Sixth value type.</typeparam>
+    /// <typeparam name="T7">Seventh value type.</typeparam>
+    /// <returns>A Discriminated Union (7) in the Seventh state.</returns>
 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
