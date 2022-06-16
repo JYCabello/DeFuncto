@@ -107,11 +107,29 @@ public static class Prelude
     public static Option<T> Optional<T>(T? t) where T : struct =>
         t.HasValue ? Some(t.Value) : None;
 
+    /// <summary>
+    /// Composes two functions, passing the output of the first to the second.
+    /// </summary>
+    /// <param name="f1">First function to compose.</param>
+    /// <param name="f2">Second function to compose.</param>
+    /// <typeparam name="T1">Input type of the first function.</typeparam>
+    /// <typeparam name="T2">Output type of the first function and input of the second.</typeparam>
+    /// <typeparam name="T3">Output type of the second function.</typeparam>
+    /// <returns>A function than takes the input, </returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Func<T1, T3> Compose<T1, T2, T3>(this Func<T1, T2> f1, Func<T2, T3> f2) =>
-        t1 => f2(f1(t1));
+        t1 => t1.Apply(f1).Apply(f2);
 
+    /// <summary>
+    /// Composes two functions, passing the output of the first to the second.
+    /// </summary>
+    /// <param name="f1">First function to compose.</param>
+    /// <param name="f2">Second function to compose.</param>
+    /// <typeparam name="T1">Input type of the first function.</typeparam>
+    /// <typeparam name="T2">Output type of the first function and input of the second.</typeparam>
+    /// <typeparam name="T3">Output type of the second function.</typeparam>
+    /// <returns>A function than takes the input, </returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Func<T2> Compose<T1, T2>(this Func<T1> f1, Func<T1, T2> f2) =>
