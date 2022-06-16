@@ -512,11 +512,23 @@ public static class Prelude
     /// <typeparam name="T6">Sixth value type.</typeparam>
     /// <typeparam name="T7">Seventh value type.</typeparam>
     /// <returns>A Discriminated Union (7) in the Seventh state.</returns>
-
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du7<T1, T2, T3, T4, T5, T6, T7> Seventh<T1, T2, T3, T4, T5, T6, T7>(T7 t7) => Du7<T1, T2, T3, T4, T5, T6, T7>.Seventh(t7);
-
+    
+    /// <summary>
+    /// Perform active pattern matching in the input object.
+    /// <remarks>
+    /// Purposely not documented in the official docs, if this makes sense to you, I believe
+    /// you should switch your solution to F#.
+    /// </remarks>
+    /// </summary>
+    /// <param name="input">Object to perform pattern matching on.</param>
+    /// <param name="patterns">Patterns.</param>
+    /// <param name="defaulter">Function to provide a default value.</param>
+    /// <typeparam name="TIn">Object type.</typeparam>
+    /// <typeparam name="TOut">Output type.</typeparam>
+    /// <returns>The result of the first pattern that matches, or de result of the default function.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TOut ActMatch<TIn, TOut>(
@@ -526,6 +538,15 @@ public static class Prelude
     ) =>
         ActivePatternsExecutor.Execute(input, patterns, defaulter);
 
+    /// <summary>
+    /// Static factory for an active pattern.
+    /// </summary>
+    /// <param name="matcher">Function that provides an optional intermediate type.</param>
+    /// <param name="projection">Function that transforms the intermediate type.</param>
+    /// <typeparam name="TIn">Input type.</typeparam>
+    /// <typeparam name="TIntermediate">Intermediate type.</typeparam>
+    /// <typeparam name="TOut">Final type.</typeparam>
+    /// <returns>An active pattern.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ActivePatternBase<TIn, TOut> Pattern<TIn, TIntermediate, TOut>(
@@ -534,11 +555,25 @@ public static class Prelude
     ) =>
         new ActivePattern<TIn, TIntermediate, TOut>(matcher, projection);
 
+    /// <summary>
+    /// Static factory for a collection of patterns, meant to emulate the with
+    /// syntax from F#
+    /// </summary>
+    /// <param name="patterns">Patterns to apply.</param>
+    /// <typeparam name="TIn">Input type.</typeparam>
+    /// <typeparam name="TOut">Output type.</typeparam>
+    /// <returns>A collection of patterns.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ActivePatternBase<TIn, TOut>[] With<TIn, TOut>(params ActivePatternBase<TIn, TOut>[] patterns) =>
         patterns;
 
+    /// <summary>
+    /// Wraps a function in a try catch returning the Exception in the Error side of a Result.
+    /// </summary>
+    /// <param name="func">Function to wrap.</param>
+    /// <typeparam name="T">Output type of the function.</typeparam>
+    /// <returns>A Result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Result<T, Exception> Try<T>(Func<T> func)
     {
@@ -552,6 +587,13 @@ public static class Prelude
         }
     }
 
+    /// <summary>
+    /// Wraps an asynchronous function in a try catch returning the Exception in the Error side of an
+    /// AsyncResult.
+    /// </summary>
+    /// <param name="func">Function to wrap.</param>
+    /// <typeparam name="T">Output type of the Task returned by the function.</typeparam>
+    /// <returns>An AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncResult<T, Exception> Try<T>(Func<Task<T>> func)
     {
