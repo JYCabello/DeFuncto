@@ -85,11 +85,23 @@ public static class Prelude
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> Some<T>(T t) => Option<T>.Some(t);
 
+    /// <summary>
+    /// Creates an Option out of a nullable, None for null, Some for non null.
+    /// </summary>
+    /// <param name="t">Nullable value.</param>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <returns>An option in the corresponding state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> Optional<T>(T? t) =>
         t is not null ? Some(t) : None;
 
+    /// <summary>
+    /// Creates an Option out of a nullable, None for null, Some for non null.
+    /// </summary>
+    /// <param name="t">Nullable value.</param>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <returns>An option in the corresponding state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> Optional<T>(T? t) where T : struct =>
