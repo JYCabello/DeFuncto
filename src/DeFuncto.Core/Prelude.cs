@@ -65,10 +65,22 @@ public static class Prelude
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Result<TOk, TError> Error<TOk, TError>(TError error) => Error(error);
 
+    /// <summary>
+    /// Identity function, returns the value passed to it.
+    /// </summary>
+    /// <param name="t">Value.</param>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <returns>The value.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T Id<T>(T t) => t;
 
+    /// <summary>
+    /// Creates an Option in the Some state.
+    /// </summary>
+    /// <param name="t"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Option<T> Some<T>(T t) => Option<T>.Some(t);
