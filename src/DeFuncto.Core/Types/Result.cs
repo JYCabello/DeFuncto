@@ -218,7 +218,10 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
         Iter(fOk);
         return Iter(fError);
     }
-
+    
+    /// <summary>
+    /// An option, Some if Ok, None if Error.
+    /// </summary>
     public Option<TOk> Option => Match(Some, _ => None);
 
     [Pure]
@@ -247,6 +250,10 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
         -1584136870 + value.GetHashCode();
 }
 
+/// <summary>
+/// Abstraction of the Ok state, used for implicit casting and prelude.
+/// </summary>
+/// <typeparam name="TOk">Value type.</typeparam>
 public readonly struct ResultOk<TOk>
 {
     internal readonly TOk OkValue;
@@ -254,11 +261,20 @@ public readonly struct ResultOk<TOk>
     public ResultOk(TOk okValue) =>
         OkValue = okValue;
 
+    /// <summary>
+    /// Converts it to a full Result.
+    /// </summary>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>A Result in the Ok state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOk, TError> Result<TError>() => this;
 }
 
+/// <summary>
+/// Abstraction of the Error state, used for implicit casting and prelude.
+/// </summary>
+/// <typeparam name="TError">Error type.</typeparam>
 public readonly struct ResultError<TError>
 {
     internal readonly TError ErrorValue;
@@ -266,50 +282,120 @@ public readonly struct ResultError<TError>
     public ResultError(TError errorValue) =>
         ErrorValue = errorValue;
 
+    /// <summary>
+    /// Converts it to a full Result.
+    /// </summary>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <returns>A Result in the Error state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Result<TOk, TError> Result<TOk>() => this;
 }
 
+/// <summary>
+/// Common operations for the Result type.
+/// </summary>
 public static class ResultExtensions
 {
+    /// <summary>
+    /// Returns the appropriate value when both are of the same type.
+    /// </summary>
+    /// <param name="result">The Result to collapse.</param>
+    /// <typeparam name="TOut">Value and Error type.</typeparam>
+    /// <returns>The value.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TOut Collapse<TOut>(this Result<TOut, TOut> result) => result.Match(Id, Id);
 
+    /// <summary>
+    /// Wraps the a Task returning result Result in an AsyncResult.
+    /// </summary>
+    /// <param name="self">The Result to wrap.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>An AsyncResult.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncResult<TOk, TError> Async<TOk, TError>(this Task<Result<TOk, TError>> self) => self;
 
+    /// <summary>
+    /// Wraps the Result in an AsyncResult.
+    /// </summary>
+    /// <param name="self">The Result to wrap.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>An AsyncResult.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<TOk, TError> self) => self;
 
+    /// <summary>
+    /// Wraps the Result having a Task as an Error in an AsyncResult.
+    /// </summary>
+    /// <param name="self">The Result to wrap.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>An AsyncResult.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<TOk, Task<TError>> self) =>
         self.Match(ok => ok.Apply(Ok<TOk, TError>).Async(), errTsk => errTsk.Map(Error<TOk, TError>));
 
+    /// <summary>
+    /// Wraps the Result having a Task as Ok in an AsyncResult.
+    /// </summary>
+    /// <param name="self">The Result to wrap.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>An AsyncResult.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<Task<TOk>, TError> self) =>
         self.Match(okTsk => okTsk.Map(Ok<TOk, TError>).Async(), error => error.Apply(Error<TOk, TError>));
 
+    /// <summary>
+    /// Wraps the Result having a Task as Ok and Error in an AsyncResult.
+    /// </summary>
+    /// <param name="self">The Result to wrap.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>An AsyncResult.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncResult<TOk, TError> Async<TOk, TError>(this Result<Task<TOk>, Task<TError>> self) =>
         self.Match(okTsk => okTsk.Map(Ok<TOk, TError>), errTsk => errTsk.Map(Error<TOk, TError>));
 
+    /// <summary>
+    /// Wraps the Task containing a Result having a Task as Ok and Error in an AsyncResult.
+    /// </summary>
+    /// <param name="self">The Result to wrap.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>An AsyncResult.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AsyncResult<TOk, TError> Async<TOk, TError>(this Task<Result<Task<TOk>, Task<TError>>> self) =>
         self.Map(r => r.Async().ToTask());
 
+    /// <summary>
+    /// Flattens a Result that has a Result with the same Ok type as the parent as Error type.
+    /// </summary>
+    /// <param name="self">The Result to flatten.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>The flattened Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Result<TOk, TError> Flatten<TOk, TError>(this Result<TOk, Result<TOk, TError>> self) =>
         self.Match(Ok<TOk, TError>, Id);
 
+    /// <summary>
+    /// Flattens a Result that has a Result with the same Error type as the parent as Ok type.
+    /// </summary>
+    /// <param name="self">The Result to flatten.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>The flattened Result.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Result<TOk, TError> Flatten<TOk, TError>(this Result<Result<TOk, TError>, TError> self) =>
