@@ -7,25 +7,60 @@ using DeFuncto.Extensions;
 
 namespace DeFuncto;
 
+/// <summary>
+/// Basic functional operations.
+/// </summary>
 public static class Prelude
 {
+    /// <summary>
+    /// Option in the None state.
+    /// </summary>
     public static OptionNone None => new();
 
+    /// <summary>
+    /// Default access for the unit instance.
+    /// </summary>
     // ReSharper disable once InconsistentNaming
     public static Unit unit => Unit.Default;
 
+    /// <summary>
+    /// Creates a ResultOk, will usually convert to Result via implicit casting.
+    /// </summary>
+    /// <param name="ok">Value.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <returns>ResultOk</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ResultOk<TOk> Ok<TOk>(TOk ok) => new(ok);
 
+    /// <summary>
+    /// Creates a Result in the Ok state.
+    /// </summary>
+    /// <param name="ok">Value.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>A Result in the Ok state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Result<TOk, TError> Ok<TOk, TError>(TOk ok) => Ok(ok);
 
+    /// <summary>
+    /// Creates a ResultError, will usually convert to Result via implicit casting.
+    /// </summary>
+    /// <param name="error">Error value.</param>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>ResultError</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ResultError<TError> Error<TError>(TError error) => new(error);
 
+    /// <summary>
+    /// Creates a Result in the Error state.
+    /// </summary>
+    /// <param name="error">Error value.</param>
+    /// <typeparam name="TOk">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <returns>A Result in the Error state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Result<TOk, TError> Error<TOk, TError>(TError error) => Error(error);
