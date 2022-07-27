@@ -17,14 +17,11 @@ public class GetAwaiter
             return unit;
         });
     }
+
     [Fact(DisplayName = "Awaits none")]
     public async Task AwaitsNone()
     {
         var opt = await None.Option<int>().Async();
-        opt.ShouldBeSome(n =>
-        {
-            Assert.Equal(1, n);
-            return unit;
-        });
+        opt.ShouldBeNone();
     }
 }
