@@ -20,19 +20,25 @@ public class Bind
         Some(a)
             .Async()
             .Bind(_ => None.Option<int>().ToTask())
-            .ShouldBeNone();
+            .ShouldBeNone()
+            .GetAwaiter()
+            .GetResult();
 
     [Fact(DisplayName = "Skips none after none")]
     public void NoneOnNone() =>
         None.Option<string>()
             .Async()
             .Bind(_ => None.Option<int>())
-            .ShouldBeNone();
+            .ShouldBeNone()
+            .GetAwaiter()
+            .GetResult();
 
     [Property(DisplayName = "Skips some after none")]
     public void SomeOnNone(string a, string b) =>
         None.Option<int>()
             .Async()
             .Bind(number => number == 42 ? Some(a) : Some(b))
-            .ShouldBeNone();
+            .ShouldBeNone()
+            .GetAwaiter()
+            .GetResult();
 }
