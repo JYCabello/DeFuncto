@@ -353,6 +353,8 @@ public readonly struct AsyncResult<TOk, TError>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncResult<TOk, TError>(Task<TError> error) =>
         error.Map(Error<TOk, TError>);
+
+    public TaskAwaiter<Result<TOk, TError>> GetAwaiter() => resultTask.GetAwaiter();
 }
 
 public static class AsyncResultExtensions

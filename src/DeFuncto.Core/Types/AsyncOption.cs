@@ -28,7 +28,7 @@ public readonly struct AsyncOption<T>
     private AsyncOption(Option<T> option) : this(option.ToTask()) { }
 
     private AsyncOption(Task<Option<T>> optionTask) =>
-        option = optionTask;
+        this.optionTask = optionTask;
 
     /// <summary>
     /// Takes one function for the None case and one for the Some
@@ -374,13 +374,13 @@ public readonly struct AsyncOption<T>
     public Task<Unit> Iter(Func<T, Task<Unit>> fSome, Func<Task<Unit>> fNone) =>
         Iter(fSome.AsyncAction(), fNone.AsyncAction());
 
-    private readonly Task<Option<T>>? option;
+    private readonly Task<Option<T>>? optionTask;
 
     /// <summary>
     /// Removes the wrapper for the asynchrony, giving a task with an option
     /// as a result.
     /// </summary>
-    public Task<Option<T>> Option => option ?? Task.FromResult(None.Option<T>());
+    public Task<Option<T>> Option => optionTask ?? Task.FromResult(None.Option<T>());
 
     /// <summary>
     /// Converts to an AsyncResult, mapping the Some state to Ok and the None
@@ -427,7 +427,7 @@ public readonly struct AsyncOption<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(Task<Option<T>> option) => new(option);
 
-    public TaskAwaiter<Option<T>> GetAwaiter() => Option.GetAwaiter();
+    public TaskAwaiter<Option<T>> GetAwaiter() => (optionTask ?? Task.FromResult(None.Option<T>())).GetAwaiter();
 }
 
 public static class AsyncOptionExtensions
