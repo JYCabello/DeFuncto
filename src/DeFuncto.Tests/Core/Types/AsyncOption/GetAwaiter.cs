@@ -10,7 +10,7 @@ public class GetAwaiter
     [Fact(DisplayName = "Awaits some")]
     public async Task AwaitsSome()
     {
-        Option<int> opt = Some(1).Async();
+        Option<int> opt = await Some(1).Async();
         opt.ShouldBeSome(n =>
         {
             Assert.Equal(1, n);
