@@ -10,7 +10,17 @@ public class GetAwaiter
     [Fact(DisplayName = "Awaits some")]
     public async Task AwaitsSome()
     {
-        Option<int> opt = await Some(1).Async();
+        var opt = await Some(1).Async();
+        opt.ShouldBeSome(n =>
+        {
+            Assert.Equal(1, n);
+            return unit;
+        });
+    }
+    [Fact(DisplayName = "Awaits none")]
+    public async Task AwaitsNone()
+    {
+        var opt = await None.Option<int>().Async();
         opt.ShouldBeSome(n =>
         {
             Assert.Equal(1, n);

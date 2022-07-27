@@ -426,6 +426,8 @@ public readonly struct AsyncOption<T>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(Task<Option<T>> option) => new(option);
+
+    public TaskAwaiter<Option<T>> GetAwaiter() => Option.GetAwaiter();
 }
 
 public static class AsyncOptionExtensions
