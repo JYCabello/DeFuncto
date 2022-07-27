@@ -10,8 +10,8 @@ public class GetAwaiter
     [Fact(DisplayName = "Awaits Ok")]
     public async Task AwaitsOk()
     {
-        var opt = await Ok(1).Result<int>().Async();
-        opt.ShouldBeOk(n =>
+        var result = await Ok(1).Result<int>().Async();
+        result.ShouldBeOk(n =>
         {
             Assert.Equal(1, n);
             return unit;
@@ -21,8 +21,8 @@ public class GetAwaiter
     [Fact(DisplayName = "Awaits Error")]
     public async Task AwaitsError()
     {
-        var opt = await Error(1).Result<int>().Async();
-        opt.ShouldBeError(n =>
+        var result = await Error(1).Result<int>().Async();
+        result.ShouldBeError(n =>
         {
             Assert.Equal(1, n);
             return unit;
