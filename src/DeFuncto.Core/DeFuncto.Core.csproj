@@ -16,10 +16,11 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageVersion>1.0.4</PackageVersion>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="../../readme.md" Pack="true" PackagePath="\"/>
+        <None Include="../../readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
     
     <ItemGroup>
