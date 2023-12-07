@@ -5,7 +5,7 @@
         <LangVersion>10</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Version>1.0.5</Version>
-        <PackageVersion>1.0.5</PackageVersion>
+        <PackageVersion>1.0.6</PackageVersion>
         <Description>Assertions for DeFuncto data types. Assertions fail by throwing an exceptions, which is acknowledged by virtually every popular .NET testing library as a way to fail a test. Not yet localized, assertions fail messages are always in English.</Description>
         <RepositoryUrl>https://github.com/JYCabello/DeFuncto</RepositoryUrl>
         <PackageTags>Functional Monad Option Result Either Parallel UnitTesting</PackageTags>
