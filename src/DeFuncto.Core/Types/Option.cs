@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -13,7 +15,7 @@ namespace DeFuncto;
 /// Biased towards the Some case.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public readonly struct Option<T> : IEquatable<Option<T>>
+public readonly struct Option<T> : IEquatable<Option<T>>, IEnumerable<T>
 {
     private readonly Du<Unit, T> value;
 
@@ -283,14 +285,44 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Option<T>(OptionNone _) => new(unit);
 
-    public override bool Equals(object obj) =>
+    /// <summary>
+    /// Make it enumerable.
+    /// </summary>
+    /// <returns>An enumerator that yields the value if it's in the Some state.</returns>
+    public IEnumerator<T> GetEnumerator()
+    {
+        if (IsNone)
+        {
+            yield break;
+        }
+
+        yield return value.Match(_ => throw new("This can't happen"), Id);
+    }
+
+    /// <summary>
+    /// Equality check.
+    /// </summary>
+    /// <param name="obj">The object to compare.</param>
+    /// <returns>True if the objects are equal.</returns>
+    public override bool Equals(object? obj) =>
         obj is Option<T> other && Equals(other);
 
+    /// <summary>
+    /// Equality check.
+    /// </summary>
+    /// <param name="other">The other option to compare.</param>
+    /// <returns>True if the options are equal.</returns>
     public bool Equals(Option<T> other) =>
         IsSome == other.IsSome && other.value.Equals(value);
 
+    /// <summary>
+    /// Equality check.
+    /// </summary>
+    /// <returns>True if the options are equal.</returns>
     public override int GetHashCode() =>
         -1584136870 + value.GetHashCode();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
 /// <summary>
