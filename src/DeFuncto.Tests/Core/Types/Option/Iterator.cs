@@ -5,7 +5,7 @@ namespace DeFuncto.Tests.Core.Types.Option;
 
 public class Iterator
 {
-  [Fact(DisplayName = "Iterates over the option")]
+  [Fact(DisplayName = "Iterates over some")]
   public void Iterates()
   {
     var some = Some(1);
@@ -18,7 +18,7 @@ public class Iterator
     Assert.Equal(1, count);
   }
 
-  [Fact(DisplayName = "Does not iterate over the none")]
+  [Fact(DisplayName = "Does not iterate over none")]
   public void DoesNotIterate()
   {
     Option<int> none = None;
