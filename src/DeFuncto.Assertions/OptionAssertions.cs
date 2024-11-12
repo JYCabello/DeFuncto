@@ -1,66 +1,37 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DeFuncto.Extensions;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto.Assertions;
 
 public static class OptionAssertions
 {
-    public static Option<T> ShouldBeSome<T>(this Option<T> option)
-    {
-        if (option.IsNone && !option.IsSome)
-            throw new AssertionFailedException("Option should have been in the 'Some' state.");
-        return option;
-    }
+  public static T ShouldBeSome<T>(this Option<T> option) =>
+    option.Match(Id, () => throw new AssertionFailedException("Option should have been in the 'Some' state."));
 
-    public static async Task<Option<T>> ShouldBeSome<T>(this AsyncOption<T> option)
-    {
-        if (await option.IsNone && !await option.IsSome)
-            throw new AssertionFailedException("Option should have been in the 'Some' state.");
-        return await option.Option;
-    }
+  public static async Task<T> ShouldBeSome<T>(this AsyncOption<T> option) => await option.Option.Map(ShouldBeSome);
 
-    public static Option<T> ShouldBeSome<T>(this Option<T> option, Func<T, Unit> assertion) =>
-        option.ShouldBeSome().Map(t =>
-        {
-            assertion(t);
-            return t;
-        });
+  public static T ShouldBeSome<T>(this Option<T> option, Func<T, Unit> assertion)
+  {
+    option.Iter(assertion);
+    return option.ShouldBeSome();
+  }
 
-    public static Task<Option<T>> ShouldBeSome<T>(this AsyncOption<T> option, Func<T, Unit> assertion) =>
-        option.ShouldBeSome().Async().Map(t =>
-        {
-            assertion(t);
-            return t;
-        }).Option;
+  public static async Task<T> ShouldBeSome<T>(this AsyncOption<T> option, Func<T, Unit> assertion)
+  {
+    await option.Iter(assertion);
+    return await option.ShouldBeSome();
+  }
 
-    public static Option<T> ShouldBeSome<T>(this Option<T> option, T expected) =>
-        option.ShouldBeSome(t =>
-        {
-            if (!expected?.Equals(t) ?? t != null)
-                throw new AssertionFailedException($"Option should have value {expected} but it was {t}.");
-            return unit;
-        });
+  public static T ShouldBeSome<T>(this Option<T> option, T expected) =>
+    option.ShouldBeSome().AssertEquals(expected);
 
-    public static Task<Option<T>> ShouldBeSome<T>(this AsyncOption<T> option, T expected) =>
-        option.ShouldBeSome(t =>
-        {
-            if (!expected.Equals(t))
-                throw new AssertionFailedException($"Option should have value {expected} but it was {t}.");
-            return unit;
-        });
+  public static Task<T> ShouldBeSome<T>(this AsyncOption<T> option, T expected) =>
+    option.ShouldBeSome().Map(t => t.AssertEquals(expected));
 
-    public static Option<T> ShouldBeNone<T>(this Option<T> option)
-    {
-        if (option.IsSome)
-            throw new AssertionFailedException("Option should have been in the 'None' state.");
-        return option;
-    }
+  public static Unit ShouldBeNone<T>(this Option<T> option) =>
+    option.Match(_ => throw new AssertionFailedException("Option should have been in the 'None' state."), () => unit);
 
-    public static async Task<Option<T>> ShouldBeNone<T>(this AsyncOption<T> option)
-    {
-        if (await option.IsSome)
-            throw new AssertionFailedException("Option should have been in the 'None' state.");
-        return await option.Option;
-    }
+  public static async Task<Unit> ShouldBeNone<T>(this AsyncOption<T> option) => await option.Option.Map(ShouldBeNone);
 }
