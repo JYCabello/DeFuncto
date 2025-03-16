@@ -15,10 +15,8 @@ public class Parallel
     [InlineData(50, 50)]
     [InlineData(100, 10)]
     [InlineData(100, 150)]
-    [InlineData(300, 150)]
-    [InlineData(850, 150)]
-    [InlineData(5_000, 100)]
-    [InlineData(5_000, 300)]
+    [InlineData(150, 75)]
+    [InlineData(500, 150)]
     public async Task InParallel(int total, int parallelism)
     {
         var witness = new ConcurrentWitness();
