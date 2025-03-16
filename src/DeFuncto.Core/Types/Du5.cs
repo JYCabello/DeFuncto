@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using DeFuncto.Extensions;
+using DeFuncto.Serialization;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto;
@@ -15,6 +16,7 @@ namespace DeFuncto;
 /// <typeparam name="T3">Third case type.</typeparam>
 /// <typeparam name="T4">Fourth case type.</typeparam>
 /// <typeparam name="T5">Fifth case type.</typeparam>
+[Newtonsoft.Json.JsonConverter(typeof(DuNewtonsoftConverter))]
 public readonly struct Du5<T1, T2, T3, T4, T5> : IEquatable<Du5<T1, T2, T3, T4, T5>>
 {
     public enum DiscriminationValue
