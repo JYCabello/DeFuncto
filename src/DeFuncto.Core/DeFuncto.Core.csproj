@@ -14,7 +14,7 @@
         <PackageTags>Functional Monad Option Result Either Parallel</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageVersion>1.1.1</PackageVersion>
+        <PackageVersion>1.1.2</PackageVersion>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
@@ -22,7 +22,7 @@
     <ItemGroup>
         <None Include="../../readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <PackageReference Include="coverlet.collector" Version="6.0.0">
         <PrivateAssets>all</PrivateAssets>
