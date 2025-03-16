@@ -16,15 +16,18 @@ internal class DuNewtonsoftConverter : JsonConverter
     writer.WriteStartObject();
     var duType = value.GetType();
     var wasValueFound = false;
+    var discriminator = (int)duType
+      .GetField("Discriminator", BindingFlags.Public | BindingFlags.Instance)!
+      .GetValue(value);
     for (var i = 1; i <= 7; i++)
     {
+      if (discriminator != i - 1)
+        continue;
       var fieldName = $"t{i}";
       var field = duType.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
       if (field == null)
         continue;
       var fieldValue = field.GetValue(value);
-      if (fieldValue == null)
-        continue;
       writer.WritePropertyName("State");
       writer.WriteValue(fieldName);
       writer.WritePropertyName("Value");
@@ -77,14 +80,17 @@ internal class DuNewtonsoftConverter : JsonConverter
   }
 
   private static MethodInfo GetFactoryMethod(Type duType, int index) =>
-    duType.GetMethod("First", BindingFlags.Public | BindingFlags.Static) ??
-    duType.GetMethod("Second", BindingFlags.Public | BindingFlags.Static) ??
-    duType.GetMethod("Third", BindingFlags.Public | BindingFlags.Static) ??
-    duType.GetMethod("Fourth", BindingFlags.Public | BindingFlags.Static) ??
-    duType.GetMethod("Fifth", BindingFlags.Public | BindingFlags.Static) ??
-    duType.GetMethod("Sixth", BindingFlags.Public | BindingFlags.Static) ??
-    duType.GetMethod("Seventh", BindingFlags.Public | BindingFlags.Static) ??
-    throw new SerializationException("Invalid state for Du");
+    index switch
+    {
+      1 => duType.GetMethod("First", BindingFlags.Public | BindingFlags.Static)!,
+      2 => duType.GetMethod("Second", BindingFlags.Public | BindingFlags.Static)!,
+      3 => duType.GetMethod("Third", BindingFlags.Public | BindingFlags.Static)!,
+      4 => duType.GetMethod("Fourth", BindingFlags.Public | BindingFlags.Static)!,
+      5 => duType.GetMethod("Fifth", BindingFlags.Public | BindingFlags.Static)!,
+      6 => duType.GetMethod("Sixth", BindingFlags.Public | BindingFlags.Static)!,
+      7 => duType.GetMethod("Seventh", BindingFlags.Public | BindingFlags.Static)!,
+      _ => throw new ArgumentOutOfRangeException()
+    };
 
   public override bool CanConvert(Type objectType) =>
     objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Du<,>);
