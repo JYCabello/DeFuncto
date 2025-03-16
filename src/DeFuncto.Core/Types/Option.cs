@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DeFuncto.Extensions;
+using DeFuncto.Serialization;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto;
@@ -12,9 +13,10 @@ namespace DeFuncto;
 /// <summary>
 /// Discriminated union of a value that might be absent.
 /// Being Some the present and None the absent case respectively.
-/// Biased towards the Some case.
+/// Biased towards the 'Some' case.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+[Newtonsoft.Json.JsonConverter(typeof(OptionNewtonsoftConverter))]
 public readonly struct Option<T> : IEquatable<Option<T>>, IEnumerable<T>
 {
     private readonly Du<Unit, T> value;
@@ -30,7 +32,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEnumerable<T>
     public bool IsNone => !IsSome;
 
     /// <summary>
-    /// Constructor for the some case.
+    /// Constructor for the 'some' case.
     /// </summary>
     /// <param name="value">Value.</param>
     private Option(T value)

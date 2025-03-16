@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DeFuncto.Extensions;
+using DeFuncto.Serialization;
 using static DeFuncto.Prelude;
 
 namespace DeFuncto;
@@ -14,6 +15,7 @@ namespace DeFuncto;
 /// </summary>
 /// <typeparam name="TOk">Error type.</typeparam>
 /// <typeparam name="TError">Value type.</typeparam>
+[Newtonsoft.Json.JsonConverter(typeof(ResultNewtonsoftConverter))]
 public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
 {
     private readonly Du<TOk, TError> value;
@@ -218,7 +220,7 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
         Iter(fOk);
         return Iter(fError);
     }
-    
+
     /// <summary>
     /// An option, Some if Ok, None if Error.
     /// </summary>
