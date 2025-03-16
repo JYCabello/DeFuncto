@@ -21,7 +21,7 @@ namespace DeFuncto;
 [Newtonsoft.Json.JsonConverter(typeof(DuNewtonsoftConverter))]
 public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, T3, T4, T5, T6, T7>>
 {
-    private enum DiscriminationValue
+    public enum DiscriminationValue
     {
         T1,
         T2,
@@ -39,7 +39,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
     private readonly T5? t5;
     private readonly T6? t6;
     private readonly T7? t7;
-    private readonly DiscriminationValue discriminator;
+    public readonly DiscriminationValue Discriminator;
 
     /// <summary>
     /// Constructor for the first case.
@@ -54,7 +54,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         t5 = default;
         t6 = default;
         t7 = default;
-        discriminator = DiscriminationValue.T1;
+        Discriminator = DiscriminationValue.T1;
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         t5 = default;
         t6 = default;
         t7 = default;
-        discriminator = DiscriminationValue.T2;
+        Discriminator = DiscriminationValue.T2;
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         t5 = default;
         t6 = default;
         t7 = default;
-        discriminator = DiscriminationValue.T3;
+        Discriminator = DiscriminationValue.T3;
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         t5 = default;
         t6 = default;
         t7 = default;
-        discriminator = DiscriminationValue.T4;
+        Discriminator = DiscriminationValue.T4;
     }
 
     /// <summary>
@@ -118,7 +118,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         t4 = default;
         t6 = default;
         t7 = default;
-        discriminator = DiscriminationValue.T5;
+        Discriminator = DiscriminationValue.T5;
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         t4 = default;
         t5 = default;
         t7 = default;
-        discriminator = DiscriminationValue.T6;
+        Discriminator = DiscriminationValue.T6;
     }
 
     /// <summary>
@@ -150,7 +150,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         t4 = default;
         t5 = default;
         t6 = default;
-        discriminator = DiscriminationValue.T7;
+        Discriminator = DiscriminationValue.T7;
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T Match<T>(Func<T1, T> f1, Func<T2, T> f2, Func<T3, T> f3, Func<T4, T> f4, Func<T5, T> f5, Func<T6, T> f6, Func<T7, T> f7) =>
-        discriminator switch
+        Discriminator switch
         {
             DiscriminationValue.T1 => f1(t1!),
             DiscriminationValue.T2 => f2(t2!),
@@ -178,7 +178,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
             DiscriminationValue.T5 => f5(t5!),
             DiscriminationValue.T6 => f6(t6!),
             DiscriminationValue.T7 => f7(t7!),
-            _ => throw new ArgumentException(nameof(discriminator))
+            _ => throw new ArgumentException(nameof(Discriminator))
         };
 
     /// <summary>
@@ -276,7 +276,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         obj is Du7<T1, T2, T3, T4, T5, T6, T7> other && Equals(other);
 
     public bool Equals(Du7<T1, T2, T3, T4, T5, T6, T7> other) =>
-        discriminator == other.discriminator
+        Discriminator == other.Discriminator
         && Match(
             v => v!.Equals(other.t1),
             v => v!.Equals(other.t2),
@@ -295,7 +295,7 @@ public readonly struct Du7<T1, T2, T3, T4, T5, T6, T7> : IEquatable<Du7<T1, T2, 
         .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T5?>.Default.GetHashCode(t.Item1.t5)))
         .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T6?>.Default.GetHashCode(t.Item1.t6)))
         .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T7?>.Default.GetHashCode(t.Item1.t7)))
-        .Apply(t => t.Item2 * -1521134295 + t.Item1.discriminator.GetHashCode());
+        .Apply(t => t.Item2 * -1521134295 + t.Item1.Discriminator.GetHashCode());
 
     /// <summary>
     /// Runs an effectful function for the adequate case.
