@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -5,15 +6,14 @@ namespace DeFuncto.Tests.Core.Serialization.Newtonsoft;
 
 public class SerializationTests
 {
-  [Theory(DisplayName = "serializes and deserializes as expected")]
+  [Theory(DisplayName = "serializes and deserializes as ")]
   [MemberData(nameof(Data))]
-  public void Test(object instance)
+  public void Test(object[] instance)
   {
-    var type = instance.GetType();
-    var serialized = JsonConvert.SerializeObject(instance);
-    var deserialized = JsonConvert.DeserializeObject(serialized, type);
-    Assert.Equal(instance, deserialized);
+    var serialized = JsonConvert.SerializeObject(instance[0]);
+    var deserialized = JsonConvert.DeserializeObject(serialized, instance[0].GetType());
+    Assert.Equal(instance[0], deserialized);
   }
 
-  public static IEnumerable<object[]> Data => Samples.Data;
+  public static TheoryData<object[]> Data => Samples.Data;
 }

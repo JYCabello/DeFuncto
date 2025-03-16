@@ -2,7 +2,7 @@ namespace DeFuncto.Tests.Core.Serialization;
 
 public static class Samples
 {
-  public static readonly object[][] Data =
+  public static readonly TheoryData<object[]> Data =
   [
     [Option<int>.None],
     [Option<int>.Some(1)],
