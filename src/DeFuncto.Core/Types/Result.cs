@@ -153,7 +153,7 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
         Func<TOk, Result<TOkBind, TError>> binder,
         Func<TOk, TOkBind, Result<TOkFinal, TError>> projection
-    ) => throw new NotImplementedException();
+    ) => Match(ok => binder(ok).Match(okBind => projection(ok, okBind), Error<TOkFinal, TError>), Error<TOkFinal, TError>);
 
     /// <summary>
     /// Collapses the structure in an output value, choosing the adequate projection
