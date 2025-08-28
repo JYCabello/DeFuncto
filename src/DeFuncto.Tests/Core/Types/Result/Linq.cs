@@ -109,5 +109,12 @@ public class Linq
             from z in Error<string, int>(1)
             select Error<string, int>(2)))
             .ShouldBeError(1);
+
+        ((Result<decimal, int>)(
+            from x in Ok<string, int>(string.Empty)
+            from y in Ok<string, int>(string.Empty)
+            from z in Error<string, int>(1)
+            select Error<decimal, int>(2)))
+            .ShouldBeError(1);
     }
 }
