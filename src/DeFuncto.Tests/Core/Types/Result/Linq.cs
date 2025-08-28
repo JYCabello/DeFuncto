@@ -87,6 +87,8 @@ public class Linq
     [Property(DisplayName = "Result SelectMany should project results")]
     public void SelectManyProjectsResult()
     {
+        // leave the type castings to ensure it's not returning a nested Result<Result...>>
+
         ((Result<string, int>)(
             from x in Ok<string, int>(string.Empty)
             from y in Ok<string, int>(string.Empty)
@@ -94,5 +96,18 @@ public class Linq
             select Ok<string, int>("out")))
             .ShouldBeOk("out");
 
+        ((Result<string, int>)(
+            from x in Ok<string, int>(string.Empty)
+            from y in Ok<string, int>(string.Empty)
+            from z in Ok<string, int>(string.Empty)
+            select Error<string, int>(1)))
+            .ShouldBeError(1);
+
+        ((Result<string, int>)(
+            from x in Ok<string, int>(string.Empty)
+            from y in Ok<string, int>(string.Empty)
+            from z in Error<string, int>(1)
+            select Error<string, int>(2)))
+            .ShouldBeError(1);
     }
 }
