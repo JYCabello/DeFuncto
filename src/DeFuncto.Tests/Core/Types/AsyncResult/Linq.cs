@@ -73,28 +73,28 @@ public class Linq
             from x in Ok<string, int>(string.Empty).Async()
             from y in Ok<string, int>(string.Empty).Async()
             from z in Ok<string, int>(string.Empty).Async()
-            select Ok<string, int>("out")))
+            select Ok<string, int>("out").Async()))
             .ShouldBeOk("out");
 
         ((AsyncResult<string, int>)(
             from x in Ok<string, int>(string.Empty).Async()
             from y in Ok<string, int>(string.Empty).Async()
             from z in Ok<string, int>(string.Empty).Async()
-            select Error<string, int>(1)))
+            select Error<string, int>(1).Async()))
             .ShouldBeError(1);
 
         ((AsyncResult<string, int>)(
-            from x in Ok<string, int>(string.Empty)
-            from y in Ok<string, int>(string.Empty)
-            from z in Error<string, int>(1)
-            select Error<string, int>(2)))
+            from x in Ok<string, int>(string.Empty).Async()
+            from y in Ok<string, int>(string.Empty).Async()
+            from z in Error<string, int>(1).Async()
+            select Error<string, int>(2).Async()))
             .ShouldBeError(1);
 
         ((AsyncResult<decimal, int>)(
-            from x in Ok<string, int>(string.Empty)
-            from y in Ok<string, int>(string.Empty)
-            from z in Error<string, int>(1)
-            select Error<decimal, int>(2)))
+            from x in Ok<string, int>(string.Empty).Async()
+            from y in Ok<string, int>(string.Empty).Async()
+            from z in Error<string, int>(1).Async()
+            select Error<decimal, int>(2).Async()))
             .ShouldBeError(1);
     }
 }
