@@ -74,9 +74,13 @@ public class Linq
     [Property(DisplayName = "Result Select should project results")]
     public void SelectProjectsResult()
     {
-        (from _ in Ok<string, int>(string.Empty) select Ok<string, int>(string.Empty)).ShouldBeOk();
-        (from _ in Ok<string, int>(string.Empty) select Error<string, int>(1)).ShouldBeError(1);
-        (from _ in Error<string, int>(1) select Error<string, int>(2)).ShouldBeError(1);
-        (from _ in Error<string, int>(1) select Ok<string, int>(string.Empty)).ShouldBeError(1);
+        // leave the type castings to ensure it's not returning a nested Result<Result...>>
+        
+        ((Result<decimal, int>) (from _ in Ok<string, int>(string.Empty) select Ok<decimal,int>(decimal.Zero))).ShouldBeOk();
+        ((Result<string, int>) (from _ in Ok<string, int>(string.Empty) select Ok<string, int>(string.Empty))).ShouldBeOk();
+        
+        ((Result<string,int>) (from _ in Ok<string, int>(string.Empty) select Error<string, int>(1))).ShouldBeError(1);
+        ((Result<string,int>) (from _ in Error<string, int>(1) select Error<string, int>(2))).ShouldBeError(1);
+        ((Result<string,int>) (from _ in Error<string, int>(1) select Ok<string, int>(string.Empty))).ShouldBeError(1);
     }
 }
