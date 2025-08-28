@@ -83,4 +83,16 @@ public class Linq
         ((Result<string,int>) (from _ in Error<string, int>(1) select Error<string, int>(2))).ShouldBeError(1);
         ((Result<string,int>) (from _ in Error<string, int>(1) select Ok<string, int>(string.Empty))).ShouldBeError(1);
     }
+
+    [Property(DisplayName = "Result SelectMany should project results")]
+    public void SelectManyProjectsResult()
+    {
+        ((Result<string, int>)(
+            from x in Ok<string, int>(string.Empty)
+            from y in Ok<string, int>(string.Empty)
+            from z in Ok<string, int>(string.Empty)
+            select Ok<string, int>("out")))
+            .ShouldBeOk("out");
+
+    }
 }
