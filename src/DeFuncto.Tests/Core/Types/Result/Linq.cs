@@ -70,4 +70,13 @@ public class Linq
 
         int Boom() => throw new Exception("Should not happen");
     }
+
+    [Property(DisplayName = "Result Select should project results")]
+    public void SelectProjectsResult()
+    {
+        (from _ in Ok<string, int>(string.Empty) select Ok<string, int>(string.Empty)).ShouldBeOk();
+        (from _ in Ok<string, int>(string.Empty) select Error<string, int>(1)).ShouldBeError(1);
+        (from _ in Error<string, int>(1) select Error<string, int>(2)).ShouldBeError(1);
+        (from _ in Error<string, int>(1) select Ok<string, int>(string.Empty)).ShouldBeError(1);
+    }
 }

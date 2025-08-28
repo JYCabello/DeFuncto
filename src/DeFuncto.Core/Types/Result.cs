@@ -85,6 +85,15 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     public Result<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
     /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Result<TOk2, TError> Select<TOk2>(Func<TOk, Result<TOk2, TError>> projection) => Match(ok => projection(ok), Error<TOk2, TError>);
+    /// <summary>
     /// Projects the error value.
     /// </summary>
     /// <param name="projection">Projection.</param>
