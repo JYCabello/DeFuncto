@@ -113,7 +113,7 @@ public class Linq
               2  task	async
               3  task	result
               4  async	task
-              5  async	async
+              5  async	async ** same as allOk test **
               6  async	result
               7  result	task
               8  result	async
@@ -130,6 +130,60 @@ public class Linq
 
         (await _1).ShouldBeOk("ok_some_some");
 
-    }
+        AsyncResult<string, int> _2 =
+            from x in Ok<string, int>("ok").Async()
+            from y in SomeAsyncMethod(x)
+            select SomeAsyncMethod(y).Async();
 
+        (await _2).ShouldBeOk("ok_some_some");
+
+        AsyncResult<string, int> _3 =
+            from x in Ok<string, int>("ok").Async()
+            from y in SomeAsyncMethod(x)
+            select Ok<string, int>($"{y}_sync");
+
+        (await _3).ShouldBeOk("ok_some_sync");
+
+        AsyncResult<string, int> _4 =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_some").Async()
+            select SomeAsyncMethod(y);
+
+        (await _4).ShouldBeOk("ok_some_some");
+
+        AsyncResult<string, int> _5 =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_some").Async()
+            select SomeAsyncMethod(y).Async();
+
+        (await _5).ShouldBeOk("ok_some_some");
+
+        AsyncResult<string, int> _6 =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_some").Async()
+            select Ok<string, int>($"{y}_sync");
+        
+        (await _6).ShouldBeOk("ok_some_sync");
+
+        AsyncResult<string, int> _7 =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_sync")
+            select SomeAsyncMethod(y);
+
+        (await _7).ShouldBeOk("ok_sync_some");
+
+        AsyncResult<string, int> _8 =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_sync")
+            select SomeAsyncMethod(y).Async();
+
+        (await _8).ShouldBeOk("ok_sync_some");
+
+        AsyncResult<string, int> _9 =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_sync")
+            select Ok<string, int>($"{y}_sync");
+
+        (await _9).ShouldBeOk("ok_sync_sync");
+    }
 }
