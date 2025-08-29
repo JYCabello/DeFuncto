@@ -302,6 +302,30 @@ public readonly struct AsyncResult<TOk, TError>
     public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, AsyncResult<TOk2, TError>> projection) => Map(projection).Flatten();
 
     /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, Task<Result<TOk2, TError>>> projection) => Map(ok => projection(ok).Async()).Flatten();
+
+    /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, Result<TOk2, TError>> projection) => Map(ok => projection(ok).Async()).Flatten();
+
+    /// <summary>
     /// Binds and projects the present state using a binder and a projection
     /// function.
     /// </summary>

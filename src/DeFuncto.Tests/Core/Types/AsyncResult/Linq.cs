@@ -100,6 +100,27 @@ public class Linq
             .ShouldBeError(1);
     }
 
+    [Property(DisplayName = "AsyncResult is projected when using linq syntax for select over a projection of Task<Result<>> or Result<>")]
+    public async void SelectAlwaysProjectsAsyncResult()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        // task
+        AsyncResult<string, int> _1 = 
+            from x in Ok<string, int>("ok").Async()
+            select SomeAsyncMethod(x);
+
+        (await _1).ShouldBeOk("ok_some");
+
+        // result
+        AsyncResult<string, int> _2 = 
+            from x in Ok<string, int>("ok").Async()
+            select Ok<string, int>($"{x}_sync");
+
+        (await _2).ShouldBeOk("ok_sync");
+    }
+
+
     [Property(DisplayName = "AsyncResult is projected when using linq syntax for select many over a Task<Result<>> or a Result<> method")]
     public async void SelectManyAlwaysProjectsAsyncResult()
     {
