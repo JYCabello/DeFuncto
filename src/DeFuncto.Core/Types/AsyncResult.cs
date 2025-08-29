@@ -343,6 +343,25 @@ public readonly struct AsyncResult<TOk, TError>
     ) => Bind(ok => binder(ok).Map(okb => projection(ok, okb))).Flatten();
 
     /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public AsyncResult<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+    Func<TOk, Task<Result<TOkBind, TError>>> binder,
+    Func<TOk, TOkBind, Task<Result<TOkFinal, TError>>> projection
+    ) => Bind(ok => binder(ok).Map(okBind => okBind.Map(okProj => projection(ok, okProj).Async()))).Flatten();
+
+
+    /// <summary>
     /// True if it's Ok.
     /// </summary>
     public Task<bool> IsOk => resultTask.Map(r => r.IsOk);

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using FsCheck;
 using FsCheck.Xunit;
@@ -97,4 +99,37 @@ public class Linq
             select Error<decimal, int>(2).Async()))
             .ShouldBeError(1);
     }
+
+    [Property(DisplayName = "AsyncResult is projected when using linq syntax for select many over a Task<Result<>> or a Result<> method")]
+    public async void SelectManyAlwaysProjectsAsyncResult()
+    {
+        /*
+         
+         Tests the following combinations for selectMany;
+         
+              #  binder	projection
+             ----------------------
+              1  task	task
+              2  task	async
+              3  task	result
+              4  async	task
+              5  async	async
+              6  async	result
+              7  result	task
+              8  result	async
+              9  result	result
+        
+         */
+
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> _1 =
+            from x in Ok<string, int>("ok").Async()
+            from y in SomeAsyncMethod(x)
+            select SomeAsyncMethod(y);
+
+        (await _1).ShouldBeOk("ok_some_some");
+
+    }
+
 }
