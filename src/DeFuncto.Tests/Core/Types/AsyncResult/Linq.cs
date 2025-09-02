@@ -50,4 +50,50 @@ public class Linq
 
         int Boom() => throw new Exception("Should not happen");
     }
+
+    [Property(DisplayName = "AsyncResult Select should project results")]
+    public void SelectProjectsResult()
+    {
+        // leave the type castings to ensure it's not returning a nested Result<Result...>>
+
+        var _1 = ((AsyncResult<decimal, int>)(from _ in Ok<string, int>(string.Empty).Async() select Ok<decimal, int>(decimal.Zero).Async())).ShouldBeOk().Result;
+        var _2 = ((AsyncResult<string, int>)(from _ in Ok<string, int>(string.Empty).Async() select Ok<string, int>(string.Empty).Async())).ShouldBeOk().Result;
+        var _3 = ((AsyncResult<string, int>)(from _ in Ok<string, int>(string.Empty).Async() select Error<string, int>(1).Async())).ShouldBeError(1).Result;
+        var _4 = ((AsyncResult<string, int>)(from _ in Error<string, int>(1).Async() select Error<string, int>(2).Async())).ShouldBeError(1).Result;
+        var _5 = ((AsyncResult<string, int>)(from _ in Error<string, int>(1).Async() select Ok<string, int>(string.Empty).Async())).ShouldBeError(1).Result;
+    }
+
+    [Property(DisplayName = "AsyncResult SelectMany should project results")]
+    public void SelectManyProjectsResult()
+    {
+        // leave the type castings to ensure it's not returning a nested Result<Result...>>
+
+        var _1 = ((AsyncResult<string, int>)(
+            from x in Ok<string, int>(string.Empty).Async()
+            from y in Ok<string, int>(string.Empty).Async()
+            from z in Ok<string, int>(string.Empty).Async()
+            select Ok<string, int>("out").Async()))
+            .ShouldBeOk("out").Result;
+
+        var _2 = ((AsyncResult<string, int>)(
+            from x in Ok<string, int>(string.Empty).Async()
+            from y in Ok<string, int>(string.Empty).Async()
+            from z in Ok<string, int>(string.Empty).Async()
+            select Error<string, int>(1).Async()))
+            .ShouldBeError(1).Result;
+
+        var _3 = ((AsyncResult<string, int>)(
+            from x in Ok<string, int>(string.Empty).Async()
+            from y in Ok<string, int>(string.Empty).Async()
+            from z in Error<string, int>(1).Async()
+            select Error<string, int>(2).Async()))
+            .ShouldBeError(1).Result;
+
+        var _4 = ((AsyncResult<decimal, int>)(
+            from x in Ok<string, int>(string.Empty).Async()
+            from y in Ok<string, int>(string.Empty).Async()
+            from z in Error<string, int>(1).Async()
+            select Error<decimal, int>(2).Async()))            
+            .ShouldBeError(1).Result;
+    }
 }

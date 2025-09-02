@@ -85,6 +85,16 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     public Result<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
     /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Result<TOk2, TError> Select<TOk2>(Func<TOk, Result<TOk2, TError>> projection) => Match(ok => projection(ok), Error<TOk2, TError>);
+
+    /// <summary>
     /// Projects the error value.
     /// </summary>
     /// <param name="projection">Projection.</param>
@@ -139,6 +149,11 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
         Func<TOk, TOkBind, TOkFinal> projection
     ) =>
         Bind(ok => binder(ok).Map(okbind => projection(ok, okbind)));
+
+    public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+        Func<TOk, Result<TOkBind, TError>> binder,
+        Func<TOk, TOkBind, Result<TOkFinal, TError>> projection
+    ) => Match(ok => binder(ok).Match(okBind => projection(ok, okBind), Error<TOkFinal, TError>), Error<TOkFinal, TError>);
 
     /// <summary>
     /// Collapses the structure in an output value, choosing the adequate projection

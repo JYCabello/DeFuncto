@@ -290,6 +290,18 @@ public readonly struct AsyncResult<TOk, TError>
     public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, TOk2> projection) => Map(projection);
 
     /// <summary>
+    /// Projects the Ok value.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, AsyncResult<TOk2, TError>> projection) => Map(projection).Flatten();
+
+    /// <summary>
     /// Binds and projects the present state using a binder and a projection
     /// function.
     /// </summary>
@@ -311,6 +323,24 @@ public readonly struct AsyncResult<TOk, TError>
                 okTpl => Ok<TOkFinal, TError>(projection(okTpl.ok, okTpl.okbind)),
                 Error<TOkFinal, TError>
             );
+
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new AsyncResult.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public AsyncResult<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+    Func<TOk, AsyncResult<TOkBind, TError>> binder,
+    Func<TOk, TOkBind, AsyncResult<TOkFinal, TError>> projection
+    ) => Bind(ok => binder(ok).Map(okb => projection(ok, okb))).Flatten();
 
     /// <summary>
     /// True if it's Ok.
