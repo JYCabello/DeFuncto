@@ -95,6 +95,34 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     public Result<TOk2, TError> Select<TOk2>(Func<TOk, Result<TOk2, TError>> projection) => Match(ok => projection(ok), Error<TOk2, TError>);
 
     /// <summary>
+    /// Projects the Ok value.
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// </summary>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new Result.</returns>
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, Task<Result<TOk2, TError>>> projection)
+        => Match(ok => projection(ok).Async(), err => err);
+
+    /// <summary>
+    /// Projects the Ok value.
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// </summary>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOk2">New value type.</typeparam>
+    /// <returns>A new Result.</returns>
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public AsyncResult<TOk2, TError> Select<TOk2>(Func<TOk, AsyncResult<TOk2, TError>> projection)
+        => Match(ok => projection(ok), err => err);
+
+    /// <summary>
     /// Projects the error value.
     /// </summary>
     /// <param name="projection">Projection.</param>
@@ -150,10 +178,90 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     ) =>
         Bind(ok => binder(ok).Map(okbind => projection(ok, okbind)));
 
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new Result.</returns>
     public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
         Func<TOk, Result<TOkBind, TError>> binder,
         Func<TOk, TOkBind, Result<TOkFinal, TError>> projection
     ) => Match(ok => binder(ok).Match(okBind => projection(ok, okBind), Error<TOkFinal, TError>), Error<TOkFinal, TError>);
+
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new Result.</returns>
+    public AsyncResult<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+        Func<TOk, AsyncResult<TOkBind, TError>> binder,
+        Func<TOk, TOkBind, AsyncResult<TOkFinal, TError>> projection
+    ) => Match(okbind => binder(okbind).Map(okproj => projection(okbind, okproj)), err => err).Flatten();
+
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new Result.</returns>
+    public AsyncResult<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+        Func<TOk, Task<Result<TOkBind, TError>>> binder,
+        Func<TOk, TOkBind, AsyncResult<TOkFinal, TError>> projection
+    ) => Match(okbind => binder(okbind).Async().Map(okproj => projection(okbind, okproj)), err => err).Flatten();
+
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new Result.</returns>
+    public AsyncResult<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+        Func<TOk, Task<Result<TOkBind, TError>>> binder,
+        Func<TOk, TOkBind, Task<Result<TOkFinal, TError>>> projection
+    ) => Match(okbind => binder(okbind).Async().Map(okproj => projection(okbind, okproj).Async()), err => err).Flatten();
+
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new Result.</returns>
+    public AsyncResult<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
+        Func<TOk, AsyncResult<TOkBind, TError>> binder,
+        Func<TOk, TOkBind, Task<Result<TOkFinal, TError>>> projection
+    ) => Match(okbind => binder(okbind).Map(okproj => projection(okbind, okproj).Async()), err => err).Flatten();
 
     /// <summary>
     /// Collapses the structure in an output value, choosing the adequate projection
