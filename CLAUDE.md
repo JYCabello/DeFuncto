@@ -32,7 +32,7 @@ DeFuncto is a functional programming library for C# inspired by F# and language-
 
 - **DeFuncto.Core** (netstandard2.0): Main library with core types
 - **DeFuncto.Assertions** (netstandard2.0): Test assertion helpers for DeFuncto types
-- **DeFuncto.Tests** (net9.0): xUnit + FsCheck property-based tests
+- **DeFuncto.Tests** (net10.0): xUnit + FsCheck property-based tests
 
 ### Core Types (in `src/DeFuncto.Core/Types/`)
 
