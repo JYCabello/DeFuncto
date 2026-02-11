@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Extensions;
-using Xunit;
 
 namespace DeFuncto.Tests.Core.Booleans;
 

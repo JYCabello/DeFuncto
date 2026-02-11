@@ -1,7 +1,6 @@
 ﻿using DeFuncto.Assertions;
 using DeFuncto.Tests.Models;
 using FsCheck.Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Du3;
 

@@ -1,6 +1,4 @@
 ﻿using FsCheck.Xunit;
-using Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncOption;
 

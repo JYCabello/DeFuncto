@@ -1,7 +1,4 @@
-﻿using Xunit;
-using static DeFuncto.Prelude;
-
-namespace DeFuncto.Tests.Core.ActivePatternMatching;
+﻿namespace DeFuncto.Tests.Core.ActivePatternMatching;
 
 public class Defaults
 {

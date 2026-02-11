@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using DeFuncto.Extensions;
-using Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Extensions.Collection;
 

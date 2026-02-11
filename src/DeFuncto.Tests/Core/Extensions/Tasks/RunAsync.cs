@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
-using Xunit;
 
 namespace DeFuncto.Tests.Core.Extensions.Tasks;
 

@@ -1,7 +1,5 @@
 ﻿using DeFuncto.Assertions;
 using FsCheck.Xunit;
-using Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Prelude;
 
