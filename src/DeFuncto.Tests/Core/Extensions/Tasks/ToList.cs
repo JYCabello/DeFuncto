@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using DeFuncto.Extensions;
 using FsCheck.Xunit;
-using Xunit;
 
 namespace DeFuncto.Tests.Core.Extensions.Tasks;
 

@@ -2,7 +2,6 @@
 using DeFuncto.Extensions;
 using FsCheck;
 using FsCheck.Xunit;
-using Xunit;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 

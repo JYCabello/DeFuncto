@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Xunit;
 
 namespace DeFuncto.Tests.Core.Types.Option;
 
