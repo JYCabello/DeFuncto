@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using FsCheck;
 using FsCheck.Xunit;
-using Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Tries;
 
