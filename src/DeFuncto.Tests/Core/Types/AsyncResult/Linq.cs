@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using FsCheck;
 using FsCheck.Xunit;
@@ -92,7 +93,160 @@ public class Linq
             from x in Ok<string, int>(string.Empty).Async()
             from y in Ok<string, int>(string.Empty).Async()
             from z in Error<string, int>(1).Async()
-            select Error<decimal, int>(2).Async()))            
+            select Error<decimal, int>(2).Async()))
             .ShouldBeError(1).Result;
+    }
+
+    [Fact(DisplayName = "AsyncResult is projected when using linq syntax for select over a projection of Task<Result<>> or Result<>")]
+    public async Task SelectAlwaysProjectsAsyncResult()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        // task
+        AsyncResult<string, int> _1 =
+            from x in Ok<string, int>("ok").Async()
+            select SomeAsyncMethod(x);
+
+        (await _1).ShouldBeOk("ok_some");
+
+        // result
+        AsyncResult<string, int> _2 =
+            from x in Ok<string, int>("ok").Async()
+            select Ok<string, int>($"{x}_sync");
+
+        (await _2).ShouldBeOk("ok_sync");
+    }
+
+    [Property(DisplayName = "SelectMany should project Task binder and task projection.")]
+    public void SelectManyTaskBinderTaskProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in SomeAsyncMethod(x)
+            select SomeAsyncMethod(y);
+
+        _ = result.ShouldBeOk("ok_some_some").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Task binder and async projection.")]
+    public void SelectManyTaskBinderAsyncProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in SomeAsyncMethod(x)
+            select SomeAsyncMethod(y).Async();
+
+        _ = result.ShouldBeOk("ok_some_some").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Task binder and result projection")]
+    public void SelectManyTaskBinderResultProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in SomeAsyncMethod(x)
+            select Ok<string, int>($"{y}_sync");
+
+        _ = result.ShouldBeOk("ok_some_sync").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Async binder and task projection")]
+    public void SelectManyAsyncBinderTaskProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_some").Async()
+            select SomeAsyncMethod(y);
+
+        _ = result.ShouldBeOk("ok_some_some").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Async binder and async projection")]
+    public void SelectManyAsyncBinderAsyncProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_some").Async()
+            select SomeAsyncMethod(y).Async();
+
+        _ = result.ShouldBeOk("ok_some_some").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Async binder and result projection")]
+    public void SelectManyAsyncBinderResultProjection()
+    {
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_some").Async()
+            select Ok<string, int>($"{y}_sync");
+
+        _ = result.ShouldBeOk("ok_some_sync").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Result binder and task projection")]
+    public void SelectManyResultBinderTaskProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_sync")
+            select SomeAsyncMethod(y);
+
+        _ = result.ShouldBeOk("ok_sync_some").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Result binder and async projection")]
+    public void SelectManyResultBinderAsyncProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_sync")
+            select SomeAsyncMethod(y).Async();
+
+        _ = result.ShouldBeOk("ok_sync_some").Result;
+    }
+
+    [Property(DisplayName = "SelectMany should project Result binder and result projection")]
+    public void SelectManyResultBinderResultProjection()
+    {
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            from y in Ok<string, int>($"{x}_sync")
+            select Ok<string, int>($"{y}_sync");
+
+        _ = result.ShouldBeOk("ok_sync_sync").Result;
+    }
+
+    [Property(DisplayName = "Select should project task<result>")]
+    public void SelectWithTaskProjection()
+    {
+        async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            select SomeAsyncMethod(x);
+        _ = result.ShouldBeOk("ok_some").Result;
+    }
+
+    [Property(DisplayName = "Select should project result")]
+    public void SelectWithResultProjection()
+    {
+        Result<string, int> SomeMethod(string x) => Ok<string, int>($"{x}_some");
+        AsyncResult<string, int> result =
+            from x in Ok<string, int>("ok").Async()
+            select SomeMethod(x);
+        _ = result.ShouldBeOk("ok_some").Result;
     }
 }

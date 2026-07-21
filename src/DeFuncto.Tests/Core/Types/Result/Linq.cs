@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using FsCheck;
 using FsCheck.Xunit;
@@ -115,5 +116,74 @@ public class Linq
             from z in Error<string, int>(1)
             select Error<decimal, int>(2)))
             .ShouldBeError(1);
+    }
+
+    [Property(DisplayName = "Select should project async Task<Result>")]
+    public void SelectTaskProjection()
+    {
+        Task<Result<string, int>> Foo(string r) => Task.FromResult(Ok<string, int>("foo"));
+        var x = from r in Ok<string, int>(string.Empty)
+                select Foo(r);
+
+        x.ToTask().Result.ShouldBeOk("foo");
+    }
+
+    [Property(DisplayName = "Select should project AsyncResult")]
+    public void SelectAsyncProjection()
+    {
+        AsyncResult<string, int> Foo(string r) => Task.FromResult(Ok<string, int>("foo")).Async();
+        var x = from r in Ok<string, int>(string.Empty)
+                select Foo(r);
+
+        x.ToTask().Result.ShouldBeOk("foo");
+    }
+
+    [Property(DisplayName = "SelectMany should bind and project AsyncResult")]
+    public void SelectManyAsyncBinderAsyncProjection()
+    {
+        AsyncResult<string, int> Bar(string foo) => Task.FromResult(Ok<string, int>($"{foo}bar")).Async();
+        AsyncResult<string,int> x = from r in Ok<string, int>("foo")
+                from s in Bar(r)
+                select Bar(s);
+
+        x.ToTask().Result.ShouldBeOk("foobarbar");
+    }
+
+    [Property(DisplayName = "Select should bind Task<Result> and project AsyncResult")]
+    public void SelectManyTaskBinderAsyncProjection()
+    {
+        Task<Result<string, int>> BarTask(string foo) => Task.FromResult(Ok<string, int>($"{foo}bar"));
+        AsyncResult<string, int> BarAsync(string foo) => Task.FromResult(Ok<string, int>($"{foo}bas")).Async();
+
+        AsyncResult<string, int> x = from r in Ok<string, int>("foo")
+                                     from s in BarTask(r)
+                                     select BarAsync(s);
+
+        x.ToTask().Result.ShouldBeOk("foobarbas");
+    }
+
+    [Property(DisplayName = "Select should bind AsyncResult and project Task<Result>")]
+    public void SelectManyAsyncBinderTaskProjection()
+    {
+        Task<Result<string, int>> BarTask(string foo) => Task.FromResult(Ok<string, int>($"{foo}bas"));
+        AsyncResult<string, int> BarAsync(string foo) => Task.FromResult(Ok<string, int>($"{foo}bar")).Async();
+
+        AsyncResult<string, int> x = from r in Ok<string, int>("foo")
+                                     from s in BarAsync(r)
+                                     select BarTask(s);
+
+        x.ToTask().Result.ShouldBeOk("foobarbas");
+    }
+
+    [Property(DisplayName = "Select should bind and project Task<Result>")]
+    public void SelectManyTaskBinderTaskProjection()
+    {
+        Task<Result<string, int>> BarTask(string foo) => Task.FromResult(Ok<string, int>($"{foo}bas"));
+
+        AsyncResult<string, int> x = from r in Ok<string, int>("foo")
+                                     from s in BarTask(r)
+                                     select BarTask(s);
+
+        x.ToTask().Result.ShouldBeOk("foobasbas");
     }
 }
