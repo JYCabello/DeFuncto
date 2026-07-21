@@ -525,36 +525,73 @@ public readonly struct AsyncResult<TOk, TError>
     /// </summary>
     public AsyncOption<TOk> Option => Match(Some, _ => None);
 
+    /// <summary>
+    /// Implicitly lifts a synchronous Result into an AsyncResult.
+    /// </summary>
+    /// <param name="result">The Result to lift.</param>
+    /// <returns>An AsyncResult.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncResult<TOk, TError>(Result<TOk, TError> result) =>
         new(result);
 
+    /// <summary>
+    /// Implicitly wraps a value into an AsyncResult in the Ok state.
+    /// </summary>
+    /// <param name="ok">The Ok value.</param>
+    /// <returns>An AsyncResult in the Ok state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncResult<TOk, TError>(TOk ok) =>
         Ok<TOk, TError>(ok);
 
+    /// <summary>
+    /// Implicitly wraps a value into an AsyncResult in the Error state.
+    /// </summary>
+    /// <param name="error">The Error value.</param>
+    /// <returns>An AsyncResult in the Error state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncResult<TOk, TError>(TError error) =>
         Error<TOk, TError>(error);
 
+    /// <summary>
+    /// Implicitly wraps a Task of Result into an AsyncResult.
+    /// </summary>
+    /// <param name="result">The Task of Result to wrap.</param>
+    /// <returns>An AsyncResult.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncResult<TOk, TError>(Task<Result<TOk, TError>> result) =>
         new(result);
 
+    /// <summary>
+    /// Implicitly wraps a Task of value into an AsyncResult in the Ok state.
+    /// </summary>
+    /// <param name="ok">The Task of Ok value.</param>
+    /// <returns>An AsyncResult in the Ok state.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncResult<TOk, TError>(Task<TOk> ok) =>
         ok.Map(Ok<TOk, TError>);
 
+    /// <summary>
+    /// Implicitly wraps a Task of value into an AsyncResult in the Error state.
+    /// </summary>
+    /// <param name="error">The Task of Error value.</param>
+    /// <returns>An AsyncResult in the Error state.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncResult<TOk, TError>(Task<TError> error) =>
         error.Map(Error<TOk, TError>);
 
+    /// <summary>
+    /// Gets an awaiter used to await the underlying Result.
+    /// </summary>
+    /// <returns>An awaiter for the underlying Result.</returns>
     public TaskAwaiter<Result<TOk, TError>> GetAwaiter() => resultTask.GetAwaiter();
 }
 
+/// <summary>
+/// Common operations for the AsyncResult type.
+/// </summary>
 public static class AsyncResultExtensions
 {
     /// <summary>

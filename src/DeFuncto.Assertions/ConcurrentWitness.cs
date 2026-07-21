@@ -3,14 +3,28 @@ using System.Threading;
 
 namespace DeFuncto.Assertions;
 
+/// <summary>
+/// Test helper that tracks concurrent access, recording the maximum number of simultaneous holds
+/// and the total number of times it has been held.
+/// </summary>
 public class ConcurrentWitness
 {
     private readonly SemaphoreSlim semaphore = new(1);
     private int currentHoldCount;
+    /// <summary>
+    /// Highest number of holds observed to be active at the same time.
+    /// </summary>
     public int MaxConcurrentHolds { get; private set; }
 
+    /// <summary>
+    /// Total number of times a hold has been taken and released.
+    /// </summary>
     public int TimesCalled { get; private set; }
 
+    /// <summary>
+    /// Takes a hold on the witness for the lifetime of the returned disposable.
+    /// </summary>
+    /// <returns>A disposable that releases the hold when disposed.</returns>
     public IDisposable Grab() =>
         new Holder(this);
 
@@ -30,6 +44,11 @@ public class ConcurrentWitness
         semaphore.Release();
     }
 
+    /// <summary>
+    /// Asserts that the witness was never held by more than the given number of holders at the same time.
+    /// </summary>
+    /// <param name="max">Maximum number of concurrent holds allowed.</param>
+    /// <returns>This instance.</returns>
     public ConcurrentWitness ShouldBeenHeldMax(int max)
     {
         if (MaxConcurrentHolds > max)
@@ -37,6 +56,11 @@ public class ConcurrentWitness
         return this;
     }
 
+    /// <summary>
+    /// Asserts that the witness was held the given total number of times.
+    /// </summary>
+    /// <param name="total">Expected total number of holds.</param>
+    /// <returns>This instance.</returns>
     public ConcurrentWitness ShouldBeenHeldTotal(int total)
     {
         if (total != TimesCalled)

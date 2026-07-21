@@ -16,14 +16,28 @@ namespace DeFuncto;
 [Newtonsoft.Json.JsonConverter(typeof(DuNewtonsoftConverter))]
 public readonly struct Du<T1, T2> : IEquatable<Du<T1, T2>>
 {
+    /// <summary>
+    /// Identifies which case a Du holds.
+    /// </summary>
     public enum DiscriminationValue
     {
+        /// <summary>
+        /// The first case.
+        /// </summary>
         T1,
+
+        /// <summary>
+        /// The second case.
+        /// </summary>
         T2
     }
 
     private readonly T1? t1;
     private readonly T2? t2;
+
+    /// <summary>
+    /// Identifies the active case.
+    /// </summary>
     public readonly DiscriminationValue Discriminator;
 
     /// <summary>
@@ -84,21 +98,45 @@ public readonly struct Du<T1, T2> : IEquatable<Du<T1, T2>>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du<T1, T2> Second(T2 t2) => t2;
 
+    /// <summary>
+    /// Implicitly wraps a value into the first case.
+    /// </summary>
+    /// <param name="t1">First case value.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Du<T1, T2>(T1 t1) => new(t1);
 
+    /// <summary>
+    /// Implicitly wraps a value into the second case.
+    /// </summary>
+    /// <param name="t2">Second case value.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Du<T1, T2>(T2 t2) => new(t2);
 
+    /// <summary>
+    /// Determines whether this instance equals another object.
+    /// </summary>
+    /// <param name="obj">Object to compare with.</param>
+    /// <returns>True if equal.</returns>
     public override bool Equals(object obj) =>
         obj is Du<T1, T2> other && Equals(other);
 
+    /// <summary>
+    /// Determines whether this instance equals another instance.
+    /// </summary>
+    /// <param name="other">Instance to compare with.</param>
+    /// <returns>True if both hold the same case with equal values.</returns>
     public bool Equals(Du<T1, T2> other) =>
         Discriminator == other.Discriminator
         && Match(v => v!.Equals(other.t1), v => v!.Equals(other.t2));
 
+    /// <summary>
+    /// Computes the hash code for this instance.
+    /// </summary>
+    /// <returns>The hash code.</returns>
     public override int GetHashCode() =>
         (this, -1956924612)
         .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t.Item1.t1)))

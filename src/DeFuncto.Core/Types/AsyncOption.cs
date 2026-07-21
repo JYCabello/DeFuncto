@@ -416,20 +416,42 @@ public readonly struct AsyncOption<T>
     public AsyncResult<T, TError> Result<TError>(TError error) =>
         Result(() => error);
 
+    /// <summary>
+    /// Implicitly wraps a value into a Some async option.
+    /// </summary>
+    /// <param name="val">The value to wrap.</param>
+    /// <returns>An async option.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(T val) => new(val);
 
+    /// <summary>
+    /// Implicitly wraps an option into an async option.
+    /// </summary>
+    /// <param name="option">The option to wrap.</param>
+    /// <returns>An async option.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(Option<T> option) => new(option);
 
+    /// <summary>
+    /// Implicitly wraps a task of an option into an async option.
+    /// </summary>
+    /// <param name="option">The task of an option to wrap.</param>
+    /// <returns>An async option.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator AsyncOption<T>(Task<Option<T>> option) => new(option);
 
+    /// <summary>
+    /// Gets an awaiter used to await the underlying task of an option.
+    /// </summary>
+    /// <returns>An awaiter for the underlying task of an option.</returns>
     public TaskAwaiter<Option<T>> GetAwaiter() => (optionTask ?? Task.FromResult(None.Option<T>())).GetAwaiter();
 }
 
+/// <summary>
+/// Extension methods for <see cref="AsyncOption{T}" />.
+/// </summary>
 public static class AsyncOptionExtensions
 {
     /// <summary>

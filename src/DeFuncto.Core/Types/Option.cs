@@ -342,6 +342,9 @@ public readonly struct OptionNone
     public Option<T> Option<T>() => DeFuncto.Option<T>.None;
 }
 
+/// <summary>
+/// Common operations for the Option type.
+/// </summary>
 public static class OptionExtensions
 {
     /// <summary>
