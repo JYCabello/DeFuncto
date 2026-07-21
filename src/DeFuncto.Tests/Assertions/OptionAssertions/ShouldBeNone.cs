@@ -1,6 +1,4 @@
 ﻿using DeFuncto.Assertions;
-using Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Assertions.OptionAssertions;
 

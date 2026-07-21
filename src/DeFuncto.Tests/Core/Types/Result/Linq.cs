@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using FsCheck;
 using FsCheck.Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.Result;
 
@@ -185,6 +184,6 @@ public class Linq
                                      from s in BarTask(r)
                                      select BarTask(s);
 
-        x.ToTask().Result.ShouldBeOk("foobarbas");
+        x.ToTask().Result.ShouldBeOk("foobasbas");
     }
 }

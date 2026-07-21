@@ -14,7 +14,7 @@
         <PackageTags>Functional Monad Option Result Either Parallel</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageVersion>1.1.4</PackageVersion>
+        <PackageVersion>1.3.0</PackageVersion>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>

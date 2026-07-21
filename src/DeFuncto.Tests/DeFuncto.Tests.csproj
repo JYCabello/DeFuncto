@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
 
         <IsPackable>false</IsPackable>
 
@@ -10,18 +10,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FsCheck.Xunit" Version="2.16.6" />
-        <PackageReference Include="FSharp.Core" Version="8.0.100" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-        <PackageReference Include="xunit" Version="2.6.2" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
+        <PackageReference Include="FsCheck.Xunit.v3" Version="3.3.2" />
+        <PackageReference Include="FSharp.Core" Version="10.0.103" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="6.0.0">
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="xunit.v3" Version="3.2.2" />
     </ItemGroup>
 
     <ItemGroup>

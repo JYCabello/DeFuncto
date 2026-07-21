@@ -3,7 +3,6 @@ using DeFuncto.Assertions;
 using DeFuncto.Extensions;
 using FsCheck;
 using FsCheck.Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncResult;
 

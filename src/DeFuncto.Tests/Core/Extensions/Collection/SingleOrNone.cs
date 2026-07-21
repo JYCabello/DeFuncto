@@ -3,7 +3,6 @@ using System.Linq;
 using DeFuncto.Assertions;
 using DeFuncto.Extensions;
 using FsCheck.Xunit;
-using Xunit;
 
 namespace DeFuncto.Tests.Core.Extensions.Collection;
 

@@ -1,5 +1,4 @@
 ﻿using DeFuncto.Assertions;
-using Xunit;
 
 namespace DeFuncto.Tests.Core.Types.Option;
 

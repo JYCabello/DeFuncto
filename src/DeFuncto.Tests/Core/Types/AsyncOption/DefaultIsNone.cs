@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using DeFuncto.Assertions;
-using Xunit;
 
 namespace DeFuncto.Tests.Core.Types.AsyncOption;
 

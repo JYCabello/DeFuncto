@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using DeFuncto.Assertions;
 using FsCheck;
 using FsCheck.Xunit;
-using static DeFuncto.Prelude;
 
 namespace DeFuncto.Tests.Core.Types.AsyncResult;
 
@@ -54,66 +52,65 @@ public class Linq
     }
 
     [Property(DisplayName = "AsyncResult Select should project results")]
-    public async void SelectProjectsResult()
+    public void SelectProjectsResult()
     {
         // leave the type castings to ensure it's not returning a nested Result<Result...>>
 
-        await ((AsyncResult<decimal, int>)(from _ in Ok<string, int>(string.Empty).Async() select Ok<decimal, int>(decimal.Zero).Async())).ShouldBeOk();
-        await ((AsyncResult<string, int>)(from _ in Ok<string, int>(string.Empty).Async() select Ok<string, int>(string.Empty).Async())).ShouldBeOk();
-
-        await ((AsyncResult<string, int>)(from _ in Ok<string, int>(string.Empty).Async() select Error<string, int>(1).Async())).ShouldBeError(1);
-        await ((AsyncResult<string, int>)(from _ in Error<string, int>(1).Async() select Error<string, int>(2).Async())).ShouldBeError(1);
-        await ((AsyncResult<string, int>)(from _ in Error<string, int>(1).Async() select Ok<string, int>(string.Empty).Async())).ShouldBeError(1);
+        var _1 = ((AsyncResult<decimal, int>)(from _ in Ok<string, int>(string.Empty).Async() select Ok<decimal, int>(decimal.Zero).Async())).ShouldBeOk().Result;
+        var _2 = ((AsyncResult<string, int>)(from _ in Ok<string, int>(string.Empty).Async() select Ok<string, int>(string.Empty).Async())).ShouldBeOk().Result;
+        var _3 = ((AsyncResult<string, int>)(from _ in Ok<string, int>(string.Empty).Async() select Error<string, int>(1).Async())).ShouldBeError(1).Result;
+        var _4 = ((AsyncResult<string, int>)(from _ in Error<string, int>(1).Async() select Error<string, int>(2).Async())).ShouldBeError(1).Result;
+        var _5 = ((AsyncResult<string, int>)(from _ in Error<string, int>(1).Async() select Ok<string, int>(string.Empty).Async())).ShouldBeError(1).Result;
     }
 
     [Property(DisplayName = "AsyncResult SelectMany should project results")]
-    public async void SelectManyProjectsResult()
+    public void SelectManyProjectsResult()
     {
         // leave the type castings to ensure it's not returning a nested Result<Result...>>
 
-        await ((AsyncResult<string, int>)(
+        var _1 = ((AsyncResult<string, int>)(
             from x in Ok<string, int>(string.Empty).Async()
             from y in Ok<string, int>(string.Empty).Async()
             from z in Ok<string, int>(string.Empty).Async()
             select Ok<string, int>("out").Async()))
-            .ShouldBeOk("out");
+            .ShouldBeOk("out").Result;
 
-        await ((AsyncResult<string, int>)(
+        var _2 = ((AsyncResult<string, int>)(
             from x in Ok<string, int>(string.Empty).Async()
             from y in Ok<string, int>(string.Empty).Async()
             from z in Ok<string, int>(string.Empty).Async()
             select Error<string, int>(1).Async()))
-            .ShouldBeError(1);
+            .ShouldBeError(1).Result;
 
-        await ((AsyncResult<string, int>)(
+        var _3 = ((AsyncResult<string, int>)(
             from x in Ok<string, int>(string.Empty).Async()
             from y in Ok<string, int>(string.Empty).Async()
             from z in Error<string, int>(1).Async()
             select Error<string, int>(2).Async()))
-            .ShouldBeError(1);
+            .ShouldBeError(1).Result;
 
-        await ((AsyncResult<decimal, int>)(
+        var _4 = ((AsyncResult<decimal, int>)(
             from x in Ok<string, int>(string.Empty).Async()
             from y in Ok<string, int>(string.Empty).Async()
             from z in Error<string, int>(1).Async()
             select Error<decimal, int>(2).Async()))
-            .ShouldBeError(1);
+            .ShouldBeError(1).Result;
     }
 
-    [Property(DisplayName = "AsyncResult is projected when using linq syntax for select over a projection of Task<Result<>> or Result<>")]
-    public async void SelectAlwaysProjectsAsyncResult()
+    [Fact(DisplayName = "AsyncResult is projected when using linq syntax for select over a projection of Task<Result<>> or Result<>")]
+    public async Task SelectAlwaysProjectsAsyncResult()
     {
         async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
 
         // task
-        AsyncResult<string, int> _1 = 
+        AsyncResult<string, int> _1 =
             from x in Ok<string, int>("ok").Async()
             select SomeAsyncMethod(x);
 
         (await _1).ShouldBeOk("ok_some");
 
         // result
-        AsyncResult<string, int> _2 = 
+        AsyncResult<string, int> _2 =
             from x in Ok<string, int>("ok").Async()
             select Ok<string, int>($"{x}_sync");
 
@@ -192,7 +189,7 @@ public class Linq
             from x in Ok<string, int>("ok").Async()
             from y in Ok<string, int>($"{x}_some").Async()
             select Ok<string, int>($"{y}_sync");
-        
+
         _ = result.ShouldBeOk("ok_some_sync").Result;
     }
 
@@ -233,7 +230,7 @@ public class Linq
         _ = result.ShouldBeOk("ok_sync_sync").Result;
     }
 
-    [Property(DisplayName = "SelectMany should project task<result>")]
+    [Property(DisplayName = "Select should project task<result>")]
     public void SelectWithTaskProjection()
     {
         async Task<Result<string, int>> SomeAsyncMethod(string x) => Ok<string, int>($"{x}_some");
@@ -243,7 +240,7 @@ public class Linq
         _ = result.ShouldBeOk("ok_some").Result;
     }
 
-    [Property(DisplayName = "SelectMany should project result")]
+    [Property(DisplayName = "Select should project result")]
     public void SelectWithResultProjection()
     {
         Result<string, int> SomeMethod(string x) => Ok<string, int>($"{x}_some");
