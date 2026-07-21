@@ -158,3 +158,39 @@ public IActionResult GetData(int id) =>
 The type system is enforcing error handling in every step. If you were to check for `isAuthorized` after you get the data, it would still return an error. It can be made safer by having `HasRole` return a token and make it a parameter of `GetMyData`, but it's out of the scope for this example.
 
 More importantly, we have a single point where we translate all possible errors to action results. If we had operations with idempotency keys, we could validate the idempotency key and shortcircuit the whole operation with a cached result with trivial modifications.
+
+## Hey, where is my value?
+> This railway thing is lovely, but at some point I'm at the end of the line and I just want whatever is inside.
+
+You already heard this sermon in the [Option](./option.md) chapter, so I'll keep it short: the whole point of the `Result` is to defer that question, and the moment you reach inside you're back to caring about the value being there or not. When you are genuinely at the end of the road, though, a `Result` won't hand you a naked value that might not exist, it hands you something that keeps you honest.
+
+### As an option
+A `Result` is biased towards `Ok`, so, more often than not, the value you're after is the successful one. Asking for its `Option` gives you back an `Option<TOk>`, `Some` when it was `Ok` and `None` when it was an `Error`:
+```cs
+Result<User, MyError> result = GetActiveUser(key);
+
+Option<User> maybeUser = result.Option; // Some when Ok, None when Error.
+```
+The failure track is symmetric. You'd expect it to be called `Error`, but that name is already taken by the static constructor (`Result<User, MyError>.Error(...)`), so the error-as-option accessor goes by `OptionError`:
+```cs
+Result<User, MyError> result = GetActiveUser(key);
+
+Option<MyError> maybeError = result.OptionError; // Some when Error, None when Ok.
+```
+This shines when you only care about one of the two tracks: gather every error that fell out of a batch and forget the successes, or the other way around, without writing a single conditional.
+
+### Iterating over it
+Just like an `Option` is a list with one element or none, a `Result` is a list with exactly one `Ok` element, or none at all when it's an `Error` (from the success track's point of view, an `Error` is simply an empty list). That means you can `foreach` right over it, and the body runs once when it's `Ok` and never when it's `Error`:
+```cs
+Result<User, MyError> result = GetActiveUser(key);
+
+foreach (var user in result)
+    Console.WriteLine($"Welcome back, {user.Username}"); // Runs only on Ok.
+```
+Since it's a well behaved collection, it also drops straight into a LINQ-to-objects pipeline. Say you ran a bunch of keys through `GetActiveUser` and you just want the users that actually made it through, errors and all discarded:
+```cs
+IEnumerable<Result<User, MyError>> results = keys.Select(GetActiveUser);
+
+// Only the users that were found and active, every Error quietly skipped:
+List<User> users = results.SelectMany(result => result).ToList();
+```

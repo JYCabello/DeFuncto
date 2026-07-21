@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -16,7 +18,7 @@ namespace DeFuncto;
 /// <typeparam name="TOk">Error type.</typeparam>
 /// <typeparam name="TError">Value type.</typeparam>
 [Newtonsoft.Json.JsonConverter(typeof(ResultNewtonsoftConverter))]
-public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
+public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>, IEnumerable<TOk>
 {
     private readonly Du<TOk, TError> value;
 
@@ -150,6 +152,18 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     ) =>
         Bind(ok => binder(ok).Map(okbind => projection(ok, okbind)));
 
+    /// <summary>
+    /// Binds and projects the present state using a binder and a projection
+    /// function that itself returns a Result.
+    /// </summary>
+    /// <remarks>
+    /// Used to enable LINQ embedded syntax, not meant for direct use.
+    /// </remarks>
+    /// <param name="binder">Binding function.</param>
+    /// <param name="projection">Projection.</param>
+    /// <typeparam name="TOkBind">Intermediate type of the binding.</typeparam>
+    /// <typeparam name="TOkFinal">Final type of the projection.</typeparam>
+    /// <returns>A new Result.</returns>
     public Result<TOkFinal, TError> SelectMany<TOkBind, TOkFinal>(
         Func<TOk, Result<TOkBind, TError>> binder,
         Func<TOk, TOkBind, Result<TOkFinal, TError>> projection
@@ -241,28 +255,83 @@ public readonly struct Result<TOk, TError> : IEquatable<Result<TOk, TError>>
     /// </summary>
     public Option<TOk> Option => Match(Some, _ => None);
 
+    /// <summary>
+    /// An option, Some if Error, None if Ok.
+    /// </summary>
+    public Option<TError> OptionError => Match(_ => None, Some);
+
+    /// <summary>
+    /// Makes it enumerable, yielding the Ok value when present.
+    /// </summary>
+    /// <returns>An enumerator that yields the value if it's in the Ok state.</returns>
+    public IEnumerator<TOk> GetEnumerator()
+    {
+        if (IsError)
+        {
+            yield break;
+        }
+
+        yield return value.Match(Id, _ => throw new("This can't happen"));
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    /// <summary>
+    /// Implicitly wraps an Ok abstraction into a Result in the Ok state.
+    /// </summary>
+    /// <param name="resultOk">The Ok abstraction.</param>
+    /// <returns>A Result in the Ok state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Result<TOk, TError>(ResultOk<TOk> resultOk) => Ok(resultOk.OkValue);
 
+    /// <summary>
+    /// Implicitly wraps a value into a Result in the Ok state.
+    /// </summary>
+    /// <param name="ok">The Ok value.</param>
+    /// <returns>A Result in the Ok state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Result<TOk, TError>(TOk ok) => Ok(ok);
 
+    /// <summary>
+    /// Implicitly wraps an Error abstraction into a Result in the Error state.
+    /// </summary>
+    /// <param name="resultError">The Error abstraction.</param>
+    /// <returns>A Result in the Error state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Result<TOk, TError>(ResultError<TError> resultError) => Error(resultError.ErrorValue);
 
+    /// <summary>
+    /// Implicitly wraps a value into a Result in the Error state.
+    /// </summary>
+    /// <param name="error">The Error value.</param>
+    /// <returns>A Result in the Error state.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Result<TOk, TError>(TError error) => Error(error);
 
+    /// <summary>
+    /// Determines whether this instance equals another object.
+    /// </summary>
+    /// <param name="obj">Object to compare with.</param>
+    /// <returns>True if equal.</returns>
     public override bool Equals(object obj) =>
         obj is Result<TOk, TError> other && Equals(other);
 
+    /// <summary>
+    /// Determines whether this instance equals another Result.
+    /// </summary>
+    /// <param name="other">Instance to compare with.</param>
+    /// <returns>True if both hold the same state with equal values.</returns>
     public bool Equals(Result<TOk, TError> other) =>
         other.value.Equals(value);
 
+    /// <summary>
+    /// Computes the hash code for this instance.
+    /// </summary>
+    /// <returns>The hash code.</returns>
     public override int GetHashCode() =>
         -1584136870 + value.GetHashCode();
 }
@@ -275,6 +344,10 @@ public readonly struct ResultOk<TOk>
 {
     internal readonly TOk OkValue;
 
+    /// <summary>
+    /// Constructor for the Ok abstraction.
+    /// </summary>
+    /// <param name="okValue">The Ok value.</param>
     public ResultOk(TOk okValue) =>
         OkValue = okValue;
 
@@ -296,6 +369,10 @@ public readonly struct ResultError<TError>
 {
     internal readonly TError ErrorValue;
 
+    /// <summary>
+    /// Constructor for the Error abstraction.
+    /// </summary>
+    /// <param name="errorValue">The Error value.</param>
     public ResultError(TError errorValue) =>
         ErrorValue = errorValue;
 
