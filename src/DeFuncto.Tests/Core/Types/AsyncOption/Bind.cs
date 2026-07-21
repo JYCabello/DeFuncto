@@ -1,5 +1,7 @@
-﻿using DeFuncto.Assertions;
+using System.Threading.Tasks;
+using DeFuncto.Assertions;
 using DeFuncto.Extensions;
+using FsCheck;
 using FsCheck.Xunit;
 using Xunit;
 using static DeFuncto.Prelude;
@@ -9,11 +11,13 @@ namespace DeFuncto.Tests.Core.Types.AsyncOption;
 public class Bind
 {
     [Property(DisplayName = "Binds two somes")]
-    public void SomeOnSome(string a, string b) =>
+    public void SomeOnSome(NonNull<string> a, NonNull<string> b) =>
         Some(42)
             .Async()
-            .Bind(number => number == 42 ? Some(a) : Some(b))
-            .ShouldBeSome(a);
+            .Bind(number => number == 42 ? Some(a.Get) : Some(b.Get))
+            .ShouldBeSome(a.Get)
+            .GetAwaiter()
+            .GetResult();
 
     [Property(DisplayName = "Binds none after some")]
     public void NoneOnSome(string a) =>
@@ -25,13 +29,11 @@ public class Bind
             .GetResult();
 
     [Fact(DisplayName = "Skips none after none")]
-    public void NoneOnNone() =>
-        None.Option<string>()
+    public async Task NoneOnNone() =>
+        await None.Option<string>()
             .Async()
             .Bind(_ => None.Option<int>())
-            .ShouldBeNone()
-            .GetAwaiter()
-            .GetResult();
+            .ShouldBeNone();
 
     [Property(DisplayName = "Skips some after none")]
     public void SomeOnNone(string a, string b) =>

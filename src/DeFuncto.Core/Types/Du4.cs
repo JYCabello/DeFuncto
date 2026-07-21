@@ -18,11 +18,29 @@ namespace DeFuncto;
 [Newtonsoft.Json.JsonConverter(typeof(DuNewtonsoftConverter))]
 public readonly struct Du4<T1, T2, T3, T4> : IEquatable<Du4<T1, T2, T3, T4>>
 {
+    /// <summary>
+    /// Identifies which case a Du holds.
+    /// </summary>
     public enum DiscriminationValue
     {
+        /// <summary>
+        /// The first case.
+        /// </summary>
         T1,
+
+        /// <summary>
+        /// The second case.
+        /// </summary>
         T2,
+
+        /// <summary>
+        /// The third case.
+        /// </summary>
         T3,
+
+        /// <summary>
+        /// The fourth case.
+        /// </summary>
         T4
     }
 
@@ -30,6 +48,10 @@ public readonly struct Du4<T1, T2, T3, T4> : IEquatable<Du4<T1, T2, T3, T4>>
     private readonly T2? t2;
     private readonly T3? t3;
     private readonly T4? t4;
+
+    /// <summary>
+    /// Identifies the active case.
+    /// </summary>
     public readonly DiscriminationValue Discriminator;
 
     /// <summary>
@@ -142,25 +164,55 @@ public readonly struct Du4<T1, T2, T3, T4> : IEquatable<Du4<T1, T2, T3, T4>>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Du4<T1, T2, T3, T4> Fourth(T4 t4) => t4;
 
+    /// <summary>
+    /// Implicitly wraps a value into the first case.
+    /// </summary>
+    /// <param name="t1">First case value.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Du4<T1, T2, T3, T4>(T1 t1) => new(t1);
 
+    /// <summary>
+    /// Implicitly wraps a value into the second case.
+    /// </summary>
+    /// <param name="t2">Second case value.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Du4<T1, T2, T3, T4>(T2 t2) => new(t2);
 
+    /// <summary>
+    /// Implicitly wraps a value into the third case.
+    /// </summary>
+    /// <param name="t3">Third case value.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Du4<T1, T2, T3, T4>(T3 t3) => new(t3);
 
+    /// <summary>
+    /// Implicitly wraps a value into the fourth case.
+    /// </summary>
+    /// <param name="t4">Fourth case value.</param>
+    /// <returns>A discriminated union.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Du4<T1, T2, T3, T4>(T4 t4) => new(t4);
 
+    /// <summary>
+    /// Determines whether this instance equals another object.
+    /// </summary>
+    /// <param name="obj">Object to compare with.</param>
+    /// <returns>True if equal.</returns>
     public override bool Equals(object obj) =>
         obj is Du4<T1, T2, T3, T4> other && Equals(other);
 
+    /// <summary>
+    /// Determines whether this instance equals another instance.
+    /// </summary>
+    /// <param name="other">Instance to compare with.</param>
+    /// <returns>True if both hold the same case with equal values.</returns>
     public bool Equals(Du4<T1, T2, T3, T4> other) =>
         Discriminator == other.Discriminator
         && Match(
@@ -169,6 +221,10 @@ public readonly struct Du4<T1, T2, T3, T4> : IEquatable<Du4<T1, T2, T3, T4>>
             v => v!.Equals(other.t3),
             v => v!.Equals(other.t4));
 
+    /// <summary>
+    /// Computes the hash code for this instance.
+    /// </summary>
+    /// <returns>The hash code.</returns>
     public override int GetHashCode() =>
         (this, -307543185)
         .Apply(t => (t.Item1, t.Item2 * -1521134295 + EqualityComparer<T1?>.Default.GetHashCode(t.Item1.t1)))
